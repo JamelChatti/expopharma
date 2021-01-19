@@ -194,7 +194,9 @@ class ArtList extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pushNamed('detailart');
+      },
     );
   }
 }
