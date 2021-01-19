@@ -66,97 +66,229 @@ class _DetailArtState extends State<DetailArt> {
               ),
             ),
             //debut colonne caratcteristique
+
             Container(
               padding: EdgeInsets.all(10),
-              child:Column(children:<Widget> [
-              Container(
-                padding: EdgeInsets.all(10),
-                color: Colors.white,
-                child: Row(children:<Widget> [
-                Text('Designation:', style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    fontSize: 15,
-                    color: Colors.blue),),
-                  Text('Avene ecran mineral 50+', style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 15,
-                      ),)
+              child:Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children:<Widget> [
 
-              ],),),
                 Container(
+                  width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(10),
                   color: Colors.blue,
-                  child: Row(children:<Widget> [
-                    Text('Forme:', style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 15,
-                        ),),
-                    Text('creme', style: TextStyle(
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Designation: ', style: TextStyle(
                       decoration: TextDecoration.underline,
-                      fontSize: 15,
-                    ),)
-
-                  ],),),
+                      fontSize: 17,
+                    )),
+                    TextSpan(text:'Avene ecran mineral 50+', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 17,
+                    ) )
+                  ])),
+                ),
                 Container(
                   padding: EdgeInsets.all(10),
                   color: Colors.white,
-                  child: Row(children:<Widget> [
-                    Text('indication:', style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 15,
-                        color: Colors.blue),),
-                    Text('ecran solaire', style: TextStyle(
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Forme: ', style: TextStyle(color: Colors.black,
                       decoration: TextDecoration.underline,
-                      fontSize: 15,
-                    ),)
-
-                  ],),),
+                      fontSize: 17,
+                    )),
+                    TextSpan(text:'crème', style: TextStyle(color: Colors.black,
+                      decoration: TextDecoration.underline,
+                      fontSize: 17,
+                    ) )
+                  ])),
+                ),
                 Container(
+                  width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(10),
                   color: Colors.blue,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:<Widget> [
-                    Text('Mode d\'utilisation:', style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 15,
-                        ),),
-                      Text('renouveler frequem.', style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontSize: 15,
-                          ),),
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'indication: ', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 17,
+                    )),
+                    TextSpan(text:'ecran solaire', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 17,
+                    ) )
+                  ])),
+                ),
 
-
-                  ],),),
                 Container(
                   padding: EdgeInsets.all(10),
                   color: Colors.white,
-                  child: Row(children:<Widget> [
-                    Text('Propriétes', style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 15,
-                        color: Colors.blue),),
-                    Text('ecran solaire', style: TextStyle(
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                 TextSpan(text: 'Mode d\'utilisation:', style: TextStyle(color: Colors.black,
+                   decoration: TextDecoration.underline,
+                   fontSize: 15,
+                 )),
+                    TextSpan(text:' renouveler frequemment l\'application.', style: TextStyle(color: Colors.black,
                       decoration: TextDecoration.underline,
                       fontSize: 15,
-                    ),)
-
-                  ],),),
+                    ) )
+                  ])),
+                  ),
                 Container(
+                  width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(10),
                   color: Colors.blue,
-                  child: Row(children:<Widget> [
-                    Text('Contenance', style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 15,
-                        ),),
-                    Text('50ml', style: TextStyle(
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Propriétes: ', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 17,
+                    )),
+                    TextSpan(text:'Très haute protection solaire de la peau intolérante du visage.Très résistant à l\'eau Très large protection UVB-UVA Photostable', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 17,
+                    ) )
+                  ])),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  color: Colors.white,
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Laboratoire:', style: TextStyle(color: Colors.black,
                       decoration: TextDecoration.underline,
                       fontSize: 15,
-                    ),)
-
-                  ],),),
-
+                    )),
+                    TextSpan(text:' Avene', style: TextStyle(color: Colors.black,
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    ) )
+                  ])),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(10),
+                  color: Colors.blue,
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Tableau:', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    )),
+                    TextSpan(text:' non', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    ) )
+                  ])),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  color: Colors.white,
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Contre indication', style: TextStyle(color: Colors.black,
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    )),
+                    TextSpan(text:' ', style: TextStyle(color: Colors.black,
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    ) )
+                  ])),
+                ),
+                Container(width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(10),
+                  color: Colors.blue,
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Effets indesirables:', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    )),
+                    TextSpan(text:' ', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    ) )
+                  ])),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  color: Colors.white,
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Femme enceinte et allaittement:', style: TextStyle(color: Colors.black,
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    )),
+                    TextSpan(text:' ', style: TextStyle(color: Colors.black,
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    ) )
+                  ])),
+                ),
+                Container(width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(10),
+                  color: Colors.blue,
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Remboursable par CNAM:', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    )),
+                    TextSpan(text:' non', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    ) )
+                  ])),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  color: Colors.white,
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Catégories:', style: TextStyle(color: Colors.black,
+                      fontSize: 15,
+                    )),
+                    TextSpan(text:' AMC', style: TextStyle(color: Colors.black,
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    ) )
+                  ])),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(10),
+                  color: Colors.blue,
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'DCI:', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    )),
+                    TextSpan(text:' ', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    ) )
+                  ])),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  color: Colors.white,
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Contenance:', style: TextStyle(color: Colors.black,
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    )),
+                    TextSpan(text:' 50ml', style: TextStyle(color: Colors.black,
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    ) )
+                  ])),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(10),
+                  color: Colors.blue,
+                  child: RichText(text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: 'Prix:', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    )),
+                    TextSpan(text:' 48500 dt', style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 15,
+                    ) )
+                  ])),
+                ),
             ],)
               //fin colonne caratcteristique
               ,),
