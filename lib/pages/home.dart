@@ -60,13 +60,14 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
+          Divider(height: 10,color: Colors.blue,thickness: 2,),
           Container(
               padding: EdgeInsets.all(10),
               child: Text(
                 'المخابر',
                 style: TextStyle(
                     color: Colors.indigo,
-                    fontSize: 35,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold),
               )),
           Container(
@@ -341,90 +342,106 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
+              Divider(height: 10,color: Colors.blue,thickness: 1,),
           Container(
               padding: EdgeInsets.all(10),
               child: Text(
                 'اخر المنتجات',
                 style: TextStyle(
                     color: Colors.indigo,
-                    fontSize: 35,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold),
               )),
           //start latest product
-          // Container(
-          //   height: 200,
-          //   child: GridView(
-          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //         crossAxisCount: 2),
-          //     children: <Widget>[
-          //       GridTile(
-          //         child: Image.asset(
-          //           'images/labo/avene/avclex.jfif',
-          //         ),
-          //         footer: Container(
-          //           height: 25,
-          //           color: Colors.tealAccent,
-          //           child: Text(
-          //             'AVENE TRIACNYL ',
-          //             textAlign: TextAlign.center,
-          //           ),
-          //         ),
-          //       ),
-          //       GridTile(
-          //         child: Image.asset(
-          //           'images/labo/avene/avcima.jfif',
-          //         ),
-          //         footer: Container(
-          //           height: 25,
-          //           color: Colors.tealAccent,
-          //           child: Text(
-          //             'AVENE CICALFATE ',
-          //             textAlign: TextAlign.center,
-          //           ),
-          //         ),
-          //       ),
-          //       GridTile(
-          //         child: Image.asset(
-          //           'images/labo/avene/avclge.jfif',
-          //         ),
-          //         footer: Container(
-          //           height: 25,
-          //           color: Colors.tealAccent,
-          //           child: Text(
-          //             'AVENE CLEANANCE GEL',
-          //             textAlign: TextAlign.center,
-          //           ),
-          //         ),
-          //       ),
-          //       GridTile(
-          //         child: Image.asset(
-          //           'images/labo/avene/aveath150.jfif',
-          //         ),
-          //         footer: Container(
-          //           height: 25,
-          //           color: Colors.tealAccent,
-          //           child: Text(
-          //             'AVENE EAU THERMALE ',
-          //             textAlign: TextAlign.center,
-          //           ),
-          //         ),
-          //       ),
-          //       GridTile(
-          //         child: Image.asset(
-          //           'images/labo/avene/avecmi.jfif',
-          //         ),
-          //         footer: Container(
-          //           height: 25,
-          //           color: Colors.tealAccent,
-          //           child: Text(
-          //             'AVENE mineral cr SPF50 ',
-          //             textAlign: TextAlign.center,
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),//
-          // ),
+          Container(
+            height: 300,
+            child: GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2),
+              children: <Widget>[
+                InkWell(
+                  child:
+                    GridTile(
+                      child: Image.asset(
+                        'images/labo/avene/avclex.jfif',
+                      ),
+                      footer: Container(
+                        height: 25,
+                        color: Colors.tealAccent,
+                        child: Text(
+                          'AVENE TRIACNYL ',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  onTap: (){},
+                ),
+                InkWell(child:
+                GridTile(
+                  child: Image.asset(
+                    'images/labo/avene/avcima.jfif',
+                  ),
+                  footer: Container(
+                    height: 25,
+                    color: Colors.tealAccent,
+                    child: Text(
+                      'AVENE CICALFATE ',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                  onTap: (){},),
+                InkWell(child:
+                GridTile(
+                  child: Image.asset(
+                    'images/labo/avene/avclge.jfif',
+                  ),
+                  footer: Container(
+                    height: 25,
+                    color: Colors.tealAccent,
+                    child: Text(
+                      'AVENE CLEANANCE GEL',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                  onTap: (){},
+                ),
+                InkWell(child:
+                GridTile(
+                  child: Image.asset(
+                    'images/labo/avene/aveath150.jfif',
+                  ),
+                  footer: Container(
+                    height: 25,
+                    color: Colors.tealAccent,
+                    child: Text(
+                      'AVENE EAU THERMALE ',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                  onTap: (){},
+                ),
+                InkWell(child:
+                GridTile(
+                  child: Image.asset(
+                    'images/labo/avene/avecmi.jfif',
+                  ),
+                  footer: Container(
+                    height: 25,
+                    color: Colors.tealAccent,
+                    child: Text(
+                      'AVENE mineral cr SPF50 ',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                  onTap: (){},
+                )
+              ],
+            ),//
+          ),
 
           //end latest product
         ]),

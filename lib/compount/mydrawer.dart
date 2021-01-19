@@ -49,7 +49,9 @@ class MyDrawer extends StatelessWidget {
               color: Colors.blue,
               size: 20,
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed('categories');
+            },
           ),
           Divider(
             color: Colors.lightBlueAccent,
