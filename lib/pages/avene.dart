@@ -13,17 +13,16 @@ class Avene extends StatefulWidget {
 class _AveneState extends State<Avene> {
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-          appBar: AppBar(
-            title: Text('Aveneمخابر'),
-            centerTitle: true,
-          ),
-          body: ListView(
-            children: <Widget>[
-              //debut de la liste
-              Container(
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Aveneمخابر'),
+          centerTitle: true,
+        ),
+        body: ListView(
+          children: <Widget>[
+            //debut de la liste
+            InkWell(
+              child: Container(
                 height: 200,
                 width: 100,
                 child: Card(
@@ -39,86 +38,160 @@ class _AveneState extends State<Avene> {
                               height: 200,
                               padding: EdgeInsets.all(10),
                               alignment: Alignment.topLeft,
-                              child: Column(crossAxisAlignment: CrossAxisAlignment.end,
-                                children:<Widget> [
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        'Tube 50 ml',
+                                        'Designation: ',
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w700,
                                         ),
                                       ),
-                                    Expanded(
-
-                                      child:   Text(
-                                        'CRÈME MINÉRALE SPF 50',textAlign: TextAlign.end,
+                                      Expanded(
+                                        child: Text(
+                                          'CRÈME MINÉRALE SPF 50',
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            color: Colors.blueGrey,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Forme: ',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          Text(
+                                            'creme',
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: Colors.blueGrey,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '    Indication: ',
+                                            textAlign: TextAlign.end,
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          Text(
+                                            ' ecran solaire',
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Proprités: ',
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w700,
                                         ),
-                                      ),),
-
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            'Sans filtre chimique',
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Sans parfum',
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Très résistant à l’eau',
+                                            textAlign: TextAlign.end,
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Très large protection UVB-UVA',
+                                            textAlign: TextAlign.end,
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ],
-                              ),
-                                  Text(
-                                    'Sans filtre chimique',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 10),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.red)),
+                                    padding: EdgeInsets.all(5),
+                                    child: Text(
+                                      'Prix : 48.500 DT',
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                   ),
+                                  SizedBox(height: 5,),
                                   Text(
-                                    'Sans parfum',
+                                    'Pour plus d\'information taper sur l\'image',
                                     style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Très haute protection solaire de la peau intolérante du visage',textAlign: TextAlign.end,
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Très résistant à l’eau',textAlign: TextAlign.end,
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Très large protection UVB-UVA',textAlign: TextAlign.end,
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                 Container(margin: EdgeInsets.only(top: 10),
-                                   decoration: BoxDecoration(border: Border.all(color: Colors.red)),
-                                   padding:EdgeInsets.all(5) ,
-                                   child: Text(
-
-                                    'Prix : 48.500 DT',
-                                    style: TextStyle(color: Colors.green,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ), )
+                                        color: Colors.orange, fontSize: 10),
+                                  )
                                 ],
                               )))
                       //Expended التمدد
                     ],
                   ),
                 ),
-              )
-              //fin de la liste
-            ],
-          )),
-    );
+              ),
+              onTap: () {},
+            ),
+
+            //fin de la liste
+          ],
+        ));
   }
 }
