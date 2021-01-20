@@ -83,6 +83,20 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text(
+              'Test',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+            ),
+            leading: Icon(
+              Icons.exit_to_app,
+              color: Colors.blue,
+              size: 20,
+            ),
+            onTap: () {
+              Navigator.of(context).pushNamed('test');
+            },
+          ),
+          ListTile(
+            title: Text(
               'تسجيل الخروج',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
             ),
