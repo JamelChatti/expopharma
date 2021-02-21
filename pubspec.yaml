@@ -30,6 +30,17 @@ dependencies:
   cupertino_icons: ^0.1.3
   carousel_pro: ^1.0.0
   http: ^0.12.2
+  firebase_auth: ^0.20.0+1
+  firebase_core: ^0.7.0
+  image_picker: ^0.6.7+22
+  cloud_firestore: ^0.16.0
+  firebase_database: ^6.0.0
+  firebase_storage: ^7.0.0
+  uuid: ^2.2.2
+
+
+
+
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +73,7 @@ flutter:
    - images/labo/nux.jfif
    - images/labo/pf.png
    - images/labo/svr.png
-   - images/labo/uri.jpg
+   - images/labo/uri.jfif
    - images/labo/vichy.jpg
    - images/labo/nature.jpg
    - images/labo/lrp.png
@@ -71,6 +82,39 @@ flutter:
    - images/labo/avene/avclge.jfif
    - images/labo/avene/aveath150.jfif
    - images/labo/avene/avecmi.jfif
+   - images/categorie/bebe.jfif
+   - images/categorie/dietetique.png
+   - images/categorie/complements.jpg
+   - images/categorie/cosmetique.png
+   - images/categorie/login.jpg
+   - images/categorie/medicament.jpg
+   - images/categorie/orthopedie.jfif
+   - images/categorie/pedicure.jpg
+   - images/categorie/lab.jpg
+   - images/categorie/alimentbebe.jfif
+   - images/rsocial/f.png
+   - images/cosmeto/antirid.jfif
+   - images/cosmeto/blevre.jfif
+   - images/cosmeto/crcicatrisante.jfif
+   - images/cosmeto/crcorps.jfif
+   - images/cosmeto/deo.jfif
+   - images/cosmeto/ecran.jfif
+   - images/cosmeto/geldouch.jfif
+   - images/cosmeto/gelnet.jfif
+   - images/cosmeto/huilchev.jfif
+   - images/cosmeto/pigment.jfif
+   - images/cosmeto/savon.jfif
+   - images/cosmeto/crmains.jpg
+   - images/cosmeto/crvisage.jpg
+   - images/cosmeto/edt.jpg
+   - images/cosmeto/shampo.jpg
+   - images/cosmeto/crempieds.jpg
+   - images/cosmeto/acne.jfif
+
+
+
+
+
 
   #   - images/a_dot_ham.jpeg
 

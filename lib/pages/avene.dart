@@ -38,23 +38,26 @@ class _AveneState extends State<Avene> {
           title: Text('Aveneمخابر'),
           centerTitle: true,
         ),
-        body: ListView.builder(
-          itemCount: artlist.length,
-          itemBuilder: (context, i) {
-            return ArtList(nom: artlist[i]['nom'],
-                forme: artlist[i]['forme'],
-                indication: artlist[i]['indication'],
-                proprietes: artlist[i]['proprietes'],
-                utilisation: artlist[i]['utilisation'],
-                contenance: artlist[i]['contenance'],
-                prix: artlist[i]['prix']); //debut de la liste
-
-          },
+        body: Container());
 
 
-          //fin de la liste
-
-        ));
+        // ListView.builder(
+        //   itemCount: artlist.length,
+        //   itemBuilder: (context, i) {
+        //     return ArtList(nom: artlist[i]['nom'],
+        //         forme: artlist[i]['forme'],
+        //         indication: artlist[i]['indication'],
+        //         proprietes: artlist[i]['proprietes'],
+        //         utilisation: artlist[i]['utilisation'],
+        //         contenance: artlist[i]['contenance'],
+        //         prix: artlist[i]['prix']); //debut de la liste
+        //
+        //   },
+        //
+        //
+        //   //fin de la liste
+        //
+        // ));
   }
 }
 

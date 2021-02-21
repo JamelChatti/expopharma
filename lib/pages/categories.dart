@@ -1,5 +1,6 @@
 import 'package:expopharma/compount/mydrawer.dart';
 import 'package:flutter/material.dart';
+import 'package:expopharma/compount/artlist.dart';
 
 class Categories extends StatefulWidget {
   @override
@@ -30,14 +31,14 @@ class _CategoriesState extends State<Categories> {
                               fit: BoxFit.fill)),
                       Container(
                           child: Text(
-                        '',
-                        style: TextStyle(fontSize: 20),
-                      ))
+                            'AVENE',
+                            style: TextStyle(fontSize: 15),
+                          ))
                     ],
                   ),
                 ),
                 onTap: () {
-                  Navigator.of(context).pushNamed('avene');
+                  Navigator.of(context).pushNamed('artlist');
                 },
               ),
               InkWell(
@@ -49,9 +50,9 @@ class _CategoriesState extends State<Categories> {
                                 fit: BoxFit.fill)),
                         Container(
                             child: Text(
-                          '',
-                          style: TextStyle(fontSize: 20),
-                        ))
+                              'ACM',
+                              style: TextStyle(fontSize: 15),
+                            ))
                       ],
                     ),
                   ),
@@ -65,9 +66,9 @@ class _CategoriesState extends State<Categories> {
                                 fit: BoxFit.fill)),
                         Container(
                             child: Text(
-                          '',
-                          style: TextStyle(fontSize: 20),
-                        ))
+                              'BIODERMA',
+                              style: TextStyle(fontSize: 15),
+                            ))
                       ],
                     ),
                   ),
@@ -81,9 +82,9 @@ class _CategoriesState extends State<Categories> {
                                 fit: BoxFit.fill)),
                         Container(
                             child: Text(
-                          '',
-                          style: TextStyle(fontSize: 20),
-                        ))
+                              'BIO ORIENT',
+                              style: TextStyle(fontSize: 15),
+                            ))
                       ],
                     ),
                   ),
@@ -97,9 +98,9 @@ class _CategoriesState extends State<Categories> {
                                 fit: BoxFit.fill)),
                         Container(
                             child: Text(
-                          '',
-                          style: TextStyle(fontSize: 20),
-                        ))
+                              'EYE CARE',
+                              style: TextStyle(fontSize: 15),
+                            ))
                       ],
                     ),
                   ),
@@ -113,9 +114,9 @@ class _CategoriesState extends State<Categories> {
                                 fit: BoxFit.fill)),
                         Container(
                             child: Text(
-                          'FILORGA',
-                          style: TextStyle(fontSize: 20),
-                        ))
+                              'FILORGA',
+                              style: TextStyle(fontSize: 15),
+                            ))
                       ],
                     ),
                   ),
@@ -129,10 +130,26 @@ class _CategoriesState extends State<Categories> {
                                 fit: BoxFit.fill)),
                         Container(
                             child: Text(
-                          'LA ROCHE POSAY',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20),
-                        ))
+                              'LAROCHE POSAY',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 15),
+                            ))
+                      ],
+                    ),
+                  ),
+                  onTap: () {}),
+              InkWell(
+                  child: Card(
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                            child: Image.asset('images/labo/nature.jpg',
+                                fit: BoxFit.fill)),
+                        Container(
+                            child: Text(
+                              'NATURE',
+                              style: TextStyle(fontSize: 15),
+                            ))
                       ],
                     ),
                   ),
@@ -224,7 +241,7 @@ class _CategoriesState extends State<Categories> {
                     child: Column(
                       children: <Widget>[
                         Expanded(
-                            child: Image.asset('images/labo/uri.jpg',
+                            child: Image.asset('images/labo/uri.jfif',
                                 fit: BoxFit.fill)),
                         Container(
                             child: Text(
