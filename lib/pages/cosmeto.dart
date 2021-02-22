@@ -82,7 +82,7 @@ class _CosmetoState extends State<Cosmeto> {
                           onTap: (){
                             Navigator.push(
                               context,
-                             MaterialPageRoute(builder: (context) => CosmetForme( formes.elementAt(i).id)),
+                             MaterialPageRoute(builder: (context) => CosmetForme( formes.elementAt(i).id, "FORME")),
 
                             );
                           },

@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expopharma/pages/Item.dart';
 import 'package:expopharma/pages/data.dart';
+import 'package:expopharma/pages/detaiart.dart';
+import 'package:expopharma/pages/detailArticle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class CosmetForme extends StatefulWidget {
   final int idf ;
-  CosmetForme(this.idf);
+  final String  type ;
+  CosmetForme(this.idf, this.type);
 
   @override
   _CosmetFormeState createState() => _CosmetFormeState();
@@ -22,7 +25,13 @@ class _CosmetFormeState extends State<CosmetForme> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getListByidf();
+    if(widget.type == "FORME"){
+      getListByForme();
+    }
+    if(widget.type == "FAMILLE"){
+      getListByFamille();
+    }
+
   }
 
   @override
@@ -91,7 +100,7 @@ class _CosmetFormeState extends State<CosmetForme> {
                           padding: EdgeInsets.all(10),
                           width: 150,
                           child: Image.network(
-                            'https://firebasestorage.googleapis.com/v0/b/flutter-with-firebase-99891.appspot.com/o/deo.jfif?alt=media',
+                            'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/savon%2F'+articles[index].id+'.jpg?alt=media',
                             fit: BoxFit.cover,
                             height: 160,
                           ),
@@ -123,14 +132,12 @@ class _CosmetFormeState extends State<CosmetForme> {
                                   style: TextStyle(color: Colors.blue, fontSize: 15),
                                 ),
                                 SizedBox(height: 5,),
-                                Text(nstock <= 0 ? 'Disponible' : 'Non disponible',
-                                 // articles[index].stock,
-                                  style: TextStyle(color: Colors.blue, fontSize: 15),
+                                Text(nstock <= 0 ? 'Non disponible' : 'Disponible',
 
-                                  // stockint <= 0 ? 'Non disponible' : 'disponible',
-                                  // style: stockint <= 0 ? TextStyle(
-                                  //     color: Colors.red, fontSize: 15) : TextStyle(
-                                  //     color: Colors.green, fontSize: 15),
+
+                                  style: nstock <= 0 ? TextStyle(
+                                     color: Colors.red, fontSize: 15) : TextStyle(
+                                      color: Colors.green, fontSize: 15),
                                 ),
                                 SizedBox(height: 15,)
                               ]),
@@ -138,6 +145,11 @@ class _CosmetFormeState extends State<CosmetForme> {
 
                       ])),
                   onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DetailArticl(articles[index])),
+
+                    );
                   },
                 )
               //Text(myItem.name)
@@ -167,7 +179,18 @@ class _CosmetFormeState extends State<CosmetForme> {
     });
   }
 
-  void getListByidf() {
+  void getListByForme() {
+    dataList.forEach((element) {
+      if(element.forme == widget.idf.toString() && element.stock != 0){
+        allArticle.add(element);
+      }
+    });
+    articles.addAll(allArticle);
+    setState(() {
+    });
+  }
+
+  void getListByFamille() {
     dataList.forEach((element) {
       if(element.forme == widget.idf.toString() && element.stock != 0){
         allArticle.add(element);
