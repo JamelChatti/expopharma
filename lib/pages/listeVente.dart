@@ -5,9 +5,10 @@ class ListVente {
   int timestamp;
   List<Vente> ventes;
   String documentID;
+  String nameclient;
 
   ListVente.id();
-  ListVente(this.ventes, this.timestamp, this.documentID);
+  ListVente(this.ventes,this.nameclient, this.timestamp, this.documentID);
 
   Map<String, dynamic>  toMap() {
     return {

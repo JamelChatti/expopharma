@@ -1,5 +1,8 @@
+import 'package:badges/badges.dart';
 import 'package:expopharma/pages/Item.dart';
 import 'package:expopharma/pages/data.dart';
+import 'package:expopharma/pages/displayvene.dart';
+import 'package:expopharma/pages/vente.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,8 +18,10 @@ class DetailArticl extends StatefulWidget {
 }
 
 class _DetailArticlState extends State<DetailArticl> {
-
-
+  int shopCount = 0;
+  List<Vente> listCommande = new List();
+  bool addNewVente = false;
+  List<Item> articles = [];
 
   @override
   void initState() {
@@ -30,6 +35,57 @@ class _DetailArticlState extends State<DetailArticl> {
         appBar: AppBar(
           title: Text('Description' + 'التفاصيل'),
           centerTitle: true,
+          actions: [
+            SizedBox(
+              width: 20,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 15),
+              child: Builder(builder: (BuildContext context) {
+                return Badge(
+                  position: BadgePosition.topEnd(top: 0, end: 0),
+                  badgeContent: shopCount == 0
+                      ? Text(
+                    '',
+                    style: TextStyle(color: Colors.white),
+                  )
+                      : Text(
+                    shopCount.toString(),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.add_shopping_cart,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+                    onPressed: () async {
+                      if (shopCount != 0) {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DisplayVente(listCommande,shopCount)),
+                        ).then((value) {
+                          if(value == "SAVED"){
+                            setState(() {
+                              listCommande.clear();
+                              shopCount = 0;
+                            });
+                          }
+                        });
+                      } else {
+                        final snackBar = SnackBar(
+                            content: Text(
+                              ' Vente vide, veillez ajouter au moins un article',
+                              textAlign: TextAlign.center,
+                            ));
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      }
+                    },
+                  ),
+                );
+              }),
+            ),
+          ],
         ),
         body: ListView(
           children: <Widget>[
@@ -95,14 +151,60 @@ class _DetailArticlState extends State<DetailArticl> {
             ),
             Container(
               padding: EdgeInsets.all(10),
-              child: Text(
-                'Caratéristiques' + 'الخصائص',
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue),
-              ),
+              child: Row(children: <Widget>[
+                Text(
+                  'Caratéristiques' + 'الخصائص',
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
+                ),
+                SizedBox(width: 50,),
+                Container(
+                  height: 60,
+                  width: 70,
+
+                  child:RaisedButton(
+                    elevation: 10,
+                    color:
+                    Colors.redAccent[200],
+                    clipBehavior: Clip.none ,
+                    padding: EdgeInsets.symmetric(
+                        vertical: 1, horizontal: 2),
+                    onPressed:(){
+                      print('bonjour');
+                      _showMyDialog(context,widget.article);
+                      //listCommande.add(new Vente(articles[index], 1));
+
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          'Ajouter au panier',
+                          style: TextStyle(
+                              color: Colors.white, fontSize:10),
+                        ),
+                        Container(
+                          height: 20,
+                          width: 20,
+                          margin: EdgeInsets.only(top: 0),
+                          padding: EdgeInsets.only(left: 10),
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+
+                ),
+              ],)
+
             ),
             //debut colonne caratcteristique
 
@@ -161,6 +263,98 @@ class _DetailArticlState extends State<DetailArticl> {
           ],
         ));
   }
+  Future<void> _showMyDialog(BuildContext context, Item item) async {
+    TextEditingController numberController = new TextEditingController();
+    TextEditingController nameclientController = new TextEditingController();
+
+    var expression = RegExp('([-]?)([0-9]+)');
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Ajouter au panier'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      item.name,
+                      style: TextStyle(
+                          color: Colors.red, fontWeight: FontWeight.bold),
+                    )),
+                Row(children: [
+                  Text('Valider '),
+                  Text('1', style: TextStyle(color: Colors.red),),
+                  Text(' ou choisir la quantité '),
+                ],),
+                Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                            width: 90,
+                            child:Column(children: <Widget>[
+                              TextFormField(
+                                autofocus: true,
+                                controller: numberController,
+                                //initialValue: "1",
+                                decoration: InputDecoration(
+                                  hintText: '1',
+                                  helperText: 'différent de 0',
+                                ),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  //WhitelistingTextInputFormatter.digitsOnly
+                                  FilteringTextInputFormatter.allow(expression)
+                                ], // Only numbers can be entered
+                              ),
+
+                            ],) ),
+                        Text(''),
+                      ],
+                    )),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('ANNULER'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Column(children: <Widget>[
+                Text('VALIDER'),
+                //  Text('Puis appuyer sur le panier pour enregister la commande')
+              ],),
+              onPressed: () {
+                int value;
+                numberController.text.isEmpty
+                    ? value = 1
+                    : value = int.parse(numberController.text);
+                if (value != 0) {
+                  listCommande.add(new Vente(item, value));
+                  shopCount = shopCount + value;
+                  shopCount == 0 ? addNewVente = false : addNewVente = true;
+                  setState(() {
+                    shopCount;
+                    addNewVente;
+                  });
+                  Navigator.of(context).pop();
+                } else {}
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 }
 mySpec(context,String feature,String detail, Color colorbackground, Color colortext){
   return Container(
@@ -179,5 +373,9 @@ mySpec(context,String feature,String detail, Color colorbackground, Color colort
         ),
       )
   );
+
+
+
+
 }
 
