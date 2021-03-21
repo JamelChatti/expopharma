@@ -6,12 +6,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CommandeClient extends StatefulWidget {
+class CommandeAExecuter extends StatefulWidget {
   @override
-  _CommandeClientState createState() => _CommandeClientState();
+  _CommandeAExecuterState createState() => _CommandeAExecuterState();
 }
 
-class _CommandeClientState extends State<CommandeClient> {
+class _CommandeAExecuterState extends State<CommandeAExecuter> {
   final fireStoreInstance = FirebaseFirestore.instance;
 
   @override
@@ -19,7 +19,7 @@ class _CommandeClientState extends State<CommandeClient> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text("Commande client "),
+        title: Text("Commande à executer "),
 
       ),
       body: Container(

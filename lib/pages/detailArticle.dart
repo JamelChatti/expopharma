@@ -1,11 +1,15 @@
 import 'package:badges/badges.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expopharma/pages/Item.dart';
+import 'package:expopharma/pages/commandeClient.dart';
 import 'package:expopharma/pages/data.dart';
 import 'package:expopharma/pages/displayvene.dart';
+import 'package:expopharma/pages/searchArticle.dart';
 import 'package:expopharma/pages/vente.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:expopharma/pages/shoppingCard.dart';
 
 class DetailArticl extends StatefulWidget {
   Item article;
@@ -39,63 +43,129 @@ class _DetailArticlState extends State<DetailArticl> {
             SizedBox(
               width: 20,
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: Builder(builder: (BuildContext context) {
-                return Badge(
-                  position: BadgePosition.topEnd(top: 0, end: 0),
-                  badgeContent: shopCount == 0
-                      ? Text(
-                    '',
-                    style: TextStyle(color: Colors.white),
-                  )
-                      : Text(
-                    shopCount.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.add_shopping_cart,
-                      color: Colors.white,
-                      size: 35,
-                    ),
-                    onPressed: () async {
-                      if (shopCount != 0) {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => DisplayVente(listCommande,shopCount)),
-                        ).then((value) {
-                          if(value == "SAVED"){
-                            setState(() {
-                              listCommande.clear();
-                              shopCount = 0;
-                            });
-                          }
-                        });
-                      } else {
-                        final snackBar = SnackBar(
-                            content: Text(
-                              ' Vente vide, veillez ajouter au moins un article',
-                              textAlign: TextAlign.center,
-                            ));
-                        Scaffold.of(context).showSnackBar(snackBar);
-                      }
-                    },
-                  ),
+        // Padding(
+        //     padding: EdgeInsets.only(right: 5),
+        //     child: StreamBuilder(
+        //         stream: FirebaseFirestore.instance
+        //             .collection('ventes')
+        //             .snapshots(),
+        //         builder: (context, snapshot) {
+        //           QuerySnapshot values = snapshot.data;
+        //           //print(values.size);
+        //           return Badge(
+        //             position: BadgePosition.topEnd(
+        //               top: 10,
+        //               end: 30,
+        //             ),
+        //             badgeContent: values !=null && values.size == 0
+        //                 ? Text(
+        //               '',
+        //               style: TextStyle(color: Colors.white),
+        //             )
+        //                 : Text(
+        //               values.size.toString(),
+        //               style:
+        //               TextStyle(color: Colors.white, fontSize: 7),
+        //             ),
+        //             child: IconButton(
+        //               icon: Icon(
+        //                 Icons.add_shopping_cart,
+        //                 color: Colors.white,
+        //                 size: 20,
+        //               ),
+        //               onPressed: () async {
+        //                 if (values.size != 0) {
+        //                   await Navigator.push(
+        //                     context,
+        //                     MaterialPageRoute(
+        //                         builder: (context) => CommandeClient()),
+        //                   ).then((value) {
+        //                     //  if(value == "SAVED"){
+        //                     setState(() {
+        //                       //  listCommande.clear();
+        //                       // shopCount = 0;
+        //                     });
+        //                     //}
+        //                   });
+        //                 } else {
+        //                   final snackBar = SnackBar(
+        //                       content: Text(
+        //                         ' Vente vide, veillez ajouter au moins un article',
+        //                         textAlign: TextAlign.center,
+        //                       ));
+        //                   Scaffold.of(context).showSnackBar(snackBar);
+        //                 }
+        //               },
+        //             ),
+        //           );
+        //         })),
+        //     Padding(
+        //       padding: EdgeInsets.only(right: 15),
+        //       child: Builder(builder: (BuildContext context) {
+        //         return Badge(
+        //           position: BadgePosition.topEnd(top: 0, end: 0),
+        //           badgeContent: shopCount == 0
+        //               ? Text(
+        //             '',
+        //             style: TextStyle(color: Colors.white),
+        //           )
+        //               : Text(
+        //             shopCount.toString(),
+        //             style: TextStyle(color: Colors.white),
+        //           ),
+        //           child: IconButton(
+        //             icon: Icon(
+        //               Icons.add_shopping_cart,
+        //               color: Colors.white,
+        //               size: 35,
+        //             ),
+        //             onPressed: () async {
+        //               if (shopCount != 0) {
+        //                 await Navigator.push(
+        //                   context,
+        //                   MaterialPageRoute(builder: (context) => DisplayVente()),
+        //                 ).then((value) {
+        //                   if(value == "SAVED"){
+        //                     setState(() {
+        //                       listCommande.clear();
+        //                       shopCount = 0;
+        //                     });
+        //                   }
+        //                 });
+        //               } else {
+        //                 final snackBar = SnackBar(
+        //                     content: Text(
+        //                       ' Vente vide, veillez ajouter au moins un article',
+        //                       textAlign: TextAlign.center,
+        //                     ));
+        //                 Scaffold.of(context).showSnackBar(snackBar);
+        //               }
+        //             },
+        //           ),
+        //         );
+        //       }),
+        //     ),
+            MyShoppingCard("commandeClient"),
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchArticle()),
                 );
-              }),
-            ),
+              },
+            )
           ],
         ),
         body: ListView(
           children: <Widget>[
             Container(
-              height: 350,
+              height: 600,
               child: GridTile(
 
                 child: Image.network(
-                  'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/savon%2F'+widget.article.id+'.jpg?alt=media',
-                  fit: BoxFit.fill,
+                  'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/articles%2F'+widget.article.id+'?alt=media',
+                  fit: BoxFit.contain,
                   height: 160,
                 ),
                 footer: Container(
@@ -331,18 +401,19 @@ class _DetailArticlState extends State<DetailArticl> {
                 Text('VALIDER'),
                 //  Text('Puis appuyer sur le panier pour enregister la commande')
               ],),
-              onPressed: () {
+              onPressed: () async {
                 int value;
                 numberController.text.isEmpty
                     ? value = 1
                     : value = int.parse(numberController.text);
-                if (value != 0) {
-                  listCommande.add(new Vente(item, value));
-                  shopCount = shopCount + value;
-                  shopCount == 0 ? addNewVente = false : addNewVente = true;
-                  setState(() {
-                    shopCount;
-                    addNewVente;
+                if (value != 0)  {
+                  Vente vente = new Vente(item, value);
+                  await FirebaseFirestore.instance.collection('commandeClient').add({
+                    'timestamp': DateTime.now().millisecondsSinceEpoch,
+                    // 'vente' : vente.toMap(),
+                    'name' : item.name,
+                    'number' :vente.number,
+                    'prixVente' : item.prixVente,
                   });
                   Navigator.of(context).pop();
                 } else {}

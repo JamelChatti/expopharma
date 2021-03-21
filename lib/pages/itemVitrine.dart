@@ -1,25 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemVitrine {
-   String id;
+
+   String idVitrine;
    String name;
   String image;
 
 
 
   ItemVitrine.id();
-  ItemVitrine(this.id,this.name, this.image);
+  ItemVitrine(this.idVitrine,this.name, this.image);
 
   Map<String, dynamic> toMap() {
     return {
+
+      'idVitrine': idVitrine,
      'name': name,
       'image':image,
-    'id': id, // this worked well
+     // this worked well
     };}
 
   factory ItemVitrine.formDocument(DocumentSnapshot documentSnapshot) {
     return ItemVitrine(
-     documentSnapshot["id"],
+     documentSnapshot["idVitrine"],
      documentSnapshot["name"],
       documentSnapshot["image"],
     );

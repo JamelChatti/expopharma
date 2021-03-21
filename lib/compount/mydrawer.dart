@@ -1,4 +1,4 @@
-import 'package:expopharma/pages/commandeClients.dart';
+import 'package:expopharma/pages/commandeAExecuter.dart';
 import 'package:expopharma/pages/login.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +68,7 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CommandeClient()),
+                MaterialPageRoute(builder: (context) => CommandeAExecuter()),
 
               );
 
@@ -104,7 +104,7 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text(
-              'Test',
+              'تسجيل صورة',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
             ),
             leading: Icon(
@@ -113,7 +113,7 @@ class MyDrawer extends StatelessWidget {
               size: 20,
             ),
             onTap: () {
-              Navigator.of(context).pushNamed('test');
+              Navigator.of(context).pushNamed('ajoutImage');
             },
           ),
           ListTile(

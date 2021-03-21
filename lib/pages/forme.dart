@@ -1,18 +1,22 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expopharma/pages/Item.dart';
+import 'package:expopharma/pages/commandeAExecuter.dart';
+import 'package:expopharma/pages/commandeClient.dart';
 import 'package:expopharma/pages/data.dart';
 import 'package:expopharma/pages/detaiart.dart';
 import 'package:expopharma/pages/detailArticle.dart';
 import 'package:expopharma/pages/displayvene.dart';
+import 'package:expopharma/pages/searchArticle.dart';
 import 'package:expopharma/pages/vente.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:expopharma/pages/shoppingCard.dart';
 
 class Forme extends StatefulWidget {
-  final int idf ;
+  final String idf ;
   final String  type ;
   Forme(this.idf, this.type);
 
@@ -25,7 +29,7 @@ class _FormeState extends State<Forme> {
   List<Item> articles = [];
   bool addNewVente = false;
   List<Vente> listCommande = new List();
-  int shopCount = 0;
+ int shopCount = 0;
 
   @override
   void initState() {
@@ -48,90 +52,167 @@ class _FormeState extends State<Forme> {
           centerTitle: true,
           elevation: 0.5,
           brightness: Brightness.light,
-          title: SizedBox(
-              height: 37,
-              child: Container(
-                padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                height: 37.0,
-                decoration: BoxDecoration(
-                    color: Color(0xFFEEEEEE),
-                    borderRadius: BorderRadius.circular(25)),
-                child: Center(
-                  child: TextField(
-                    //expands: true,
-                    maxLines: 1,
-                    autofocus: false,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Search',
-                        hintStyle: TextStyle(color: Colors.black26)),
-                    onChanged: (value) {
-                      if (value.length > 0) {
-                        articles.clear();
-                        getListArticles(value);
-                      } else {
-                        articles.clear();
-                        setState(() {
-                          articles.addAll(allArticle);
-                        });
-                      }
-                    },
-                  ),
-                ),
-              )),
+          // title: SizedBox(
+          //     height: 37,
+          //     child: Container(
+          //       padding: EdgeInsets.only(left: 10.0, right: 10.0),
+          //       height: 37.0,
+          //       decoration: BoxDecoration(
+          //           color: Color(0xFFEEEEEE),
+          //           borderRadius: BorderRadius.circular(25)),
+          //       child: Center(
+          //         child: TextField(
+          //           //expands: true,
+          //           maxLines: 1,
+          //           autofocus: false,
+          //           keyboardType: TextInputType.text,
+          //           decoration: InputDecoration(
+          //               border: InputBorder.none,
+          //               hintText: 'Search',
+          //               hintStyle: TextStyle(color: Colors.black26)),
+          //           onChanged: (value) {
+          //             if (value.length > 0) {
+          //               articles.clear();
+          //               getListArticles(value);
+          //             } else {
+          //               articles.clear();
+          //               setState(() {
+          //                 articles.addAll(allArticle);
+          //               });
+          //             }
+          //           },
+          //         ),
+          //       ),
+          //     )),
+          // IconButton(
+          //   icon: Icon(Icons.search),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => SearchArticle()),
+          //     );
+          //   },
+          // ),
           actions: [
+
             SizedBox(
               width: 20,
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: Builder(builder: (BuildContext context) {
-                return Badge(
-                  position: BadgePosition.topEnd(top: 0, end: 0),
-                  badgeContent: shopCount == 0
-                      ? Text(
-                    '',
-                    style: TextStyle(color: Colors.white),
-                  )
-                      : Text(
-                    shopCount.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.add_shopping_cart,
-                      color: Colors.blueAccent,
-                      size: 35,
-                    ),
-                    onPressed: () async {
-                      if (shopCount != 0) {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => DisplayVente(listCommande,shopCount)),
-                        ).then((value) {
-                          if(value == "SAVED"){
-                            setState(() {
-                              listCommande.clear();
-                              shopCount = 0;
-                            });
-                          }
-                        });
-                      } else {
-                        final snackBar = SnackBar(
-                            content: Text(
-                              ' Vente vide, veillez ajouter au moins un article',
-                              textAlign: TextAlign.center,
-                            ));
-                        Scaffold.of(context).showSnackBar(snackBar);
-                      }
-                    },
-                  ),
+            MyShoppingCard("commandeClient"),
+            // Padding(
+            //     padding: EdgeInsets.only(right: 5),
+            //     child: StreamBuilder(
+            //         stream: FirebaseFirestore.instance
+            //             .collection('ventes')
+            //             .snapshots(),
+            //         builder: (context, snapshot) {
+            //           QuerySnapshot values = snapshot.data;
+            //           //print(values.size);
+            //           return Badge(
+            //             position: BadgePosition.topEnd(
+            //               top: 10,
+            //               end: 30,
+            //             ),
+            //             badgeContent: values !=null && values.size == 0
+            //                 ? Text(
+            //               '',
+            //               style: TextStyle(color: Colors.white),
+            //             )
+            //                 : Text(
+            //               values.size.toString(),
+            //               style:
+            //               TextStyle(color: Colors.white, fontSize: 7),
+            //             ),
+            //             child: IconButton(
+            //               icon: Icon(
+            //                 Icons.add_shopping_cart,
+            //                 color: Colors.blueGrey,
+            //                 size: 20,
+            //               ),
+            //               onPressed: () async {
+            //                 if (values.size != 0) {
+            //                   await Navigator.push(
+            //                     context,
+            //                     MaterialPageRoute(
+            //                         builder: (context) => DisplayVente()),
+            //                   ).then((value) {
+            //                     //  if(value == "SAVED"){
+            //                     setState(() {
+            //                       //  listCommande.clear();
+            //                       // shopCount = 0;
+            //                     });
+            //                     //}
+            //                   });
+            //                 } else {
+            //                   final snackBar = SnackBar(
+            //                       content: Text(
+            //                         ' Vente vide, veillez ajouter au moins un article',
+            //                         textAlign: TextAlign.center,
+            //                       ));
+            //                   Scaffold.of(context).showSnackBar(snackBar);
+            //                 }
+            //               },
+            //             ),
+            //           );
+            //         })),
+            // Padding(
+            //   padding: EdgeInsets.only(right: 15),
+            //   child: Builder(builder: (BuildContext context) {
+            //     return Badge(
+            //       position: BadgePosition.topEnd(top: 0, end: 0),
+            //       badgeContent: shopCount == 0
+            //           ? Text(
+            //         '',
+            //         style: TextStyle(color: Colors.white),
+            //       )
+            //           : Text(
+            //         shopCount.toString(),
+            //         style: TextStyle(color: Colors.white),
+            //       ),
+            //       child: IconButton(
+            //         icon: Icon(
+            //           Icons.add_shopping_cart,
+            //           color: Colors.blueAccent,
+            //           size: 35,
+            //         ),
+            //         onPressed: () async {
+            //           if (shopCount != 0) {
+            //             await Navigator.push(
+            //               context,
+            //               MaterialPageRoute(builder: (context) => DisplayVente()),
+            //             ).then((value) {
+            //               if(value == "SAVED"){
+            //                 setState(() {
+            //                   listCommande.clear();
+            //                   shopCount = 0;
+            //                 });
+            //               }
+            //             });
+            //           } else {
+            //             final snackBar = SnackBar(
+            //                 content: Text(
+            //                   ' Vente vide, veillez ajouter au moins un article',
+            //                   textAlign: TextAlign.center,
+            //                 ));
+            //             Scaffold.of(context).showSnackBar(snackBar);
+            //           }
+            //         },
+            //       ),
+            //     );
+            //   }),
+            // ),
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchArticle()),
                 );
-              }),
-            ),
+              },
+            )
           ],
-          backgroundColor: Colors.white,
+          title: Text('Choisir un article',style: TextStyle(color: Colors.white),),
+          backgroundColor: Colors.green,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back,
@@ -142,22 +223,30 @@ class _FormeState extends State<Forme> {
             },
           ),
         ),
-        body: ListView.builder(
+        body: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: 2.0,
+              crossAxisCount: 1),
 
           itemCount: articles.length,
           itemBuilder: (context, index) {
             int nstock = int.tryParse(articles[index].stock) ?? 0;
-            return Container(color: Colors.brown[200],
+            return Container(
+                color: Colors.grey[200],
                 child: InkWell(
-                  child: Card(color: Colors.grey[300],
-                      child: Row(children: <Widget>[
+                  child: Card(
+                      color: Colors.grey[300],
+                      child: Container(
+                          height: 2000,
+                          child: Row(children: <Widget>[
                         Container(
                           padding: EdgeInsets.all(10),
                          color: Colors.grey[200],
                           width: 150,
                           child: Image.network(
-                            'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/savon%2F'+articles[index].id+'.jpg?alt=media',
-                            fit: BoxFit.fill,
+                            'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/articles%2F'+articles[index].id+'?alt=media',
+                            fit: BoxFit.fill
+                            ,
                             height: 150,
 
                           ),
@@ -195,11 +284,11 @@ class _FormeState extends State<Forme> {
                                      color: Colors.red, fontSize: 15) : TextStyle(
                                       color: Colors.green, fontSize: 15),
                                 ),
-                                SizedBox(height: 15,),
+
                                 Row(children: <Widget>[
 
 
-                                  Expanded(child:Container(child: Text('Appuyer sur l\'image pour plus de detail'),) ),
+                                  Expanded(child:Container(child: Text('Appuyer sur l\'image pour plus de detail',style: TextStyle(fontSize: 10),),) ),
                                   SizedBox(width: 20,),
                                   Container(
                                     height: 60,
@@ -250,7 +339,7 @@ class _FormeState extends State<Forme> {
                         ),
                         ),
 
-                      ])),
+                      ]))),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -300,9 +389,9 @@ class _FormeState extends State<Forme> {
                           color: Colors.red, fontWeight: FontWeight.bold),
                     )),
                 Row(children: [
-                  Text('Valider '),
-                  Text('1', style: TextStyle(color: Colors.red),),
-                  Text(' ou choisir la quantité '),
+               //   Text('Valider '),
+                  //Text('0', style: TextStyle(color: Colors.red),),
+                  Text(' Saisir la quantité '),
                 ],),
                 Center(
                     child: Row(
@@ -316,7 +405,7 @@ class _FormeState extends State<Forme> {
                                 controller: numberController,
                                 //initialValue: "1",
                                 decoration: InputDecoration(
-                                  hintText: '1',
+                                  hintText: '0',
                                   helperText: 'différent de 0',
                                 ),
                                 keyboardType: TextInputType.number,
@@ -345,22 +434,29 @@ class _FormeState extends State<Forme> {
                 Text('VALIDER'),
               //  Text('Puis appuyer sur le panier pour enregister la commande')
               ],),
-              onPressed: () {
+              onPressed: () async {
                 int value;
                 numberController.text.isEmpty
                     ? value = 1
                     : value = int.parse(numberController.text);
                 if (value != 0) {
-
-
-
-                  listCommande.add(new Vente(item, value));
-                  shopCount = shopCount + value;
-                  shopCount == 0 ? addNewVente = false : addNewVente = true;
-                  setState(() {
-                    shopCount;
-                    addNewVente;
+                  //Vente vente = new Vente(item, value);
+                 await FirebaseFirestore.instance.collection('commandeClient').add({
+                  'timestamp': DateTime.now().millisecondsSinceEpoch,
+                  // 'vente' : vente.toMap(),
+                   'name' : item.name,
+                    'number' :int.parse(numberController.text),
+                   'prixVente' : item.prixVente,
                   });
+
+
+                  //  listCommande.add(new Vente(item, value));
+                  // shopCount = shopCount + value;
+                  // shopCount == 0 ? addNewVente = false : addNewVente = true;
+                  // setState(() {
+                  //   shopCount;
+                  //   addNewVente;
+                  // });
                   Navigator.of(context).pop();
                 } else {}
               },

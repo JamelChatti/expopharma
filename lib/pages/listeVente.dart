@@ -4,6 +4,7 @@ import 'package:expopharma/pages/vente.dart';
 class ListVente {
   int timestamp;
   List<Vente> ventes;
+ // List<Vente> commandeClient;
   String documentID;
   String nameclient;
 

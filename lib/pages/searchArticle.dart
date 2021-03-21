@@ -65,7 +65,8 @@ class _SearchArticleState extends State<SearchArticle> {
           itemBuilder: (context, index) {
             return ListTile(
               title: Text(
-                articles[index].name,
+                articles[index].name + '\n'+ 'Prix ='+
+                articles[index].prixVente,
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -80,6 +81,7 @@ class _SearchArticleState extends State<SearchArticle> {
     dataList.forEach((element) {
       if(element.name.toLowerCase().startsWith(value.toLowerCase())){
         articles.add(element);
+
       }
     });
     setState(() {

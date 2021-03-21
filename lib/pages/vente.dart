@@ -25,16 +25,16 @@ class Vente {
 
     documentSnapshot["vente"].data.forEach((key, value) {
       print(documentSnapshot["number"]);
-     // print(documentSnapshot["nameclient"]);
+      print(documentSnapshot["nameclient"]);
     });
 
 
     // documentSnapshot.data.forEach((key, value) {
     //   print(value);
-    //   //LigneVente item = LigneVente.formDocumrnt(value["vente"]);
-    //   //Vente vente = new Vente(item, documentSnapshot.data["number"]);
+    //   LigneVente item = LigneVente.formDocumrnt(value["vente"]);
+    //   Vente vente = new Vente(item, documentSnapshot.data["number"]);
     // }
-    // );
+   // );
 
     //Item item =  new Item(documentSnapshot["name"], documentSnapshot.data["barCode"], documentSnapshot.data["prixVente"], documentSnapshot.data["prixVente"]);
 
