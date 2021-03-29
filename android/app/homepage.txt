@@ -1,0 +1,456 @@
+import 'package:expopharma/compount/mydrawer.dart';
+import 'package:expopharma/pages/Item.dart';
+import 'package:expopharma/pages/artlist.dart';
+import 'package:expopharma/pages/cosmetforme.dart';
+import 'package:expopharma/pages/cosmeto.dart';
+import 'package:expopharma/pages/searchArticle.dart';
+import 'package:expopharma/pages/searchArticleByForme.dart';
+import 'package:expopharma/pages/data.dart';
+import 'package:flutter/material.dart';
+import 'package:carousel_pro/carousel_pro.dart';
+import 'dart:collection';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+import 'package:uuid/uuid.dart';
+
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+// import 'package:medicamentlist/Item.dart';
+// import 'package:medicamentlist/ListVente.dart';
+// import 'package:medicamentlist/Vente.dart';
+// import 'package:medicamentlist/data.dart';
+// import 'package:medicamentlist/history.dart';
+//import 'package:badges/badges.dart';
+
+//import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+//import 'package:fluttericon/font_awesome5_icons.dart';
+
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  var choixdeliste = [
+    {'name': 'SE CONNECTER', 'image': 'images/categorie/login.jpg'},
+    {'name': 'LES LABORATOIRES', 'image': 'images/categorie/lab.jpg'},
+    {'name': 'ARTICLES BEBE', 'image': 'images/categorie/bebe.jfif'},
+    {
+      'name': 'COMPLEMENTS ALIMENTAIRES ET PHYTO',
+      'image': 'images/categorie/complements.jpg'
+    },
+    {'name': 'SOINS COSMETIQUES', 'image': 'images/categorie/cosmetique.png'},
+    {'name': 'MEDICAMENTS', 'image': 'images/categorie/medicament.jpg'},
+    {'name': 'ORTHOPEDIE', 'image': 'images/categorie/orthopedie.jfif'},
+    {'name': 'ACCESSOIRES ET PEDICURE', 'image': 'images/categorie/pedicure.jpg'},
+    {'name': 'DIETETIQUE', 'image': 'images/categorie/ssgluten.jfif'},
+  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    myTextFieldController = new TextEditingController();
+    // dataList est uine listé enregistrer dans le fichier data.dart
+    // si le fichier contient deja les elément( chargé depuit internet), on l'affiche directement
+    if (dataList.length == 0) {
+      // on va chargé la liste des sock et la liste des médicaments et creer des objets Item
+      loadListFromInternet();
+    } else {
+      loading = false;
+    }
+  }
+
+  // final fireStoreInstance = Firestore.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  TextEditingController myTextFieldController;
+
+  int shopCount = 0;
+
+  HashMap<String, String> stockMap = new HashMap();
+  List<Item> displayedList = new List();
+  bool loading = true;
+
+  // List<Vente> listVentes = new List();
+
+  bool showPrixAchat = currentUser.isAdmin;
+  bool addNewVente = false;
+
+  void loadListFromInternet() async {
+    // D'abort on charge la liste des stock
+    final ref2 = FirebaseStorage.instance.ref().child('stock.txt');
+    final String url2 = await ref2.getDownloadURL();
+    final Directory systemTempDir2 = Directory.systemTemp;
+    final File tempFile2 = File('${systemTempDir2.path}/tmplistemed.txt');
+    if (tempFile2.existsSync()) {
+      await tempFile2.delete();
+    }
+    if (tempFile2.existsSync()) {
+      await tempFile2.delete();
+    }
+    await tempFile2.create();
+    assert(await tempFile2.readAsString() == "");
+    await ref2.writeToFile(tempFile2);
+    Uint8List contents2 = await tempFile2.readAsBytes();
+    LineSplitter().convert(new String.fromCharCodes(contents2)).map((s) {
+      if (s.split('\t').length > 5) {
+        String id = s.split('\t').elementAt(0);
+        String stock = s.split('\t').elementAt(2);
+        if (stock != null && stock.length > 0) {
+          int stockInt =
+              int.tryParse(stock.replaceAll(new RegExp(r"\s+"), "")) ?? 0;
+          if (id.length > 0 && stockInt > 0) {
+            stockMap.putIfAbsent(id, () => stock);
+          }
+        }
+      }
+    }).toList();
+
+    print(stockMap.length);
+
+    // On a chargé la liste de stock dans une map
+    // Maintenant on creer nos objet Item a partir de la liste des médicament et la map de stock
+    loadListFromInternet2();
+  }
+
+  void loadListFromInternet2() async {
+    final ref2 = FirebaseStorage.instance.ref().child('listtxt.txt');
+    final String url2 = await ref2.getDownloadURL();
+    final Directory systemTempDir2 = Directory.systemTemp;
+    final File tempFile2 = File('${systemTempDir2.path}/tmplistemed2.txt');
+    if (tempFile2.existsSync()) {
+      await tempFile2.delete();
+    }
+    if (tempFile2.existsSync()) {
+      await tempFile2.delete();
+    }
+    await tempFile2.create();
+    assert(await tempFile2.readAsString() == "");
+    await ref2.writeToFile(tempFile2);
+    Uint8List contents2 = await tempFile2.readAsBytes();
+    LineSplitter().convert(new String.fromCharCodes(contents2)).map((s) {
+      if (s.split('\t').length > 7) {
+        String id = s.split('\t').elementAt(0);
+        String name = s.split('\t').elementAt(2);
+        String barCode = s.split('\t').elementAt(1);
+        String prixAchat = s.split('\t').elementAt(5);
+        String prixVente = s.split('\t').elementAt(6);
+        String forme = s.split('\t').elementAt(10);
+        if ((name.length > 0 || barCode.length > 0) && stockMap[id] != null)
+          dataList.add(new Item(
+              id, name, barCode, prixAchat, prixVente, forme, stockMap[id]));
+      }
+    }).toList();
+    setState(() {
+      loading = false;
+    });
+    print(dataList.length);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('عرض لجميع مواد الصيدلية'),
+          centerTitle: true,
+          elevation: 5,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SearchArticle()),
+                );
+              },
+            )
+          ],
+          backgroundColor: Colors.deepPurple,
+          titleSpacing: 1,
+        ),
+        drawer: MyDrawer(),
+        body: ListView(children: <Widget>[
+          Container(
+            height: 180.0,
+            width: double.infinity,
+            child: Carousel(
+              boxFit: BoxFit.fill,
+              autoplay: true,
+              animationCurve: Curves.fastOutSlowIn,
+              animationDuration: Duration(milliseconds: 1000),
+              dotSize: 3.0,
+              dotIncreasedColor: Color(0xFFFF335C),
+              dotBgColor: Colors.grey.withOpacity(0.4),
+              dotPosition: DotPosition.bottomCenter,
+              dotVerticalPadding: 10.0,
+              showIndicator: true,
+              indicatorBgPadding: 5.0,
+              images: [
+                // NetworkImage('https://cdn-images-1.medium.com/max/2000/1*GqdzzfB_BHorv7V2NV7Jgg.jpeg'),
+                // NetworkImage('https://cdn-images-1.medium.com/max/2000/1*wnIEgP1gNMrK5gZU7QS0-A.jpeg'),
+                // ExactAssetImage("assets/images/LaunchImage.jpg"),
+                AssetImage(
+                  'images/bv.jpg',
+                ),
+                AssetImage(
+                  'images/cadu.jpg',
+                ),
+                AssetImage(
+                  'images/ph.jpg',
+                ),
+              ],
+            ),
+          ),
+          Divider(
+            height: 10,
+            color: Colors.blue,
+            thickness: 2,
+          ),
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: Container(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  'Tapper sur ton choix',
+                  style: TextStyle(
+                      color: Colors.indigo,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                )),
+          ),
+          Container(
+            height: 400,
+            width: 400,
+            child: Directionality(
+              textDirection: TextDirection.ltr,
+              child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemCount: choixdeliste.length,
+                  itemBuilder: (context, i) {
+                    return Container(
+                      child: InkWell(
+                        child: Card(
+                          child: Column(
+                            children: <Widget>[
+                              Expanded(
+                                  child: Image.asset(
+                                      choixdeliste[i]['image'],
+                                      fit: BoxFit.fill)),
+                              Container(
+                                  child: Text(
+                                choixdeliste[i]['name'],
+                                style: TextStyle(fontSize: 15),
+                              ))
+                            ],
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Cosmeto(),
+                        },
+                      ),
+                    );
+                  }),
+            ),
+          ),
+          Divider(
+            height: 10,
+            color: Colors.blue,
+            thickness: 1,
+          ),
+          Container(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                'اخر المنتجات',
+                style: TextStyle(
+                    color: Colors.indigo,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold),
+              )),
+          //start latest product
+          Container(
+            height: 300,
+            child: GridView(
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              children: <Widget>[
+                InkWell(
+                  child: GridTile(
+                    child: Image.asset(
+                      'images/labo/avene/avclex.jfif',
+                    ),
+                    footer: Container(
+                      height: 25,
+                      color: Colors.tealAccent,
+                      child: Text(
+                        'AVENE TRIACNYL ',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+                InkWell(
+                  child: GridTile(
+                    child: Image.asset(
+                      'images/labo/avene/avcima.jfif',
+                    ),
+                    footer: Container(
+                      height: 25,
+                      color: Colors.tealAccent,
+                      child: Text(
+                        'AVENE CICALFATE ',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+                InkWell(
+                  child: GridTile(
+                    child: Image.asset(
+                      'images/labo/avene/avclge.jfif',
+                    ),
+                    footer: Container(
+                      height: 25,
+                      color: Colors.tealAccent,
+                      child: Text(
+                        'AVENE CLEANANCE GEL',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+                InkWell(
+                  child: GridTile(
+                    child: Image.asset(
+                      'images/labo/avene/aveath150.jfif',
+                    ),
+                    footer: Container(
+                      height: 25,
+                      color: Colors.tealAccent,
+                      child: Text(
+                        'AVENE EAU THERMALE ',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+                InkWell(
+                  child: GridTile(
+                    child: Image.asset(
+                      'images/labo/avene/avecmi.jfif',
+                    ),
+                    footer: Container(
+                      height: 25,
+                      color: Colors.tealAccent,
+                      child: Text(
+                        'AVENE mineral cr SPF50 ',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  onTap: () {},
+                )
+              ],
+            ), //
+          ),
+
+          //end latest product
+        ]),
+      ),
+    );
+  }
+}
+
+class DataSearch extends SearchDelegate<String> {
+  List<dynamic> list;
+
+  DataSearch({this.list});
+
+  // Future getsearchdata() async {
+  //   var url = 'http://192.168.42.23/pharmexpo/searchart.php';
+  //   var data={'searcharticl' : query};
+  //   var response = await http.post(url, body: data);
+  //   var responsebody = jsonDecode(response.body);
+  //   return responsebody;
+  // }
+
+  Future getsearchdata() async {
+    return dataList;
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    //action pour l'appbar
+    return [
+      IconButton(
+        onPressed: () {
+          query = '';
+        },
+        icon: Icon(Icons.clear),
+      )
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    //icon leading
+    return IconButton(
+      onPressed: () {
+        close(context, null);
+      },
+      icon: Icon(Icons.arrow_back),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    //resultats de recherche
+    return FutureBuilder(
+        future: getsearchdata(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, i) {
+                  return ArticleList();
+                });
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    //ce que apparait quand on est entrain de rechercher
+    var searchlist =
+        query.isEmpty ? list : list.where((p) => p.startsWith(query)).toList();
+    return ListView.builder(
+        itemCount: searchlist.length,
+        itemBuilder: (context, i) {
+          return ListTile(
+            leading: Icon(Icons.label),
+            title: Text(searchlist[i]),
+            onTap: () {
+              query = searchlist[i];
+              showResults(context);
+            },
+          );
+        });
+  }
+}
