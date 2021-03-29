@@ -10,6 +10,7 @@ class Item {
   String stock;
 
 
+
   Item.id();
   Item(this.id, this.name, this.barCode,  this.prixAchat, this.prixVente,this.forme, this.stock);
 
@@ -17,7 +18,8 @@ class Item {
     return {
       'name': name,
       'barCode':barCode,
-      'prixVente': prixVente  // this worked well
+      'prixVente': prixVente,
+      // this worked well
 
     };}
 

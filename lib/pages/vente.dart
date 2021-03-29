@@ -5,6 +5,7 @@ import 'package:expopharma/pages/Item.dart';
 class Vente {
   Item item;
   int number;
+  //String nameclient;
 
   Vente.id();
   Vente(this.item, this.number);
@@ -14,7 +15,8 @@ class Vente {
       'number': number,
       'name': item.name,
       'barCode': item.barCode,
-      'prixVente': item.prixVente,// this worked well
+      'prixVente': item.prixVente,
+     // 'nameclient': nameclient,// this worked well
     };}
 
 
@@ -23,15 +25,16 @@ class Vente {
 
     documentSnapshot["vente"].data.forEach((key, value) {
       print(documentSnapshot["number"]);
+      print(documentSnapshot["nameclient"]);
     });
 
 
     // documentSnapshot.data.forEach((key, value) {
     //   print(value);
-    //   //LigneVente item = LigneVente.formDocumrnt(value["vente"]);
-    //   //Vente vente = new Vente(item, documentSnapshot.data["number"]);
+    //   LigneVente item = LigneVente.formDocumrnt(value["vente"]);
+    //   Vente vente = new Vente(item, documentSnapshot.data["number"]);
     // }
-    // );
+   // );
 
     //Item item =  new Item(documentSnapshot["name"], documentSnapshot.data["barCode"], documentSnapshot.data["prixVente"], documentSnapshot.data["prixVente"]);
 

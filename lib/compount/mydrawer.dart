@@ -1,3 +1,5 @@
+import 'package:expopharma/pages/commandeAExecuter.dart';
+import 'package:expopharma/pages/login.dart';
 import 'package:flutter/material.dart';
 
 
@@ -53,6 +55,25 @@ class MyDrawer extends StatelessWidget {
               Navigator.of(context).pushNamed('categories');
             },
           ),
+          ListTile(
+            title: Text(
+              'طلبية Commande',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+            ),
+            leading: Icon(
+              Icons.add_shopping_cart_sharp,
+              color: Colors.blue,
+              size: 20,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CommandeAExecuter()),
+
+              );
+
+            },
+          ),
           Divider(
             color: Colors.lightBlueAccent,
             thickness: 2,
@@ -83,7 +104,7 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text(
-              'Test',
+              'تسجيل صورة',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
             ),
             leading: Icon(
@@ -92,7 +113,24 @@ class MyDrawer extends StatelessWidget {
               size: 20,
             ),
             onTap: () {
-              Navigator.of(context).pushNamed('test');
+              Navigator.of(context).pushNamed('ajoutImage');
+            },
+          ),
+          ListTile(
+            title: Text(
+              'تسجيل الدخول',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+            ),
+            leading: Icon(
+              Icons.exit_to_app,
+              color: Colors.blue,
+              size: 20,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Login()),
+              );
             },
           ),
           ListTile(

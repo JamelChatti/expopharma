@@ -33,20 +33,27 @@ dependencies:
   firebase_auth: ^0.20.0+1
   firebase_core: ^0.7.0
   image_picker: ^0.6.7+22
-  cloud_firestore: ^0.16.0
+  cloud_firestore: ^0.16.0+1
   firebase_database: ^6.0.0
   firebase_storage: ^7.0.0
   uuid: ^2.2.2
   badges: ^1.1.6
-
-
+  carousel_slider: ^3.0.0
+  flutter_typeahead: ^2.0.0
+  flutter_barcode_scanner: ^1.0.1
+  cached_network_image: ^2.5.0
 
 
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.8.0"
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "images/expopharma.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -111,6 +118,7 @@ flutter:
    - images/cosmeto/shampo.jpg
    - images/cosmeto/crempieds.jpg
    - images/cosmeto/acne.jfif
+   - images/expopharma.png
 
 
 

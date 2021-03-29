@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "219143338185",
+    "project_id": "expopharma-20c26",
+    "storage_bucket": "expopharma-20c26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219143338185:android:d39aa0b95b9ddd8e9bb518",
+        "android_client_info": {
+          "package_name": "com.example.expopharma"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219143338185-sdv94iulutmq08d9jlrorcvc4on8pqvn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwoyjzH2BU9kJNx2rDMvdbqo-se6awws8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219143338185-sdv94iulutmq08d9jlrorcvc4on8pqvn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
