@@ -6,7 +6,6 @@ import 'package:expopharma/pages/ItemCategorie.dart';
 import 'package:expopharma/pages/artlist.dart';
 import 'package:expopharma/pages/commandeClient.dart';
 import 'package:expopharma/pages/detailArticle.dart';
-import 'package:expopharma/pages/forme.dart';
 import 'package:expopharma/pages/categorie.dart';
 import 'package:expopharma/pages/imageScreen.dart';
 import 'package:expopharma/pages/itemVitrine.dart';
@@ -61,7 +60,6 @@ class _HomeState extends State<Home> {
         precacheImage(NetworkImage(imageUrl.image), context);
       });
     });
-
     // TODO: implement initState
     super.initState();
     myTextFieldController = new TextEditingController();
@@ -174,7 +172,7 @@ class _HomeState extends State<Home> {
           elevation: 5,
           actions: <Widget>[
 
-            MyShoppingCard("ventes"),
+           // MyShoppingCard("ventes"),
             MyShoppingCard("commandeClient"),
 
             IconButton(

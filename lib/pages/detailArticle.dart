@@ -1,9 +1,10 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expopharma/pages/Item.dart';
-import 'package:expopharma/pages/commandeClient.dart';
-import 'package:expopharma/pages/data.dart';
+import 'package:expopharma/pages/ajoutAuPanier.dart';
+import 'package:expopharma/pages/itemDetailArticle.dart';
 import 'package:expopharma/pages/forme.dart';
+
 import 'package:expopharma/pages/searchArticle.dart';
 import 'package:expopharma/pages/vente.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,30 +29,25 @@ class _DetailArticlState extends State<DetailArticl> {
   List<Vente> listCommande = new List();
   List<ItemForme> formes = [];
   List<Item> articles = [];
-
-  String result;
-  bool hasData=false ;
-
-  Future<bool> checkEmptyMethod() async {
-    hasData = await FirebaseFirestore.instance
-        .collection("commandeClient").snapshots().isEmpty;
-
-    print(hasData);
-  }
-
+  bool empty = true;
+  final fireStoreInstance = FirebaseFirestore.instance;
+  List<ItemDetailArticle> listDetailArticle = new List();
+  String description;
+  String dci1;
+  String dci2;
+  String dci3;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    checkEmptyMethod();
-
-    // getListByidf();
+    getDescription();
   }
 
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance.collection('commandeClient').snapshots().isEmpty;
+    //bool empty = false;
+    //FirebaseFirestore.instance.collection('commandeClient').snapshots().isEmpty;
     return Scaffold(
         appBar: AppBar(
           title: Text('Description' + 'التفاصيل'),
@@ -149,183 +145,265 @@ class _DetailArticlState extends State<DetailArticl> {
                     SizedBox(
                       width: 20,
                     ),
-                    hasData
-                        ? Container(
-                      height: 60,
-                      width: 70,
-                      child: RaisedButton(
-                        elevation: 10,
-                        color: Colors.redAccent[200],
-                        clipBehavior: Clip.none,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 1, horizontal: 2),
-                        onPressed: () {
-                          _showMyDialog(context, widget.article);
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              'Ajouter au panier',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 10),
-                            ),
-                            Container(
-                              height: 20,
-                              width: 20,
-                              margin: EdgeInsets.only(top: 0),
-                              padding: EdgeInsets.only(left: 10),
-                              child: Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                        : Column(
-                      children: <Widget>[
-                        Text('Le panier n\'est pas vide'),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              height: 60,
-                              width: 90,
-                              child: RaisedButton(
-                                elevation: 10,
-                                color: Colors.green,
-                                clipBehavior: Clip.none,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 1, horizontal: 2),
-                                onPressed: () {
-                                  _showMyDialog(context, widget.article);
+                    Padding(
+                        padding: EdgeInsets.only(right: 5),
+                        child: StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('commandeClient')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              String result;
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                result = "";
+                              } else if (snapshot.hasError) {
+                                result = "";
+                              } else if (snapshot.hasData) {
+                                QuerySnapshot values = snapshot.data;
+                                if (values != null) {
+                                  result = snapshot.data.size.toString();
+                                } else {
+                                  result = "";
+                                }
 
-                                },
-                                child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Text(
-                                      'Ajouter d\'autres articles',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10),
-                                    ),
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      margin: EdgeInsets.only(top: 0),
-                                      padding: EdgeInsets.only(left: 10),
-                                      child: Icon(
-                                        Icons.arrow_forward,
-                                        color: Colors.white,
-                                        size: 25,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Container(
-                              height: 60,
-                              width: 70,
-                              child: RaisedButton(
-                                elevation: 10,
-                                color: Colors.green,
-                                clipBehavior: Clip.none,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 1, horizontal: 2),
-                                onPressed: () {
-                                  showMyDialogViderpanier(context, widget.article);
-                                  setState(() {
-                                    hasData=true;
-                                  });
-                                },
-                                child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Text(
-                                      'Vider le panier ',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10),
-                                    ),
-                                    Container(
-                                      height: 20,
-                                      width: 20,
-                                      margin: EdgeInsets.only(top: 0),
-                                      padding: EdgeInsets.only(left: 10),
-                                      child: Icon(
-                                        Icons.arrow_forward,
-                                        color: Colors.white,
-                                        size: 25,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-
-
+                                if (snapshot.data.size == 0) {
+                                  empty = true;
+                                } else {
+                                  empty = false;
+                                }
+                                print(empty);
+                              }
+                              return Row(
+                                children: <Widget>[
+                                  empty
+                                      ? Container(
+                                          height: 60,
+                                          width: 70,
+                                          child: RaisedButton(
+                                            elevation: 10,
+                                            color: Colors.redAccent[200],
+                                            clipBehavior: Clip.none,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 1, horizontal: 2),
+                                            onPressed: () {
+                                              _showMyDialog(
+                                                  context, widget.article);
+                                              print(empty);
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                Text(
+                                                  'Ajouter au panier',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 10),
+                                                ),
+                                                Container(
+                                                  height: 20,
+                                                  width: 20,
+                                                  margin:
+                                                      EdgeInsets.only(top: 0),
+                                                  padding:
+                                                      EdgeInsets.only(left: 10),
+                                                  child: Icon(
+                                                    Icons.arrow_forward,
+                                                    color: Colors.white,
+                                                    size: 25,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      : Column(
+                                          children: <Widget>[
+                                            Text('Le panier n\'est pas vide'),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  height: 60,
+                                                  width: 90,
+                                                  child: RaisedButton(
+                                                    elevation: 10,
+                                                    color: Colors.green,
+                                                    clipBehavior: Clip.none,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 1,
+                                                            horizontal: 2),
+                                                    onPressed: () {
+                                                      _showMyDialog(context,
+                                                          widget.article);
+                                                    },
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Ajouter d\'autres articles',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 10),
+                                                        ),
+                                                        Container(
+                                                          height: 20,
+                                                          width: 20,
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  top: 0),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 10),
+                                                          child: Icon(
+                                                            Icons.arrow_forward,
+                                                            color: Colors.white,
+                                                            size: 25,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Container(
+                                                  height: 60,
+                                                  width: 70,
+                                                  child: RaisedButton(
+                                                    elevation: 10,
+                                                    color: Colors.green,
+                                                    clipBehavior: Clip.none,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 1,
+                                                            horizontal: 2),
+                                                    onPressed: () {
+                                                      showMyDialogViderpanier(
+                                                          context,
+                                                          widget.article);
+                                                    },
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Vider le panier ',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 10),
+                                                        ),
+                                                        Container(
+                                                          height: 20,
+                                                          width: 20,
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  top: 0),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 10),
+                                                          child: Icon(
+                                                            Icons.arrow_forward,
+                                                            color: Colors.white,
+                                                            size: 25,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                ],
+                              );
+//
+                            }))
                   ],
                 )),
             //debut colonne caratcteristique
 
             Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(10),
-                    color: Colors.blue,
-                    child: RichText(
-                        text: TextSpan(children: <TextSpan>[
-                      TextSpan(
-                          text: 'Designation: ',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontSize: 17,
-                          )),
-                      TextSpan(
-                          text: widget.article.name,
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontSize: 17,
-                          ))
-                    ])),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        //  mySpec(context, 'Indication:',widget.indication_d,Colors.white,Colors.blue),
-                      ],
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.all(10),
+                      color: Colors.blue,
+                      child: RichText(
+                          text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                            text: 'Designation: ',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontSize: 17,
+                            )),
+                        TextSpan(
+                            text: widget.article.name,
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontSize: 17,
+                            ))
+                      ])),
                     ),
-                  ),
-                ],
-              )
-              //fin colonne caratcteristique
-              ,
-            ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        children: getDetailsAsWidgets(),
+                      ),
+                    ),
+                  ],
+                )),
           ],
         ));
   }
 
+  List<Widget> getDetailsAsWidgets() {
+    List<Widget> widgets = [];
+    if (dci1 != null && dci1 != "") {
+      widgets.add(Text(dci1));
+    }
+    if (dci2 != null && dci2 != "") {
+      widgets.add(Text(dci2));
+    }
+    if (dci3 != null && dci3 != "") {
+      widgets.add(Text(dci3));
+    }
+    if (description != null && description != "") {
+      widgets.add(Text(description));
+    }
+    return widgets;
+  }
+
+  void getDescription() {
+    FirebaseFirestore.instance
+        .collection('detailArticle')
+        .where('idArticle', isEqualTo: widget.article.id)
+        .snapshots()
+        .listen((data) {
+      print('grower ${data.docs[0]['description']}');
+      description = data.docs[0]['description'];
+      dci1 = data.docs[0]['dci1'];
+      dci2 = data.docs[0]['dci2'];
+      dci3 = data.docs[0]['dci3'];
+
+      setState(() {});
+    });
+  }
 
   Future<void> _showMyDialog(BuildContext context, Item item) async {
     TextEditingController numberController = new TextEditingController();
@@ -340,7 +418,6 @@ class _DetailArticlState extends State<DetailArticl> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-
                 Padding(
                     padding: EdgeInsets.only(bottom: 10),
                     child: Text(
@@ -420,7 +497,7 @@ class _DetailArticlState extends State<DetailArticl> {
                   });
                   Navigator.of(context).pop();
                   setState(() {
-                    hasData=false;
+                    empty = false;
                   });
                 } else {}
               },
@@ -431,82 +508,73 @@ class _DetailArticlState extends State<DetailArticl> {
     );
   }
 
-
-Future<void> showMyDialogViderpanier(BuildContext context, Item item) async {
-  TextEditingController numberController = new TextEditingController();
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Vider le panier'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                          width: 90,
-                          child: Column(
-                            children: <Widget>[
-
-                            ],
-                          )),
-                      Text(''),
-                    ],
-                  )),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            child: Text('ANNULER'),
-            onPressed: () {
-
-              Navigator.of(context).pop();
-            },
-          ),
-          FlatButton(
-            child: Column(
+  Future<void> showMyDialogViderpanier(BuildContext context, Item item) async {
+    TextEditingController numberController = new TextEditingController();
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Vider le panier'),
+          content: SingleChildScrollView(
+            child: ListBody(
               children: <Widget>[
-                Text('VALIDER'),
-                //  Text('Puis appuyer sur le panier pour enregister la commande')
+                Center(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                        width: 90,
+                        child: Column(
+                          children: <Widget>[],
+                        )),
+                    Text(''),
+                  ],
+                )),
               ],
             ),
-            onPressed: () async {
-              FirebaseFirestore.instance
-                  .collection("commandeClient")
-                  .get()
-                  .then((value) {
-                value.docs.forEach((element) {
-                  FirebaseFirestore.instance
-                      .collection("commandeClient")
-                      .doc(element.id)
-                      .delete()
-                      .then((value) {
-                    setState(() {
-                      hasData=true;
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('ANNULER'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Column(
+                children: <Widget>[
+                  Text('VALIDER'),
+                  //  Text('Puis appuyer sur le panier pour enregister la commande')
+                ],
+              ),
+              onPressed: () async {
+                FirebaseFirestore.instance
+                    .collection("commandeClient")
+                    .get()
+                    .then((value) {
+                  value.docs.forEach((element) {
+                    FirebaseFirestore.instance
+                        .collection("commandeClient")
+                        .doc(element.id)
+                        .delete()
+                        .then((value) {
+                      setState(() {
+                        empty = true;
+                      });
+                      print(empty);
+                      Navigator.of(context).pop();
                     });
-                    print(hasData);
-                    Navigator.of(context).pop();
                   });
                 });
-              });
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
-
-
-
-
+}
 
 // mySpec(context,String feature,String detail, Color colorbackground, Color colortext){
 //  return Container(

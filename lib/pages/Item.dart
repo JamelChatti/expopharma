@@ -23,7 +23,7 @@ class Item {
 
     };}
 
-  factory Item.formDocumrnt(DocumentSnapshot documentSnapshot) {
+  factory Item.formDocument(DocumentSnapshot documentSnapshot) {
     return Item(
       documentSnapshot["id"],
       documentSnapshot["name"],

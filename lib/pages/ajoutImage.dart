@@ -1,9 +1,14 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expopharma/pages/Item.dart';
 import 'package:expopharma/pages/data.dart';
 import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To Firestore
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart'; // For Image Picker
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -16,14 +21,18 @@ class AjoutImage extends StatefulWidget {
 
 class _AjoutImageState extends State<AjoutImage> {
   final _formKey = GlobalKey<FormState>();
-
+TextEditingController descriptionController = TextEditingController();
+  TextEditingController dci1Controller = TextEditingController();
+  TextEditingController dci2Controller = TextEditingController();
+  TextEditingController dci3Controller = TextEditingController();
   File _image;
   String _uploadedFileURL;
   List<Item> articles = [];
   List<Item> displayedList = new List();
-
+  File  _file;
   String imageName;
-  String articleChoisi = '';
+  String articleNameChoisi = '';
+  Item articleSelected;
   String articleChoisibyScan ;
 
   Future chooseFile() async {
@@ -31,6 +40,13 @@ class _AjoutImageState extends State<AjoutImage> {
       setState(() {
         _image = image;
       });
+    });
+  }
+
+  Future pickergallery() async {
+    final myfile = await ImagePicker().getImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(myfile.path);
     });
   }
 
@@ -60,6 +76,7 @@ class _AjoutImageState extends State<AjoutImage> {
         title: Text('Enregistrer une image d\'unarticle'),
       ),
       body: Center(
+
         child: ListView(
           children: <Widget>[
             Column(
@@ -72,11 +89,21 @@ class _AjoutImageState extends State<AjoutImage> {
                       )
                     : Container(),
                 _image == null
-                    ? RaisedButton(
-                        child: Text('Prendre une image'),
-                        onPressed: pickercamera,
-                        color: Colors.cyan,
-                      )
+                    ? Row(mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                  RaisedButton(
+                    child: Text('Prendre une image'),
+                    onPressed: pickercamera,
+                    color: Colors.cyan,
+                  ),
+                  SizedBox(width: 15,),
+                  RaisedButton(
+                    child: Text('Importer une image'),
+                    onPressed: pickergallery,
+                    color: Colors.cyan,
+                  )
+                ],)
+
                     : Container(),
                 SizedBox(height: 20,),
                 _image != null
@@ -135,8 +162,9 @@ class _AjoutImageState extends State<AjoutImage> {
                                   },
                                   onSuggestionSelected: (Item suggestion) {
                                     print(suggestion);
+                                    articleSelected = suggestion;
                                     imageName = suggestion.id + '.png';
-                                    articleChoisi = suggestion.name;
+                                    articleNameChoisi = suggestion.name;
                                     setState(() {});
                                     Navigator.of(context).pop();
                                   },
@@ -159,28 +187,131 @@ class _AjoutImageState extends State<AjoutImage> {
                 },
                 icon: Icon(Icons.qr_code_scanner_sharp),
                 label: Text("Appuyer")),
-            Text(articleChoisi),
+            Text(articleNameChoisi),
             Container(height: 300,
-                width: 350,
+                width: 300,
                 child:
             Form(
               key: _formKey,
-              child: Column(
+              child: ListView(
                 //crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  TextFormField(
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                  ),
-                  Padding(
+
+                 Container(
+                     width: 350,
+                     padding: const EdgeInsets.only(right: 16.0,left: 16.0),
+                     child: TextFormField(
+                       controller: descriptionController,
+                       inputFormatters: [
+                         new LengthLimitingTextInputFormatter(42),
+                       ],
+                       decoration: InputDecoration(hintText:'Description' ,
+                         fillColor: Colors.red,
+                         focusColor: Colors.grey,
+                       ),
+                       keyboardType: TextInputType.multiline,
+                       maxLines:5,
+
+
+                       // The validator receives the text that the user has entered.
+                       validator: (value) {
+                         if (value == null || value.isEmpty) {
+                           return 'Please enter some text';
+                         }
+                         return null;
+                       },
+                     )),
+
+                  Container(
+                      width: 350,
+                       padding: const EdgeInsets.only( right: 16.0,left: 16.0),
+                        child: TextFormField(
+                          controller: dci1Controller,
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(42),
+                          ],
+                          decoration: InputDecoration(hintText:'DCI 1' ,
+                              fillColor: Colors.red,
+                              focusColor: Colors.grey,
+                          ),
+                          keyboardType: TextInputType.multiline,
+                          maxLines:1,
+
+
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                        )),
+                  Container(
+                      width: 350,
+                       padding: const EdgeInsets.only(left: 16.0, right: 16,),
+                        child: TextFormField(
+                          controller: dci2Controller,
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(42),
+                          ],
+                          decoration: InputDecoration(hintText: 'DCI 2',
+                              fillColor: Colors.red,
+                              focusColor: Colors.grey
+                          ),
+                          keyboardType: TextInputType.multiline,
+                          maxLines:1,
+
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                        )),
+                  Container(
+                      width: 350,
+                      padding: const EdgeInsets.only(right: 16.0,left: 16.0),
+                      child: TextFormField(
+                        controller: dci3Controller,
+                          inputFormatters: [
+                            new LengthLimitingTextInputFormatter(42),
+                          ],
+                          decoration: InputDecoration(hintText: 'DCI 3',
+                              fillColor: Colors.red,
+                              focusColor: Colors.grey
+                          ),
+                          keyboardType: TextInputType.multiline,
+                          maxLines:1,
+
+                          // The validator receives the text that the user has entered.
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter some text';
+                            }
+                            return null;
+                          },
+                        )),
+                Container  (
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: ElevatedButton(
-                      onPressed: () {
+                        onPressed: () async {
+                          if(articleSelected != null){
+
+                              await FirebaseFirestore.instance
+                                  .collection("detailArticle")
+                                  .add({
+                                'name': articleSelected.name,
+                                'description': descriptionController.text,
+                                'idArticle':articleSelected.id,
+                                'dci1' : dci1Controller.text,
+                                'dci2' : dci2Controller.text,
+                                'dci3' : dci3Controller.text,
+                              });
+                              Navigator.of(context).pop();
+
+                          }
+
 
                       },
                       child: Text('Submit'),
@@ -213,12 +344,12 @@ class _AjoutImageState extends State<AjoutImage> {
       if (value.barCode == barcodeScanRes) {
         //displayedList.add(value);
         imageName = value.id+'.png';
-        articleChoisi = value.name;
+        articleNameChoisi = value.name;
         break;
       }
     }
     setState(() {
-      articleChoisi;
+      articleNameChoisi;
     });
   }
 
