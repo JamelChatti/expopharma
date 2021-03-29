@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expopharma/pages/Item.dart';
 import 'package:expopharma/pages/commandeClient.dart';
 import 'package:expopharma/pages/data.dart';
-import 'package:expopharma/pages/displayvene.dart';
+import 'package:expopharma/pages/forme.dart';
 import 'package:expopharma/pages/searchArticle.dart';
 import 'package:expopharma/pages/vente.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,30 +11,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:expopharma/pages/shoppingCard.dart';
 
+import 'package:expopharma/pages/ItemForme.dart';
+
 class DetailArticl extends StatefulWidget {
   Item article;
-  DetailArticl(this.article);
-  String _selectedLocation = 'Please choose a location';
 
+  DetailArticl(this.article);
+
+  String _selectedLocation = 'Please choose a location';
 
   @override
   _DetailArticlState createState() => _DetailArticlState();
 }
 
 class _DetailArticlState extends State<DetailArticl> {
-  int shopCount = 0;
   List<Vente> listCommande = new List();
-  bool addNewVente = false;
+  List<ItemForme> formes = [];
   List<Item> articles = [];
+
+  String result;
+  bool hasData=false ;
+
+  Future<bool> checkEmptyMethod() async {
+    hasData = await FirebaseFirestore.instance
+        .collection("commandeClient").snapshots().isEmpty;
+
+    print(hasData);
+  }
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-  // getListByidf();
+    checkEmptyMethod();
+
+    // getListByidf();
   }
+
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore.instance.collection('commandeClient').snapshots().isEmpty;
     return Scaffold(
         appBar: AppBar(
           title: Text('Description' + 'التفاصيل'),
@@ -43,108 +60,6 @@ class _DetailArticlState extends State<DetailArticl> {
             SizedBox(
               width: 20,
             ),
-        // Padding(
-        //     padding: EdgeInsets.only(right: 5),
-        //     child: StreamBuilder(
-        //         stream: FirebaseFirestore.instance
-        //             .collection('ventes')
-        //             .snapshots(),
-        //         builder: (context, snapshot) {
-        //           QuerySnapshot values = snapshot.data;
-        //           //print(values.size);
-        //           return Badge(
-        //             position: BadgePosition.topEnd(
-        //               top: 10,
-        //               end: 30,
-        //             ),
-        //             badgeContent: values !=null && values.size == 0
-        //                 ? Text(
-        //               '',
-        //               style: TextStyle(color: Colors.white),
-        //             )
-        //                 : Text(
-        //               values.size.toString(),
-        //               style:
-        //               TextStyle(color: Colors.white, fontSize: 7),
-        //             ),
-        //             child: IconButton(
-        //               icon: Icon(
-        //                 Icons.add_shopping_cart,
-        //                 color: Colors.white,
-        //                 size: 20,
-        //               ),
-        //               onPressed: () async {
-        //                 if (values.size != 0) {
-        //                   await Navigator.push(
-        //                     context,
-        //                     MaterialPageRoute(
-        //                         builder: (context) => CommandeClient()),
-        //                   ).then((value) {
-        //                     //  if(value == "SAVED"){
-        //                     setState(() {
-        //                       //  listCommande.clear();
-        //                       // shopCount = 0;
-        //                     });
-        //                     //}
-        //                   });
-        //                 } else {
-        //                   final snackBar = SnackBar(
-        //                       content: Text(
-        //                         ' Vente vide, veillez ajouter au moins un article',
-        //                         textAlign: TextAlign.center,
-        //                       ));
-        //                   Scaffold.of(context).showSnackBar(snackBar);
-        //                 }
-        //               },
-        //             ),
-        //           );
-        //         })),
-        //     Padding(
-        //       padding: EdgeInsets.only(right: 15),
-        //       child: Builder(builder: (BuildContext context) {
-        //         return Badge(
-        //           position: BadgePosition.topEnd(top: 0, end: 0),
-        //           badgeContent: shopCount == 0
-        //               ? Text(
-        //             '',
-        //             style: TextStyle(color: Colors.white),
-        //           )
-        //               : Text(
-        //             shopCount.toString(),
-        //             style: TextStyle(color: Colors.white),
-        //           ),
-        //           child: IconButton(
-        //             icon: Icon(
-        //               Icons.add_shopping_cart,
-        //               color: Colors.white,
-        //               size: 35,
-        //             ),
-        //             onPressed: () async {
-        //               if (shopCount != 0) {
-        //                 await Navigator.push(
-        //                   context,
-        //                   MaterialPageRoute(builder: (context) => DisplayVente()),
-        //                 ).then((value) {
-        //                   if(value == "SAVED"){
-        //                     setState(() {
-        //                       listCommande.clear();
-        //                       shopCount = 0;
-        //                     });
-        //                   }
-        //                 });
-        //               } else {
-        //                 final snackBar = SnackBar(
-        //                     content: Text(
-        //                       ' Vente vide, veillez ajouter au moins un article',
-        //                       textAlign: TextAlign.center,
-        //                     ));
-        //                 Scaffold.of(context).showSnackBar(snackBar);
-        //               }
-        //             },
-        //           ),
-        //         );
-        //       }),
-        //     ),
             MyShoppingCard("commandeClient"),
             IconButton(
               icon: Icon(Icons.search),
@@ -162,9 +77,10 @@ class _DetailArticlState extends State<DetailArticl> {
             Container(
               height: 600,
               child: GridTile(
-
                 child: Image.network(
-                  'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/articles%2F'+widget.article.id+'?alt=media',
+                  'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/articles%2F' +
+                      widget.article.id +
+                      '.png?alt=media',
                   fit: BoxFit.contain,
                   height: 160,
                 ),
@@ -186,7 +102,6 @@ class _DetailArticlState extends State<DetailArticl> {
                             ),
                           ),
                         ),
-
                         Container(
                           padding: EdgeInsets.all(10),
                           child: Row(
@@ -220,125 +135,202 @@ class _DetailArticlState extends State<DetailArticl> {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(10),
-              child: Row(children: <Widget>[
-                Text(
-                  'Caratéristiques' + 'الخصائص',
-                  style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue),
-                ),
-                SizedBox(width: 50,),
-                Container(
-                  height: 60,
-                  width: 70,
-
-                  child:RaisedButton(
-                    elevation: 10,
-                    color:
-                    Colors.redAccent[200],
-                    clipBehavior: Clip.none ,
-                    padding: EdgeInsets.symmetric(
-                        vertical: 1, horizontal: 2),
-                    onPressed:(){
-                      print('bonjour');
-                      _showMyDialog(context,widget.article);
-                      //listCommande.add(new Vente(articles[index], 1));
-
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Text(
-                          'Ajouter au panier',
-                          style: TextStyle(
-                              color: Colors.white, fontSize:10),
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      'Caratéristiques' + 'الخصائص',
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    hasData
+                        ? Container(
+                      height: 60,
+                      width: 70,
+                      child: RaisedButton(
+                        elevation: 10,
+                        color: Colors.redAccent[200],
+                        clipBehavior: Clip.none,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 1, horizontal: 2),
+                        onPressed: () {
+                          _showMyDialog(context, widget.article);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              'Ajouter au panier',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 10),
+                            ),
+                            Container(
+                              height: 20,
+                              width: 20,
+                              margin: EdgeInsets.only(top: 0),
+                              padding: EdgeInsets.only(left: 10),
+                              child: Icon(
+                                Icons.arrow_forward,
+                                color: Colors.white,
+                                size: 25,
+                              ),
+                            )
+                          ],
                         ),
-                        Container(
-                          height: 20,
-                          width: 20,
-                          margin: EdgeInsets.only(top: 0),
-                          padding: EdgeInsets.only(left: 10),
-                          child: Icon(
-                            Icons.arrow_forward,
-                            color: Colors.white,
-                            size: 25,
-                          ),
+                      ),
+                    )
+                        : Column(
+                      children: <Widget>[
+                        Text('Le panier n\'est pas vide'),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              height: 60,
+                              width: 90,
+                              child: RaisedButton(
+                                elevation: 10,
+                                color: Colors.green,
+                                clipBehavior: Clip.none,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 1, horizontal: 2),
+                                onPressed: () {
+                                  _showMyDialog(context, widget.article);
+
+                                },
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      'Ajouter d\'autres articles',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10),
+                                    ),
+                                    Container(
+                                      height: 20,
+                                      width: 20,
+                                      margin: EdgeInsets.only(top: 0),
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Icon(
+                                        Icons.arrow_forward,
+                                        color: Colors.white,
+                                        size: 25,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Container(
+                              height: 60,
+                              width: 70,
+                              child: RaisedButton(
+                                elevation: 10,
+                                color: Colors.green,
+                                clipBehavior: Clip.none,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 1, horizontal: 2),
+                                onPressed: () {
+                                  showMyDialogViderpanier(context, widget.article);
+                                  setState(() {
+                                    hasData=true;
+                                  });
+                                },
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      'Vider le panier ',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10),
+                                    ),
+                                    Container(
+                                      height: 20,
+                                      width: 20,
+                                      margin: EdgeInsets.only(top: 0),
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Icon(
+                                        Icons.arrow_forward,
+                                        color: Colors.white,
+                                        size: 25,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         )
                       ],
                     ),
-                  ),
 
-                ),
-              ],)
 
-            ),
+                  ],
+                )),
             //debut colonne caratcteristique
 
             Container(
               padding: EdgeInsets.all(10),
-              child:Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children:<Widget> [
-
+                children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.all(10),
                     color: Colors.blue,
-                    child: RichText(text: TextSpan(children: <TextSpan>[
-                      TextSpan(text: 'Designation: ', style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 17,
-                      )),
-                      TextSpan(text:widget.article.name, style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontSize: 17,
-                      ) )
+                    child: RichText(
+                        text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                          text: 'Designation: ',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 17,
+                          )),
+                      TextSpan(
+                          text: widget.article.name,
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontSize: 17,
+                          ))
                     ])),
                   ),
-
-                  // Container(
-                  //   width: MediaQuery.of(context).size.width,
-                  //   padding: EdgeInsets.all(10),
-                  //   color: Colors.blue,
-                  //   child:
-                  //   RichText(text: TextSpan(children: <TextSpan>[
-                  //     TextSpan(text: 'Prix:', style: TextStyle(
-                  //       decoration: TextDecoration.underline,
-                  //       fontSize: 15,
-                  //     )),
-                  //     TextSpan(text:' 48500 dt', style: TextStyle(
-                  //       decoration: TextDecoration.underline,
-                  //       fontSize: 15,
-                  //     ) )
-                  //   ])),
-                  // ),
                   Container(
                     padding: EdgeInsets.all(10),
-                    child:Column(
+                    child: Column(
                       children: <Widget>[
-                      //  mySpec(context, 'Indication:',widget.indication_d,Colors.white,Colors.blue),
-
-
-
+                        //  mySpec(context, 'Indication:',widget.indication_d,Colors.white,Colors.blue),
                       ],
-                    )
-                    ,),
-                ],)
+                    ),
+                  ),
+                ],
+              )
               //fin colonne caratcteristique
-              ,),
+              ,
+            ),
           ],
         ));
   }
+
+
   Future<void> _showMyDialog(BuildContext context, Item item) async {
     TextEditingController numberController = new TextEditingController();
-    TextEditingController nameclientController = new TextEditingController();
 
     var expression = RegExp('([-]?)([0-9]+)');
-
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -348,6 +340,7 @@ class _DetailArticlState extends State<DetailArticl> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
+
                 Padding(
                     padding: EdgeInsets.only(bottom: 10),
                     child: Text(
@@ -355,37 +348,43 @@ class _DetailArticlState extends State<DetailArticl> {
                       style: TextStyle(
                           color: Colors.red, fontWeight: FontWeight.bold),
                     )),
-                Row(children: [
-                  Text('Valider '),
-                  Text('1', style: TextStyle(color: Colors.red),),
-                  Text(' ou choisir la quantité '),
-                ],),
+                Row(
+                  children: <Widget>[
+                    Text('Valider '),
+                    Text(
+                      '1',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    Text(' ou choisir la quantité '),
+                  ],
+                ),
                 Center(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(
-                            width: 90,
-                            child:Column(children: <Widget>[
-                              TextFormField(
-                                autofocus: true,
-                                controller: numberController,
-                                //initialValue: "1",
-                                decoration: InputDecoration(
-                                  hintText: '1',
-                                  helperText: 'différent de 0',
-                                ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  //WhitelistingTextInputFormatter.digitsOnly
-                                  FilteringTextInputFormatter.allow(expression)
-                                ], // Only numbers can be entered
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                        width: 90,
+                        child: Column(
+                          children: <Widget>[
+                            TextFormField(
+                              autofocus: true,
+                              controller: numberController,
+                              //initialValue: "1",
+                              decoration: InputDecoration(
+                                hintText: '1',
+                                helperText: 'différent de 0',
                               ),
-
-                            ],) ),
-                        Text(''),
-                      ],
-                    )),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                //WhitelistingTextInputFormatter.digitsOnly
+                                FilteringTextInputFormatter.allow(expression)
+                              ], // Only numbers can be entered
+                            ),
+                          ],
+                        )),
+                    Text(''),
+                  ],
+                )),
               ],
             ),
           ),
@@ -397,25 +396,32 @@ class _DetailArticlState extends State<DetailArticl> {
               },
             ),
             FlatButton(
-              child: Column(children: <Widget>[
-                Text('VALIDER'),
-                //  Text('Puis appuyer sur le panier pour enregister la commande')
-              ],),
+              child: Column(
+                children: <Widget>[
+                  Text('VALIDER'),
+                  //  Text('Puis appuyer sur le panier pour enregister la commande')
+                ],
+              ),
               onPressed: () async {
                 int value;
                 numberController.text.isEmpty
                     ? value = 1
                     : value = int.parse(numberController.text);
-                if (value != 0)  {
+                if (value != 0) {
                   Vente vente = new Vente(item, value);
-                  await FirebaseFirestore.instance.collection('commandeClient').add({
+                  await FirebaseFirestore.instance
+                      .collection('commandeClient')
+                      .add({
                     'timestamp': DateTime.now().millisecondsSinceEpoch,
                     // 'vente' : vente.toMap(),
-                    'name' : item.name,
-                    'number' :vente.number,
-                    'prixVente' : item.prixVente,
+                    'name': item.name,
+                    'number': vente.number,
+                    'prixVente': item.prixVente,
                   });
                   Navigator.of(context).pop();
+                  setState(() {
+                    hasData=false;
+                  });
                 } else {}
               },
             ),
@@ -426,27 +432,97 @@ class _DetailArticlState extends State<DetailArticl> {
   }
 
 
-}
-mySpec(context,String feature,String detail, Color colorbackground, Color colortext){
-  return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(10),
-      color: colorbackground,
-      child: RichText(
-        text: TextSpan(
-            style: TextStyle(fontSize: 19 ,color: Colors.black),
-            children: <TextSpan>[
-              TextSpan(text: feature),
-              TextSpan(
-                  text: detail,
-                  style:TextStyle(color: colortext))
-            ]
+Future<void> showMyDialogViderpanier(BuildContext context, Item item) async {
+  TextEditingController numberController = new TextEditingController();
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Vider le panier'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                          width: 90,
+                          child: Column(
+                            children: <Widget>[
+
+                            ],
+                          )),
+                      Text(''),
+                    ],
+                  )),
+            ],
+          ),
         ),
-      )
+        actions: <Widget>[
+          FlatButton(
+            child: Text('ANNULER'),
+            onPressed: () {
+
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Column(
+              children: <Widget>[
+                Text('VALIDER'),
+                //  Text('Puis appuyer sur le panier pour enregister la commande')
+              ],
+            ),
+            onPressed: () async {
+              FirebaseFirestore.instance
+                  .collection("commandeClient")
+                  .get()
+                  .then((value) {
+                value.docs.forEach((element) {
+                  FirebaseFirestore.instance
+                      .collection("commandeClient")
+                      .doc(element.id)
+                      .delete()
+                      .then((value) {
+                    setState(() {
+                      hasData=true;
+                    });
+                    print(hasData);
+                    Navigator.of(context).pop();
+                  });
+                });
+              });
+            },
+          ),
+        ],
+      );
+    },
   );
-
-
-
-
 }
 
+  }
+
+
+
+
+
+// mySpec(context,String feature,String detail, Color colorbackground, Color colortext){
+//  return Container(
+//       width: MediaQuery.of(context).size.width,
+//        padding: EdgeInsets.all(10),
+//     color: colorbackground,
+//     child: RichText(
+//         text: TextSpan(
+//             style: TextStyle(fontSize: 19 ,color: Colors.black),
+//           children: <TextSpan>[
+//             TextSpan(text: feature),
+//             TextSpan(
+//                 text: detail,
+//                 style:TextStyle(color: colortext))
+//            ]
+//        ),
+//       )
+//    );
+// }

@@ -16,8 +16,10 @@ import 'package:intl/intl.dart';
 import 'package:expopharma/pages/shoppingCard.dart';
 
 class Forme extends StatefulWidget {
-  final String idf ;
-  final String  type ;
+  final String idf;
+
+  final String type;
+
   Forme(this.idf, this.type);
 
   @override
@@ -29,178 +31,33 @@ class _FormeState extends State<Forme> {
   List<Item> articles = [];
   bool addNewVente = false;
   List<Vente> listCommande = new List();
- int shopCount = 0;
+  int shopCount = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(widget.type == "FORME"){
+    if (widget.type == "FORME") {
       getListByForme();
     }
-    if(widget.type == "FAMILLE"){
+    if (widget.type == "FAMILLE") {
       getListByFamille();
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
- print(widget.idf.toString());
+    print(widget.idf.toString());
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           elevation: 0.5,
           brightness: Brightness.light,
-          // title: SizedBox(
-          //     height: 37,
-          //     child: Container(
-          //       padding: EdgeInsets.only(left: 10.0, right: 10.0),
-          //       height: 37.0,
-          //       decoration: BoxDecoration(
-          //           color: Color(0xFFEEEEEE),
-          //           borderRadius: BorderRadius.circular(25)),
-          //       child: Center(
-          //         child: TextField(
-          //           //expands: true,
-          //           maxLines: 1,
-          //           autofocus: false,
-          //           keyboardType: TextInputType.text,
-          //           decoration: InputDecoration(
-          //               border: InputBorder.none,
-          //               hintText: 'Search',
-          //               hintStyle: TextStyle(color: Colors.black26)),
-          //           onChanged: (value) {
-          //             if (value.length > 0) {
-          //               articles.clear();
-          //               getListArticles(value);
-          //             } else {
-          //               articles.clear();
-          //               setState(() {
-          //                 articles.addAll(allArticle);
-          //               });
-          //             }
-          //           },
-          //         ),
-          //       ),
-          //     )),
-          // IconButton(
-          //   icon: Icon(Icons.search),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => SearchArticle()),
-          //     );
-          //   },
-          // ),
           actions: [
-
             SizedBox(
               width: 20,
             ),
             MyShoppingCard("commandeClient"),
-            // Padding(
-            //     padding: EdgeInsets.only(right: 5),
-            //     child: StreamBuilder(
-            //         stream: FirebaseFirestore.instance
-            //             .collection('ventes')
-            //             .snapshots(),
-            //         builder: (context, snapshot) {
-            //           QuerySnapshot values = snapshot.data;
-            //           //print(values.size);
-            //           return Badge(
-            //             position: BadgePosition.topEnd(
-            //               top: 10,
-            //               end: 30,
-            //             ),
-            //             badgeContent: values !=null && values.size == 0
-            //                 ? Text(
-            //               '',
-            //               style: TextStyle(color: Colors.white),
-            //             )
-            //                 : Text(
-            //               values.size.toString(),
-            //               style:
-            //               TextStyle(color: Colors.white, fontSize: 7),
-            //             ),
-            //             child: IconButton(
-            //               icon: Icon(
-            //                 Icons.add_shopping_cart,
-            //                 color: Colors.blueGrey,
-            //                 size: 20,
-            //               ),
-            //               onPressed: () async {
-            //                 if (values.size != 0) {
-            //                   await Navigator.push(
-            //                     context,
-            //                     MaterialPageRoute(
-            //                         builder: (context) => DisplayVente()),
-            //                   ).then((value) {
-            //                     //  if(value == "SAVED"){
-            //                     setState(() {
-            //                       //  listCommande.clear();
-            //                       // shopCount = 0;
-            //                     });
-            //                     //}
-            //                   });
-            //                 } else {
-            //                   final snackBar = SnackBar(
-            //                       content: Text(
-            //                         ' Vente vide, veillez ajouter au moins un article',
-            //                         textAlign: TextAlign.center,
-            //                       ));
-            //                   Scaffold.of(context).showSnackBar(snackBar);
-            //                 }
-            //               },
-            //             ),
-            //           );
-            //         })),
-            // Padding(
-            //   padding: EdgeInsets.only(right: 15),
-            //   child: Builder(builder: (BuildContext context) {
-            //     return Badge(
-            //       position: BadgePosition.topEnd(top: 0, end: 0),
-            //       badgeContent: shopCount == 0
-            //           ? Text(
-            //         '',
-            //         style: TextStyle(color: Colors.white),
-            //       )
-            //           : Text(
-            //         shopCount.toString(),
-            //         style: TextStyle(color: Colors.white),
-            //       ),
-            //       child: IconButton(
-            //         icon: Icon(
-            //           Icons.add_shopping_cart,
-            //           color: Colors.blueAccent,
-            //           size: 35,
-            //         ),
-            //         onPressed: () async {
-            //           if (shopCount != 0) {
-            //             await Navigator.push(
-            //               context,
-            //               MaterialPageRoute(builder: (context) => DisplayVente()),
-            //             ).then((value) {
-            //               if(value == "SAVED"){
-            //                 setState(() {
-            //                   listCommande.clear();
-            //                   shopCount = 0;
-            //                 });
-            //               }
-            //             });
-            //           } else {
-            //             final snackBar = SnackBar(
-            //                 content: Text(
-            //                   ' Vente vide, veillez ajouter au moins un article',
-            //                   textAlign: TextAlign.center,
-            //                 ));
-            //             Scaffold.of(context).showSnackBar(snackBar);
-            //           }
-            //         },
-            //       ),
-            //     );
-            //   }),
-            // ),
             IconButton(
               icon: Icon(Icons.search),
               onPressed: () {
@@ -211,7 +68,10 @@ class _FormeState extends State<Forme> {
               },
             )
           ],
-          title: Text('Choisir un article',style: TextStyle(color: Colors.white),),
+          title: Text(
+            'Choisir un article',
+            style: TextStyle(color: Colors.white),
+          ),
           backgroundColor: Colors.green,
           leading: IconButton(
             icon: Icon(
@@ -225,9 +85,7 @@ class _FormeState extends State<Forme> {
         ),
         body: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 2.0,
-              crossAxisCount: 1),
-
+              childAspectRatio: 2.0, crossAxisCount: 1),
           itemCount: articles.length,
           itemBuilder: (context, index) {
             int nstock = int.tryParse(articles[index].stock) ?? 0;
@@ -239,117 +97,138 @@ class _FormeState extends State<Forme> {
                       child: Container(
                           height: 2000,
                           child: Row(children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(10),
-                         color: Colors.grey[200],
-                          width: 150,
-                          child: Image.network(
-                            'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/articles%2F'+articles[index].id+'?alt=media',
-                            fit: BoxFit.fill
-                            ,
-                            height: 150,
-
-                          ),
-                        ),
-                        Expanded(child:Container(
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(height: 15,),
-
-                                Container(width: MediaQuery.of(context).size.width,
-                                    padding: EdgeInsets.all(10),
-                                    color: Colors.blueGrey,
-                                    child: RichText(
-                                      text: TextSpan(
-                                          style: TextStyle(fontSize: 15 ,color: Colors.black),
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                text: articles[index].name,
-                                                style:TextStyle(color: Colors.white))
-                                          ]
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              color: Colors.grey[200],
+                              width: 150,
+                              child: Image.network(
+                                'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/articles%2F' +
+                                    articles[index].id +
+                                    '.png?alt=media',
+                                fit: BoxFit.fill,
+                                height: 150,
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: 15,
                                       ),
-                                    )
-                                ),
-                                SizedBox(height: 10,),
-                                Text('Prix:   '+
-                                    articles[index].prixVente,
-                                  style: TextStyle(color: Colors.blue, fontSize: 15),
-                                ),
-                                SizedBox(height: 5,),
-                                Text(nstock <= 0 ? 'Non disponible' : 'Disponible',
-
-
-                                  style: nstock <= 0 ? TextStyle(
-                                     color: Colors.red, fontSize: 15) : TextStyle(
-                                      color: Colors.green, fontSize: 15),
-                                ),
-
-                                Row(children: <Widget>[
-
-
-                                  Expanded(child:Container(child: Text('Appuyer sur l\'image pour plus de detail',style: TextStyle(fontSize: 10),),) ),
-                                  SizedBox(width: 20,),
-                                  Container(
-                                    height: 60,
-                                    width: 70,
-
-                                    child:RaisedButton(
-                                      elevation: 10,
-                                      color:
-                                      Colors.redAccent[200],
-                                        clipBehavior: Clip.none ,
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 1, horizontal: 2),
-                                      onPressed:(){
-                                        _showMyDialog(context,articles.elementAt(index));
-                                        //listCommande.add(new Vente(articles[index], 1));
-
-                                      },
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          Text(
-                                            'Ajouter au panier',
-                                            style: TextStyle(
-                                                color: Colors.white, fontSize:10),
+                                      Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          padding: EdgeInsets.all(10),
+                                          color: Colors.blueGrey,
+                                          child: RichText(
+                                            text: TextSpan(
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black),
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text:
+                                                          articles[index].name,
+                                                      style: TextStyle(
+                                                          color: Colors.white))
+                                                ]),
+                                          )),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        'Prix:   ' + articles[index].prixVente,
+                                        style: TextStyle(
+                                            color: Colors.blue, fontSize: 15),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        nstock <= 0
+                                            ? 'Non disponible'
+                                            : 'Disponible',
+                                        style: nstock <= 0
+                                            ? TextStyle(
+                                                color: Colors.red, fontSize: 15)
+                                            : TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 15),
+                                      ),
+                                      Row(children: <Widget>[
+                                        Expanded(
+                                            child: Container(
+                                          child: Text(
+                                            'Appuyer sur l\'image pour plus de detail',
+                                            style: TextStyle(fontSize: 10),
                                           ),
-                                          Container(
-                                            height: 20,
-                                            width: 20,
-                                            margin: EdgeInsets.only(top: 0),
-                                            padding: EdgeInsets.only(left: 10),
-                                            child: Icon(
-                                              Icons.add_shopping_cart,
-                                              color: Colors.white,
-                                              size: 25,
+                                        )),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        Container(
+                                          height: 60,
+                                          width: 70,
+                                          child: RaisedButton(
+                                            elevation: 10,
+                                            color: Colors.redAccent[200],
+                                            clipBehavior: Clip.none,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 1, horizontal: 2),
+                                            onPressed: () {
+                                              _showMyDialog(context,
+                                                  articles.elementAt(index));
+                                              //listCommande.add(new Vente(articles[index], 1));
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                Text(
+                                                  'Ajouter au panier',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 10),
+                                                ),
+                                                Container(
+                                                  height: 20,
+                                                  width: 20,
+                                                  margin:
+                                                      EdgeInsets.only(top: 0),
+                                                  padding:
+                                                      EdgeInsets.only(left: 10),
+                                                  child: Icon(
+                                                    Icons.add_shopping_cart,
+                                                    color: Colors.white,
+                                                    size: 25,
+                                                  ),
+                                                )
+                                              ],
                                             ),
-                                          )
-                                        ],
+                                          ),
+                                        ),
+                                      ]),
+                                      SizedBox(
+                                        height: 15,
                                       ),
-                                    ),
-
-                                    ),
-
-                                ]),
-
-                                SizedBox(height: 15,),
-                              ]),
-                        ),
-                        ),
-
-                      ]))),
+                                    ]),
+                              ),
+                            ),
+                          ]))),
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DetailArticl(articles[index])),
-
+                      MaterialPageRoute(
+                          builder: (context) => DetailArticl(articles[index])),
                     );
                   },
                 )
-              //Text(myItem.name)
-            );
+                //Text(myItem.name)
+                );
 
             //   ListTile(
             //   title: Text(
@@ -362,8 +241,6 @@ class _FormeState extends State<Forme> {
             // );
           },
         ));
-
-
   }
 
   Future<void> _showMyDialog(BuildContext context, Item item) async {
@@ -388,37 +265,40 @@ class _FormeState extends State<Forme> {
                       style: TextStyle(
                           color: Colors.red, fontWeight: FontWeight.bold),
                     )),
-                Row(children: [
-               //   Text('Valider '),
-                  //Text('0', style: TextStyle(color: Colors.red),),
-                  Text(' Saisir la quantité '),
-                ],),
+                Row(
+                  children: [
+                    //   Text('Valider '),
+                    //Text('0', style: TextStyle(color: Colors.red),),
+                    Text(' Saisir la quantité '),
+                  ],
+                ),
                 Center(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(
-                            width: 90,
-                            child:Column(children: <Widget>[
-                              TextFormField(
-                                autofocus: true,
-                                controller: numberController,
-                                //initialValue: "1",
-                                decoration: InputDecoration(
-                                  hintText: '0',
-                                  helperText: 'différent de 0',
-                                ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  //WhitelistingTextInputFormatter.digitsOnly
-                                  FilteringTextInputFormatter.allow(expression)
-                                ], // Only numbers can be entered
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                        width: 90,
+                        child: Column(
+                          children: <Widget>[
+                            TextFormField(
+                              autofocus: true,
+                              controller: numberController,
+                              //initialValue: "1",
+                              decoration: InputDecoration(
+                                hintText: '0',
+                                helperText: 'différent de 0',
                               ),
-
-                            ],) ),
-                        Text(''),
-                      ],
-                    )),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                //WhitelistingTextInputFormatter.digitsOnly
+                                FilteringTextInputFormatter.allow(expression)
+                              ], // Only numbers can be entered
+                            ),
+                          ],
+                        )),
+                    Text(''),
+                  ],
+                )),
               ],
             ),
           ),
@@ -430,10 +310,12 @@ class _FormeState extends State<Forme> {
               },
             ),
             FlatButton(
-              child: Column(children: <Widget>[
-                Text('VALIDER'),
-              //  Text('Puis appuyer sur le panier pour enregister la commande')
-              ],),
+              child: Column(
+                children: <Widget>[
+                  Text('VALIDER'),
+                  //  Text('Puis appuyer sur le panier pour enregister la commande')
+                ],
+              ),
               onPressed: () async {
                 int value;
                 numberController.text.isEmpty
@@ -441,14 +323,15 @@ class _FormeState extends State<Forme> {
                     : value = int.parse(numberController.text);
                 if (value != 0) {
                   //Vente vente = new Vente(item, value);
-                 await FirebaseFirestore.instance.collection('commandeClient').add({
-                  'timestamp': DateTime.now().millisecondsSinceEpoch,
-                  // 'vente' : vente.toMap(),
-                   'name' : item.name,
-                    'number' :int.parse(numberController.text),
-                   'prixVente' : item.prixVente,
+                  await FirebaseFirestore.instance
+                      .collection('commandeClient')
+                      .add({
+                    'timestamp': DateTime.now().millisecondsSinceEpoch,
+                    // 'vente' : vente.toMap(),
+                    'name': item.name,
+                    'number': int.parse(numberController.text),
+                    'prixVente': item.prixVente,
                   });
-
 
                   //  listCommande.add(new Vente(item, value));
                   // shopCount = shopCount + value;
@@ -467,39 +350,33 @@ class _FormeState extends State<Forme> {
     );
   }
 
-
   void getListArticles(String value) {
     articles.clear();
     allArticle.forEach((element) {
-      if(element.name.toLowerCase().startsWith(value.toLowerCase())){
+      if (element.name.toLowerCase().startsWith(value.toLowerCase())) {
         articles.add(element);
       }
     });
-    setState(() {
-    });
+    setState(() {});
   }
 
   void getListByForme() {
     dataList.forEach((element) {
-      if(element.forme == widget.idf.toString() && element.stock != 0){
+      if (element.forme == widget.idf.toString() && element.stock != 0) {
         allArticle.add(element);
       }
     });
     articles.addAll(allArticle);
-    setState(() {
-    });
+    setState(() {});
   }
 
   void getListByFamille() {
     dataList.forEach((element) {
-      if(element.forme == widget.idf.toString() && element.stock != 0){
+      if (element.forme == widget.idf.toString() && element.stock != 0) {
         allArticle.add(element);
       }
     });
     articles.addAll(allArticle);
-    setState(() {
-    });
+    setState(() {});
   }
 }
-
-

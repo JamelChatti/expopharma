@@ -27,19 +27,14 @@ class _DisplayVenteState extends State<DisplayVente> {
   TextEditingController myTextFieldController;
   int total = 0;
   int somme = 0;
-
-  HashMap<String, String> stockMap = new HashMap();
   String nameclient;
-
-  List<Item> displayedList = new List();
-
-  bool loading = true;
-
-  List<Vente> listVentes = new List();
-
-  bool addNewVente = false;
   TextEditingController nameclientController = new TextEditingController();
   List<ItemCommande> listItemCommande = new List();
+ // HashMap<String, String> stockMap = new HashMap();
+ // List<Item> displayedList = new List();
+  //bool loading = true;
+ // List<Vente> listVentes = new List();
+  //bool addNewVente = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,9 +106,7 @@ class _DisplayVenteState extends State<DisplayVente> {
                       ItemCommande itemCommande = new ItemCommande(
                           name, prixVente, number,null, result.id);
                       listItemCommande.add(itemCommande);
-                      print(listItemCommande.length);
                     });
-
                     if (listItemCommande.length == 0) {
                       return Center(
                           child: Column(
@@ -179,12 +172,12 @@ class _DisplayVenteState extends State<DisplayVente> {
                                           child: ListBody(
                                             children: <Widget>[
                                               Text(
-                                                  'Voulez vous supprimer définitivement cette article ? '),
+                                                  'Voulez vous supprimer définitivement cet article ? '),
                                               Padding(
                                                   padding: EdgeInsets.only(
                                                       bottom: 10),
                                                   child: Text(
-                                                    namearticle,
+                                                    listItemCommande[index].name,
                                                     style: TextStyle(
                                                         color: Colors.red,
                                                         fontWeight:
@@ -194,7 +187,7 @@ class _DisplayVenteState extends State<DisplayVente> {
                                                   padding: EdgeInsets.only(
                                                       bottom: 10),
                                                   child: Text(
-                                                    'Prix =' + prix,
+                                                    'Prix =' + listItemCommande[index].prixVente,
                                                     style: TextStyle(
                                                         color: Colors.red,
                                                         fontWeight:

@@ -9,11 +9,14 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class AjoutImage extends StatefulWidget {
+
   @override
   _AjoutImageState createState() => _AjoutImageState();
 }
 
 class _AjoutImageState extends State<AjoutImage> {
+  final _formKey = GlobalKey<FormState>();
+
   File _image;
   String _uploadedFileURL;
   List<Item> articles = [];
@@ -57,7 +60,7 @@ class _AjoutImageState extends State<AjoutImage> {
         title: Text('Enregistrer une image d\'unarticle'),
       ),
       body: Center(
-        child: Column(
+        child: ListView(
           children: <Widget>[
             Column(
               children: <Widget>[
@@ -156,7 +159,36 @@ class _AjoutImageState extends State<AjoutImage> {
                 },
                 icon: Icon(Icons.qr_code_scanner_sharp),
                 label: Text("Appuyer")),
-            Text(articleChoisi)
+            Text(articleChoisi),
+            Container(height: 300,
+                width: 350,
+                child:
+            Form(
+              key: _formKey,
+              child: Column(
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  TextFormField(
+                    // The validator receives the text that the user has entered.
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+
+                      },
+                      child: Text('Submit'),
+                    ),
+                  ),
+                ],
+              ),
+            ))
           ],
         ),
       ),

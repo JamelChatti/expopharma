@@ -45,8 +45,6 @@ dependencies:
 
 
 
-
-
 dev_dependencies:
   flutter_launcher_icons: "^0.8.0"
   flutter_test:
@@ -120,6 +118,7 @@ flutter:
    - images/cosmeto/shampo.jpg
    - images/cosmeto/crempieds.jpg
    - images/cosmeto/acne.jfif
+   - images/expopharma.png
 
 
 

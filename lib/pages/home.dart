@@ -218,7 +218,8 @@ class _HomeState extends State<Home> {
                       dataVitrines.addAll(vitrines);
 
                       return CarouselSlider.builder(
-                        itemCount: vitrines.length,
+                        //itemCount: vitrines.length,
+                        itemCount:4,
                         options: CarouselOptions(
                           autoPlay: true,
                           aspectRatio: 2.0,
@@ -229,7 +230,7 @@ class _HomeState extends State<Home> {
                             height: 300,
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(color: Colors.amber),
+                           // decoration: BoxDecoration(color: Colors.amber),
                             child: GestureDetector(
                                 child: Stack(fit: StackFit.expand, children: <
                                     Widget>[
@@ -240,21 +241,28 @@ class _HomeState extends State<Home> {
                                     fit: BoxFit.fill,
                                     //height: 120,
                                   ),
-                                  Padding(
-                                      padding: EdgeInsets.only(bottom: 10),
-                                      child: Positioned.fill(
+                                  // Padding(
+                                  //     padding: EdgeInsets.only(bottom: 10),
+                                  //     child:
+                                      Positioned.fill(
+                                        
+                                        bottom: 10,
+                                        top: 10,
                                         child: Align(
                                             alignment: Alignment.bottomCenter,
                                             child: Container(
+                                                padding: EdgeInsets.only(bottom: 4,top: 4),
+                                                height: 25,
                                                 width: double.infinity,
-                                                color: Colors.white60,
+                                                color: Colors.black.withOpacity(0.3),
                                                 child: Text(
                                                   vitrines
                                                       .elementAt(index)
-                                                      .name,
+                                                      .name,style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Colors.white),
                                                   textAlign: TextAlign.center,
                                                 ))),
-                                      )),
+                                      )
+                                  //),
                                 ]),
                                 onTap: () {
                                   idarticle = vitrines
