@@ -6,7 +6,6 @@ import 'package:expopharma/pages/ItemCategorie.dart';
 import 'package:expopharma/pages/artlist.dart';
 import 'package:expopharma/pages/commandeClient.dart';
 import 'package:expopharma/pages/detailArticle.dart';
-import 'package:expopharma/pages/forme.dart';
 import 'package:expopharma/pages/categorie.dart';
 import 'package:expopharma/pages/imageScreen.dart';
 import 'package:expopharma/pages/itemVitrine.dart';
@@ -32,7 +31,7 @@ import 'package:flutter/services.dart';
 
 import 'ItemForme.dart';
 import 'commandeAExecuter.dart';
-import 'displayvene.dart';
+import 'displayvente.dart';
 
 // import 'package:medicamentlist/Item.dart';
 // import 'package:medicamentlist/ListVente.dart';
@@ -61,7 +60,6 @@ class _HomeState extends State<Home> {
         precacheImage(NetworkImage(imageUrl.image), context);
       });
     });
-
     // TODO: implement initState
     super.initState();
     myTextFieldController = new TextEditingController();
@@ -77,24 +75,25 @@ class _HomeState extends State<Home> {
 
   TextEditingController myTextFieldController;
 
-  int shopCount = 0;
+ // int shopCount = 0;
 
   HashMap<String, String> stockMap = new HashMap();
+
   List<Item> displayedList = new List();
   bool loading = true;
   List<Item> articles = [];
 
   // List<Vente> listVentes = new List();
-
-  bool showPrixAchat = currentUser.isAdmin;
-  bool addNewVente = false;
+  //
+  // bool showPrixAchat = currentUser.isAdmin;
+  // bool addNewVente = false;
 
   void loadListFromInternet() async {
     // D'abort on charge la liste des stock
     final ref2 = FirebaseStorage.instance.ref().child('stock.txt');
     final String url2 = await ref2.getDownloadURL();
     final Directory systemTempDir2 = Directory.systemTemp;
-    final File tempFile2 = File('${systemTempDir2.path}/tmplistemed.txt');
+    final File tempFile2 = File('${systemTempDir2.path}/tmpstock.txt');
     if (tempFile2.existsSync()) {
       await tempFile2.delete();
     }
@@ -122,15 +121,57 @@ class _HomeState extends State<Home> {
     print(stockMap.length);
 
     // On a chargé la liste de stock dans une map
-    // Maintenant on creer nos objet Item a partir de la liste des médicament et la map de stock
+    // Maintenant on cree
+    // nos objet Item a partir de la liste des médicament et la map de stock
+
+    loadListFromInternet3();
+
+  }
+  HashMap<String, int> dateExpMap = new HashMap();
+
+  void loadListFromInternet3() async {
+    // D'abort on charge la liste des stock
+    final ref2 = FirebaseStorage.instance.ref().child('perm.txt');
+    final String url2 = await ref2.getDownloadURL();
+    final Directory systemTempDir2 = Directory.systemTemp;
+    final File tempFile2 = File('${systemTempDir2.path}/tmpsperm.txt');
+    if (tempFile2.existsSync()) {
+      await tempFile2.delete();
+    }
+    if (tempFile2.existsSync()) {
+      await tempFile2.delete();
+    }
+    await tempFile2.create();
+    assert(await tempFile2.readAsString() == "");
+    await ref2.writeToFile(tempFile2);
+    Uint8List contents2 = await tempFile2.readAsBytes();
+    LineSplitter().convert(new String.fromCharCodes(contents2)).map((s) {
+        String id = s.split('\t').elementAt(0);
+        String dateString = s.split('\t').elementAt(4);
+        dateString= dateString.split('\/').reversed.join();
+        print(dateString);
+        int dateStringInt =
+            int.tryParse(dateString.replaceAll(new RegExp(r"\s+"), "")) ?? 0;
+
+         if (id.length > 0 && dateStringInt >0) {
+          dateExpMap.putIfAbsent(id, () => dateStringInt);
+         }
+
+    }).toList();
+
+    print(dateExpMap.length );
     loadListFromInternet2();
+    // On a chargé la liste de stock dans une map
+    // Maintenant on cree
+    // nos objet Item a partir de la liste des médicament et la map de stock
+    //loadListFromInternet2();
   }
 
   void loadListFromInternet2() async {
     final ref2 = FirebaseStorage.instance.ref().child('listtxt.txt');
     final String url2 = await ref2.getDownloadURL();
     final Directory systemTempDir2 = Directory.systemTemp;
-    final File tempFile2 = File('${systemTempDir2.path}/tmplistemed2.txt');
+    final File tempFile2 = File('${systemTempDir2.path}/tmplisttxt.txt');
     if (tempFile2.existsSync()) {
       await tempFile2.delete();
     }
@@ -151,14 +192,18 @@ class _HomeState extends State<Home> {
         String forme = s.split('\t').elementAt(11);
         if ((name.length > 0 || barCode.length > 0) && stockMap[id] != null)
           dataList.add(new Item(
-              id, name, barCode, prixAchat, prixVente, forme, stockMap[id]));
+              id, name, barCode, prixAchat, prixVente, forme, stockMap[id],dateExpMap[id]));
       }
     }).toList();
     setState(() {
       loading = false;
     });
+
     print(dataList.length);
+
+
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -173,8 +218,7 @@ class _HomeState extends State<Home> {
           centerTitle: false,
           elevation: 5,
           actions: <Widget>[
-
-            MyShoppingCard("ventes"),
+             MyShoppingCard("ventes"),
             MyShoppingCard("commandeClient"),
 
             IconButton(
@@ -219,7 +263,7 @@ class _HomeState extends State<Home> {
 
                       return CarouselSlider.builder(
                         //itemCount: vitrines.length,
-                        itemCount:4,
+                        itemCount: 4,
                         options: CarouselOptions(
                           autoPlay: true,
                           aspectRatio: 2.0,
@@ -230,7 +274,7 @@ class _HomeState extends State<Home> {
                             height: 300,
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(5),
-                           // decoration: BoxDecoration(color: Colors.amber),
+                            // decoration: BoxDecoration(color: Colors.amber),
                             child: GestureDetector(
                                 child: Stack(fit: StackFit.expand, children: <
                                     Widget>[
@@ -244,24 +288,27 @@ class _HomeState extends State<Home> {
                                   // Padding(
                                   //     padding: EdgeInsets.only(bottom: 10),
                                   //     child:
-                                      Positioned.fill(
-                                        
-                                        bottom: 10,
-                                        top: 10,
-                                        child: Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: Container(
-                                                padding: EdgeInsets.only(bottom: 4,top: 4),
-                                                height: 25,
-                                                width: double.infinity,
-                                                color: Colors.black.withOpacity(0.3),
-                                                child: Text(
-                                                  vitrines
-                                                      .elementAt(index)
-                                                      .name,style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: Colors.white),
-                                                  textAlign: TextAlign.center,
-                                                ))),
-                                      )
+                                  Positioned.fill(
+                                    bottom: 10,
+                                    top: 10,
+                                    child: Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: Container(
+                                            padding: EdgeInsets.only(
+                                                bottom: 4, top: 4),
+                                            height: 25,
+                                            width: double.infinity,
+                                            color:
+                                                Colors.black.withOpacity(0.3),
+                                            child: Text(
+                                              vitrines.elementAt(index).name,
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                              textAlign: TextAlign.center,
+                                            ))),
+                                  )
                                   //),
                                 ]),
                                 onTap: () {
@@ -336,8 +383,11 @@ class _HomeState extends State<Home> {
                       // crossAxisCount: (orientation == Orientation.portrait) ? 2 : 3),
                       itemBuilder: (context, i) {
                         return new Card(
+                          elevation: 5,
+                          shadowColor: Colors.cyanAccent,
                           child: InkWell(
                             child: Container(
+                              height: 500,
                               padding: EdgeInsets.all(20),
                               color: Colors.blueGrey[200],
                               child: Column(
@@ -355,10 +405,9 @@ class _HomeState extends State<Home> {
                                   SizedBox(
                                     height: 15,
                                   ),
-                                  Flexible(
-                                      flex: 1,
-                                      child: FittedBox(
-                                          fit: BoxFit.fitWidth,
+                                  categories.elementAt(i).name.length > 20
+                                      ? Flexible(
+                                          flex: 3,
                                           child: Text(
                                             categories.elementAt(i).name,
                                             style: TextStyle(
@@ -366,7 +415,17 @@ class _HomeState extends State<Home> {
                                                 color: Colors.blue,
                                                 fontWeight: FontWeight.bold),
                                             textAlign: TextAlign.center,
-                                          ))),
+                                          ))
+                                      : Flexible(
+                                          flex: 2,
+                                          child: Text(
+                                            categories.elementAt(i).name,
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.bold),
+                                            textAlign: TextAlign.center,
+                                          )),
                                 ],
                               ),
                             ),

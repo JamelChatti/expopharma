@@ -2,7 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expopharma/pages/commandeAExecuter.dart';
 import 'package:expopharma/pages/commandeClient.dart';
-import 'package:expopharma/pages/displayvene.dart';
+import 'package:expopharma/pages/displayvente.dart';
 import 'package:flutter/material.dart';
 
 class MyShoppingCard extends StatefulWidget {
