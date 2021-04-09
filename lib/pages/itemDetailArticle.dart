@@ -7,9 +7,10 @@ class ItemDetailArticle {
   String description;
   String idArticle;
   String name;
+  int dateExp;
 
 
-  ItemDetailArticle(this.dci1,this.dci2,this.dci3,this.description,this.idArticle,this.name);
+  ItemDetailArticle(this.dci1,this.dci2,this.dci3,this.description,this.idArticle,this.name,this.dateExp);
 
 
   Map<String, dynamic> toMap() {
@@ -21,6 +22,7 @@ class ItemDetailArticle {
       'description' : description,
       'idArticle' :idArticle,
       'name': name,
+      'dateExp' : dateExp,
 
       // this worked well
     };}
@@ -32,7 +34,8 @@ class ItemDetailArticle {
         documentSnapshot["dci3"],
         documentSnapshot["description"],
         documentSnapshot["idArticle"],
-        documentSnapshot["name"]
+        documentSnapshot["name"],
+        documentSnapshot["dateExp"]
     );
   }
 

@@ -6,7 +6,7 @@ import 'package:expopharma/pages/commandeClient.dart';
 import 'package:expopharma/pages/data.dart';
 import 'package:expopharma/pages/detaiart.dart';
 import 'package:expopharma/pages/detailArticle.dart';
-import 'package:expopharma/pages/displayvene.dart';
+import 'package:expopharma/pages/displayvente.dart';
 import 'package:expopharma/pages/searchArticle.dart';
 import 'package:expopharma/pages/vente.dart';
 import 'package:flutter/cupertino.dart';
@@ -88,6 +88,7 @@ class _FormeState extends State<Forme> {
               childAspectRatio: 2.0, crossAxisCount:1),
           itemCount: articles.length,
           itemBuilder: (context, index) {
+            articles.sort((a, b) => a.dateExp==null ? 1: b.dateExp==null? -1 : a.dateExp.compareTo(b.dateExp));
             int nstock = int.tryParse(articles[index].stock) ?? 0;
             return Container(
                 color: Colors.grey[200],
@@ -144,7 +145,7 @@ class _FormeState extends State<Forme> {
                                           Text(
                                             'Prix: ' + articles[index].prixVente,
                                             style: TextStyle(
-                                              color: Colors.red, fontSize: 15,),
+                                              color: Colors.green, fontSize: 15,),
                                           ),
                                           SizedBox(
                                             height: 5,
@@ -161,6 +162,9 @@ class _FormeState extends State<Forme> {
                                                 fontSize: 15),
                                           ),
                                         ],),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
 
                                         Padding(
                                             padding: EdgeInsets.only(right: 5),
@@ -202,7 +206,7 @@ class _FormeState extends State<Forme> {
                                                           width: 70,
                                                           child: RaisedButton(
                                                             elevation: 10,
-                                                            color: Colors.redAccent[200],
+                                                            color: Colors.blueAccent[200],
                                                             clipBehavior: Clip.none,
                                                             padding: EdgeInsets.symmetric(
                                                                 vertical: 1, horizontal: 2),
@@ -269,7 +273,7 @@ class _FormeState extends State<Forme> {
                                                                     MainAxisSize.min,
                                                                     children: <Widget>[
                                                                       Text(
-                                                                        'Ajouter d\'autres articles',
+                                                                        'Ajouter au panier',
                                                                         style: TextStyle(
                                                                             color:
                                                                             Colors.white,
@@ -321,7 +325,7 @@ class _FormeState extends State<Forme> {
                                                                     MainAxisSize.min,
                                                                     children: <Widget>[
                                                                       Text(
-                                                                        'Vider le panier ',
+                                                                        'Confirmer ou annuler la commande ',
                                                                         style: TextStyle(
                                                                             color:
                                                                             Colors.white,
@@ -450,7 +454,7 @@ class _FormeState extends State<Forme> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Vider le panier'),
+          title: Text('Confirmation'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -470,39 +474,72 @@ class _FormeState extends State<Forme> {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
-              child: Text('ANNULER'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: Column(
-                children: <Widget>[
-                  Text('VALIDER'),
-                  //  Text('Puis appuyer sur le panier pour enregister la commande')
-                ],
+            Container(
+              margin: EdgeInsets.only(bottom: 15),
+              child: SizedBox(
+                height: 60,
+                width: 250,
+                child: RaisedButton(
+                  child: Text('Confirmer la commande',style: TextStyle(fontSize: 18)),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DisplayVente()));
+                   // Navigator.of(context).pop();
+                  },
+                ),
               ),
-              onPressed: () async {
-                FirebaseFirestore.instance
-                    .collection("commandeClient")
-                    .get()
-                    .then((value) {
-                  value.docs.forEach((element) {
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 15),
+              child: SizedBox(
+                width: 250,
+                height: 60,
+                child: RaisedButton (
+                  child: Text('Retour',style: TextStyle(fontSize: 18)),
+                  onPressed: () {
+
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 15),
+              child: SizedBox(
+
+                height: 60,
+                width: 250,
+                child: RaisedButton(
+                  child: Column(
+                    children: <Widget>[
+                      Text('Annuler la commande',style: TextStyle(fontSize: 18), textAlign: TextAlign.end,),
+                      //  Text('Puis appuyer sur le panier pour enregister la commande')
+                    ],
+                  ),
+                  onPressed: () async {
                     FirebaseFirestore.instance
                         .collection("commandeClient")
-                        .doc(element.id)
-                        .delete()
+                        .get()
                         .then((value) {
-                      setState(() {
-                        empty=true;
+                      value.docs.forEach((element) {
+                        FirebaseFirestore.instance
+                            .collection("commandeClient")
+                            .doc(element.id)
+                            .delete()
+                            .then((value) {
+                          setState(() {
+                            empty=true;
+                          });
+                          print(empty);
+                          Navigator.of(context).pop();
+                        });
                       });
-                      print(empty);
-                      Navigator.of(context).pop();
                     });
-                  });
-                });
-              },
+                  },
+                ),
+              ),
             ),
           ],
         );

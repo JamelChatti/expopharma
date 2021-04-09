@@ -40,7 +40,7 @@ class _CommandeAExecuterState extends State<CommandeAExecuter> {
                   String nameclient = result["nameclient"];
                   List<Vente> list = List<Vente>.from(result["vente"].map((item) {
                     Item items = new Item("", item["name"], item["barCode"],
-                       ""  ,item["prixVente"], " ", "");
+                       ""  ,item["prixVente"], " ", "",null);
                     return new Vente(items, item["number"]);
                   }));
                   ListVente vente = ListVente(list, nameclient,myTime, result.id);

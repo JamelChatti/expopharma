@@ -22,7 +22,7 @@ class AjoutImage extends StatefulWidget {
 class _AjoutImageState extends State<AjoutImage> {
   final _formKey = GlobalKey<FormState>();
 TextEditingController descriptionController = TextEditingController();
-  TextEditingController dci1Controller = TextEditingController();
+ TextEditingController dci1Controller;
   TextEditingController dci2Controller = TextEditingController();
   TextEditingController dci3Controller = TextEditingController();
   File _image;
@@ -32,8 +32,13 @@ TextEditingController descriptionController = TextEditingController();
   File  _file;
   String imageName;
   String articleNameChoisi = '';
+  String articleIdChoisi = '';
   Item articleSelected;
   String articleChoisibyScan ;
+  String description;
+  String dci1;
+  String dci2;
+  String dci3;
 
   Future chooseFile() async {
     await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
@@ -68,6 +73,20 @@ TextEditingController descriptionController = TextEditingController();
       _image = null;
     });
   }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDescription();
+
+    dci1Controller =  TextEditingController(text: dci1);
+  }
+  @override
+  void dispose() {
+    dci1Controller.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +184,7 @@ TextEditingController descriptionController = TextEditingController();
                                     articleSelected = suggestion;
                                     imageName = suggestion.id + '.png';
                                     articleNameChoisi = suggestion.name;
+                                    articleIdChoisi= suggestion.id;
                                     setState(() {});
                                     Navigator.of(context).pop();
                                   },
@@ -202,9 +222,9 @@ TextEditingController descriptionController = TextEditingController();
                      padding: const EdgeInsets.only(right: 16.0,left: 16.0),
                      child: TextFormField(
                        controller: descriptionController,
-                       inputFormatters: [
-                         new LengthLimitingTextInputFormatter(42),
-                       ],
+                       // inputFormatters: [
+                       //   new LengthLimitingTextInputFormatter(42),
+                       // ],
                        decoration: InputDecoration(hintText:'Description' ,
                          fillColor: Colors.red,
                          focusColor: Colors.grey,
@@ -227,6 +247,7 @@ TextEditingController descriptionController = TextEditingController();
                        padding: const EdgeInsets.only( right: 16.0,left: 16.0),
                         child: TextFormField(
                           controller: dci1Controller,
+
                           inputFormatters: [
                             new LengthLimitingTextInputFormatter(42),
                           ],
@@ -239,12 +260,12 @@ TextEditingController descriptionController = TextEditingController();
 
 
                           // The validator receives the text that the user has entered.
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
-                            }
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty) {
+                          //     return 'Please enter some text';
+                          //   }
+                          //   return null;
+                          // },
                         )),
                   Container(
                       width: 350,
@@ -345,11 +366,13 @@ TextEditingController descriptionController = TextEditingController();
         //displayedList.add(value);
         imageName = value.id+'.png';
         articleNameChoisi = value.name;
+        articleIdChoisi = value.id;
         break;
       }
     }
     setState(() {
       articleNameChoisi;
+      articleIdChoisi;
     });
   }
 
@@ -439,4 +462,21 @@ TextEditingController descriptionController = TextEditingController();
     print(articles.length);
     return articles;
   }
-}
+
+  void getDescription() {
+
+    FirebaseFirestore.instance
+        .collection('detailArticle')
+        .where('idArticle', isEqualTo: articleIdChoisi)
+        .snapshots()
+        .listen((data)
+    {
+      print('grower ${data.docs[0]['description']}');
+      description = data.docs[0]['description'];
+      dci1 = data.docs[0]['dci1'];
+      dci2 = data.docs[0]['dci2'];
+      dci3 = data.docs[0]['dci3'];
+
+      setState(() {});
+    });}
+  }

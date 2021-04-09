@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expopharma/pages/Item.dart';
-import 'package:expopharma/pages/ajoutAuPanier.dart';
+import 'package:expopharma/pages/displayvente.dart';
 import 'package:expopharma/pages/itemDetailArticle.dart';
 import 'package:expopharma/pages/forme.dart';
 
@@ -71,7 +71,7 @@ class _DetailArticlState extends State<DetailArticl> {
         body: ListView(
           children: <Widget>[
             Container(
-              height: 600,
+              height: 400,
               child: GridTile(
                 child: Image.network(
                   'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/articles%2F' +
@@ -105,14 +105,14 @@ class _DetailArticlState extends State<DetailArticl> {
                               Text(
                                 'Prix: ',
                                 style: TextStyle(
-                                    color: Colors.red,
+                                    color: Colors.white,
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500),
                               ),
                               Text(
                                 widget.article.prixVente,
                                 style: TextStyle(
-                                    color: Colors.red,
+                                    color: Colors.white,
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500),
                               ),
@@ -181,7 +181,7 @@ class _DetailArticlState extends State<DetailArticl> {
                                           width: 70,
                                           child: RaisedButton(
                                             elevation: 10,
-                                            color: Colors.redAccent[200],
+                                            color: Colors.lightBlue[200],
                                             clipBehavior: Clip.none,
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 1, horizontal: 2),
@@ -224,11 +224,11 @@ class _DetailArticlState extends State<DetailArticl> {
                                             Row(
                                               children: <Widget>[
                                                 Container(
-                                                  height: 60,
-                                                  width: 90,
+                                                  height: 70,
+                                                  width: 70,
                                                   child: RaisedButton(
                                                     elevation: 10,
-                                                    color: Colors.green,
+                                                    color: Colors.green[400],
                                                     clipBehavior: Clip.none,
                                                     padding:
                                                         EdgeInsets.symmetric(
@@ -246,11 +246,11 @@ class _DetailArticlState extends State<DetailArticl> {
                                                           MainAxisSize.min,
                                                       children: <Widget>[
                                                         Text(
-                                                          'Ajouter d\'autres articles',
+                                                          'Ajouter au panier',
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
-                                                              fontSize: 10),
+                                                              fontSize: 15),
                                                         ),
                                                         Container(
                                                           height: 20,
@@ -275,11 +275,11 @@ class _DetailArticlState extends State<DetailArticl> {
                                                   width: 5,
                                                 ),
                                                 Container(
-                                                  height: 60,
-                                                  width: 70,
+                                                  height: 70,
+                                                  width: 100,
                                                   child: RaisedButton(
                                                     elevation: 10,
-                                                    color: Colors.green,
+                                                    color: Colors.green[400],
                                                     clipBehavior: Clip.none,
                                                     padding:
                                                         EdgeInsets.symmetric(
@@ -298,11 +298,11 @@ class _DetailArticlState extends State<DetailArticl> {
                                                           MainAxisSize.min,
                                                       children: <Widget>[
                                                         Text(
-                                                          'Vider le panier ',
+                                                          'Confirmer ou annuler la commande ',
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
-                                                              fontSize: 10),
+                                                              fontSize: 12),
                                                         ),
                                                         Container(
                                                           height: 20,
@@ -352,12 +352,19 @@ class _DetailArticlState extends State<DetailArticl> {
                               decoration: TextDecoration.underline,
                               fontSize: 17,
                             )),
+                            widget.article.dateExp!=null ?
                         TextSpan(
-                            text: widget.article.name,
+                            text: widget.article.name +'   '+ widget.article.dateExp.toString() ,
                             style: TextStyle(
                               decoration: TextDecoration.underline,
                               fontSize: 17,
                             ))
+                                :TextSpan(
+                                text: widget.article.name ,
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontSize: 17,
+                                ))
                       ])),
                     ),
                     Container(
@@ -369,6 +376,8 @@ class _DetailArticlState extends State<DetailArticl> {
                   ],
                 )),
           ],
+
+
         ));
   }
 
@@ -384,17 +393,19 @@ class _DetailArticlState extends State<DetailArticl> {
       widgets.add(Text(dci3));
     }
     if (description != null && description != "") {
-      widgets.add(Text(description));
+      widgets.add(Text(description,style: TextStyle(fontSize: 18),));
     }
     return widgets;
   }
 
   void getDescription() {
+
     FirebaseFirestore.instance
         .collection('detailArticle')
         .where('idArticle', isEqualTo: widget.article.id)
         .snapshots()
-        .listen((data) {
+        .listen((data)
+    {
       print('grower ${data.docs[0]['description']}');
       description = data.docs[0]['description'];
       dci1 = data.docs[0]['dci1'];
@@ -421,47 +432,44 @@ class _DetailArticlState extends State<DetailArticl> {
                 Padding(
                     padding: EdgeInsets.only(bottom: 10),
                     child: Text(
-                      item.name,
+                      widget.article.name,
                       style: TextStyle(
                           color: Colors.red, fontWeight: FontWeight.bold),
                     )),
                 Row(
-                  children: <Widget>[
-                    Text('Valider '),
-                    Text(
-                      '1',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    Text(' ou choisir la quantité '),
+                  children: [
+                    //   Text('Valider '),
+                    //Text('0', style: TextStyle(color: Colors.red),),
+                    Text(' Saisir la quantité '),
                   ],
                 ),
                 Center(
                     child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                        width: 90,
-                        child: Column(
-                          children: <Widget>[
-                            TextFormField(
-                              autofocus: true,
-                              controller: numberController,
-                              //initialValue: "1",
-                              decoration: InputDecoration(
-                                hintText: '1',
-                                helperText: 'différent de 0',
-                              ),
-                              keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                //WhitelistingTextInputFormatter.digitsOnly
-                                FilteringTextInputFormatter.allow(expression)
-                              ], // Only numbers can be entered
-                            ),
-                          ],
-                        )),
-                    Text(''),
-                  ],
-                )),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                            width: 90,
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  autofocus: true,
+                                  controller: numberController,
+                                  //initialValue: "1",
+                                  decoration: InputDecoration(
+                                    hintText: '0',
+                                    helperText: 'différent de 0',
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    //WhitelistingTextInputFormatter.digitsOnly
+                                    FilteringTextInputFormatter.allow(expression)
+                                  ], // Only numbers can be entered
+                                ),
+                              ],
+                            )),
+                        Text(''),
+                      ],
+                    )),
               ],
             ),
           ),
@@ -485,20 +493,25 @@ class _DetailArticlState extends State<DetailArticl> {
                     ? value = 1
                     : value = int.parse(numberController.text);
                 if (value != 0) {
-                  Vente vente = new Vente(item, value);
+                  //Vente vente = new Vente(item, value);
                   await FirebaseFirestore.instance
                       .collection('commandeClient')
                       .add({
                     'timestamp': DateTime.now().millisecondsSinceEpoch,
                     // 'vente' : vente.toMap(),
-                    'name': item.name,
-                    'number': vente.number,
-                    'prixVente': item.prixVente,
+                    'name': widget.article.name,
+                    'number': int.parse(numberController.text),
+                    'prixVente':widget.article.prixVente,
                   });
+
+                  //  listCommande.add(new Vente(item, value));
+                  // shopCount = shopCount + value;
+                  // shopCount == 0 ? addNewVente = false : addNewVente = true;
+                  // setState(() {
+                  //   shopCount;
+                  //   addNewVente;
+                  // });
                   Navigator.of(context).pop();
-                  setState(() {
-                    empty = false;
-                  });
                 } else {}
               },
             ),
@@ -515,59 +528,92 @@ class _DetailArticlState extends State<DetailArticl> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Vider le panier'),
+          title: Text('Confirmation'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Center(
                     child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                        width: 90,
-                        child: Column(
-                          children: <Widget>[],
-                        )),
-                    Text(''),
-                  ],
-                )),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                            width: 90,
+                            child: Column(
+                              children: <Widget>[],
+                            )),
+                        Text(''),
+                      ],
+                    )),
               ],
             ),
           ),
           actions: <Widget>[
-            FlatButton(
-              child: Text('ANNULER'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: Column(
-                children: <Widget>[
-                  Text('VALIDER'),
-                  //  Text('Puis appuyer sur le panier pour enregister la commande')
-                ],
+            Container(
+              margin: EdgeInsets.only(bottom: 15),
+              child: SizedBox(
+                height: 60,
+                width: 250,
+                child: RaisedButton(
+                  child: Text('Confirmer la commande',style: TextStyle(fontSize: 18)),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DisplayVente()));
+                    // Navigator.of(context).pop();
+                  },
+                ),
               ),
-              onPressed: () async {
-                FirebaseFirestore.instance
-                    .collection("commandeClient")
-                    .get()
-                    .then((value) {
-                  value.docs.forEach((element) {
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 15),
+              child: SizedBox(
+                width: 250,
+                height: 60,
+                child: RaisedButton (
+                  child: Text('Retour',style: TextStyle(fontSize: 18)),
+                  onPressed: () {
+
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 15),
+              child: SizedBox(
+
+                height: 60,
+                width: 250,
+                child: RaisedButton(
+                  child: Column(
+                    children: <Widget>[
+                      Text('Annuler la commande',style: TextStyle(fontSize: 18), textAlign: TextAlign.end,),
+                      //  Text('Puis appuyer sur le panier pour enregister la commande')
+                    ],
+                  ),
+                  onPressed: () async {
                     FirebaseFirestore.instance
                         .collection("commandeClient")
-                        .doc(element.id)
-                        .delete()
+                        .get()
                         .then((value) {
-                      setState(() {
-                        empty = true;
+                      value.docs.forEach((element) {
+                        FirebaseFirestore.instance
+                            .collection("commandeClient")
+                            .doc(element.id)
+                            .delete()
+                            .then((value) {
+                          setState(() {
+                            empty=true;
+                          });
+                          print(empty);
+                          Navigator.of(context).pop();
+                        });
                       });
-                      print(empty);
-                      Navigator.of(context).pop();
                     });
-                  });
-                });
-              },
+                  },
+                ),
+              ),
             ),
           ],
         );

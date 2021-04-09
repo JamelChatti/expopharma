@@ -8,11 +8,11 @@ class Item {
   String prixVente;
   String forme;
   String stock;
-
+  int dateExp;
 
 
   Item.id();
-  Item(this.id, this.name, this.barCode,  this.prixAchat, this.prixVente,this.forme, this.stock);
+  Item(this.id, this.name, this.barCode,  this.prixAchat, this.prixVente,this.forme, this.stock,this.dateExp);
 
   Map<String, dynamic> toMap() {
     return {
@@ -32,6 +32,7 @@ class Item {
       documentSnapshot["prixVente"],
       documentSnapshot["forme"],
       documentSnapshot["stock"],
+      documentSnapshot["dateExp"],
     );
   }
 
