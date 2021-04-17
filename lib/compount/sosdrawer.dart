@@ -1,17 +1,12 @@
 import 'package:expopharma/pages/commandeAExecuter.dart';
 import 'package:expopharma/pages/login.dart';
 import 'package:expopharma/pages/sospharma/inventaireList.dart';
-import 'package:expopharma/pages/sospharma/navigation_bar.dart';
-import 'package:expopharma/pages/sospharma/produitDemande.dart';
-import 'package:expopharma/pages/sospharma/acueuilSospharma.dart';
-import 'package:expopharma/pages/sospharma/sosPharma.dart';
 import 'file:///D:/jamel/expopharma/lib/pages/sospharma/login_page.dart';
 import 'package:flutter/material.dart';
 
 
 
-
-class MyDrawer extends StatelessWidget {
+class SosDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -110,23 +105,7 @@ class MyDrawer extends StatelessWidget {
             ),
             onTap: () {},
           ),
-          ListTile(
-            title: Text(
-              'LOGIN ',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
-            ),
-            leading: Icon(
-              Icons.add_comment_sharp,
-              color: Colors.blue,
-              size: 20,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
-            },
-          ),
+
           ListTile(
             title: Text(
               'SOS PHARMA',
@@ -146,23 +125,6 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text(
-              'ACCUEIL SOSPHARMA',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
-            ),
-            leading: Icon(
-              Icons.add_comment_sharp,
-              color: Colors.blue,
-              size: 20,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AccueilSos()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text(
               'INVENTAIRE',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
             ),
@@ -175,23 +137,6 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => InventaireList()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text(
-              'VENTE ',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
-            ),
-            leading: Icon(
-              Icons.add_comment_sharp,
-              color: Colors.blue,
-              size: 20,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SosPharma()),
               );
             },
           ),

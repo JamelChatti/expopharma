@@ -21,8 +21,13 @@ class AjoutImage extends StatefulWidget {
 
 class _AjoutImageState extends State<AjoutImage> {
   final _formKey = GlobalKey<FormState>();
+  String description;
+  String dci1;
+  String dci2;
+  String dci3;
+  final fireStoreInstance = FirebaseFirestore.instance;
 TextEditingController descriptionController = TextEditingController();
- TextEditingController dci1Controller;
+ TextEditingController dci1Controller= TextEditingController();
   TextEditingController dci2Controller = TextEditingController();
   TextEditingController dci3Controller = TextEditingController();
   File _image;
@@ -35,10 +40,7 @@ TextEditingController descriptionController = TextEditingController();
   String articleIdChoisi = '';
   Item articleSelected;
   String articleChoisibyScan ;
-  String description;
-  String dci1;
-  String dci2;
-  String dci3;
+  String myId;
 
   Future chooseFile() async {
     await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
@@ -77,14 +79,27 @@ TextEditingController descriptionController = TextEditingController();
   void initState() {
     // TODO: implement initState
     super.initState();
-    getDescription();
-
-    dci1Controller =  TextEditingController(text: dci1);
   }
   @override
   void dispose() {
     dci1Controller.dispose();
     super.dispose();
+  }
+  List<Widget> getDetailsAsWidgets() {
+    List<Widget> widgets = [];
+    if (dci1 != null && dci1 != "") {
+      widgets.add(Text(dci1));
+    }
+    if (dci2 != null && dci2 != "") {
+      widgets.add(Text(dci2));
+    }
+    if (dci3 != null && dci3 != "") {
+      widgets.add(Text(dci3));
+    }
+    if (description != null && description != "") {
+      widgets.add(Text(description,style: TextStyle(fontSize: 18),));
+    }
+    return widgets;
   }
 
 
@@ -92,11 +107,11 @@ TextEditingController descriptionController = TextEditingController();
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Enregistrer une image d\'unarticle'),
+        title: Text('Mise à jour d\'unarticle'),
       ),
       body: Center(
 
-        child: ListView(
+        child: Column(
           children: <Widget>[
             Column(
               children: <Widget>[
@@ -185,7 +200,10 @@ TextEditingController descriptionController = TextEditingController();
                                     imageName = suggestion.id + '.png';
                                     articleNameChoisi = suggestion.name;
                                     articleIdChoisi= suggestion.id;
-                                    setState(() {});
+                                    setState(() {
+                                      getDescription();
+                                    });
+
                                     Navigator.of(context).pop();
                                   },
                                 ),
@@ -202,8 +220,6 @@ TextEditingController descriptionController = TextEditingController();
                 color: Colors.grey[200],
                 onPressed: () async{
                   await scanBarcodeNormal();
-                 // _showMyDialog(context, displayedList.first );
-                  //articleChoisibyScan= displayedList.first.name as String;
                 },
                 icon: Icon(Icons.qr_code_scanner_sharp),
                 label: Text("Appuyer")),
@@ -257,16 +273,7 @@ TextEditingController descriptionController = TextEditingController();
                           ),
                           keyboardType: TextInputType.multiline,
                           maxLines:1,
-
-
-                          // The validator receives the text that the user has entered.
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return 'Please enter some text';
-                          //   }
-                          //   return null;
-                          // },
-                        )),
+                             )),
                   Container(
                       width: 350,
                        padding: const EdgeInsets.only(left: 16.0, right: 16,),
@@ -318,17 +325,34 @@ TextEditingController descriptionController = TextEditingController();
                     child: ElevatedButton(
                         onPressed: () async {
                           if(articleSelected != null){
-
+                            if(myId==null) {
                               await FirebaseFirestore.instance
                                   .collection("detailArticle")
                                   .add({
                                 'name': articleSelected.name,
                                 'description': descriptionController.text,
-                                'idArticle':articleSelected.id,
-                                'dci1' : dci1Controller.text,
-                                'dci2' : dci2Controller.text,
-                                'dci3' : dci3Controller.text,
+                                'idArticle': articleSelected.id,
+                                'dci1': dci1Controller.text,
+                                'dci2': dci2Controller.text,
+                                'dci3': dci3Controller.text,
                               });
+                            }else{FirebaseFirestore.instance
+                                .collection('detailArticle')
+                                .doc(myId)
+                                .update({
+                              'name': articleSelected.name,
+                              'description': descriptionController.text,
+                              'idArticle': articleSelected.id,
+                              'dci1': dci1Controller.text,
+                              'dci2': dci2Controller.text,
+                              'dci3': dci3Controller.text,
+                            }).then((result){
+                              print("new USer true");
+                            }).catchError((onError){
+                              print("onError");
+                            });
+
+                            }
                               Navigator.of(context).pop();
 
                           }
@@ -463,20 +487,27 @@ TextEditingController descriptionController = TextEditingController();
     return articles;
   }
 
-  void getDescription() {
+  void getDescription()  {
+
+
 
     FirebaseFirestore.instance
         .collection('detailArticle')
         .where('idArticle', isEqualTo: articleIdChoisi)
         .snapshots()
         .listen((data)
-    {
-      print('grower ${data.docs[0]['description']}');
-      description = data.docs[0]['description'];
-      dci1 = data.docs[0]['dci1'];
-      dci2 = data.docs[0]['dci2'];
-      dci3 = data.docs[0]['dci3'];
+   async {
 
-      setState(() {});
+      print('grower ${data.docs[0]['description']}');
+      print("myId : " + data.docs[0].id);
+
+      setState(() {
+        myId = data.docs[0].id;
+        descriptionController.text=data.docs[0]['description'];
+        dci1Controller.text=data.docs[0]['dci1'];
+        dci2Controller.text=data.docs[0]['dci2'];
+        dci3Controller.text=data.docs[0]['dci3'];
+
+      });
     });}
   }

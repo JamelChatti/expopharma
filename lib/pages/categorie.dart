@@ -167,7 +167,7 @@ class _CategorieState extends State<Categorie> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Forme(
-                                    formes.elementAt(i).id, "FORME")),
+                                    formes.elementAt(i).id, "FORME",formes.elementAt(i).name)),
                           );
                         },
                       ));

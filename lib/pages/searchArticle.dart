@@ -1,5 +1,6 @@
 import 'package:expopharma/pages/Item.dart';
 import 'package:expopharma/pages/data.dart';
+import 'package:expopharma/pages/detailArticle.dart';
 import 'package:flutter/material.dart';
 
 class SearchArticle extends StatefulWidget {
@@ -8,7 +9,6 @@ class SearchArticle extends StatefulWidget {
 }
 
 class _SearchArticleState extends State<SearchArticle> {
-
   List<Item> articles = [];
 
   @override
@@ -61,17 +61,35 @@ class _SearchArticleState extends State<SearchArticle> {
           ),
         ),
         body: ListView.builder(
+
           itemCount: articles.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                articles[index].name + '\n'+ 'Prix ='+
-                articles[index].prixVente,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+            Color color = index.isOdd
+                ? Colors.grey[100]
+                : Colors.blue[50];
+            return
+              GestureDetector(
+              onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailArticl(articles.elementAt(index))),
+              );
+            },
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  articles[index].name +
+                      '\n' +
+                      'Prix =' +
+                      articles[index].prixVente,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
+
             );
           },
         ));
@@ -79,12 +97,10 @@ class _SearchArticleState extends State<SearchArticle> {
 
   void getListArticles(String value) {
     dataList.forEach((element) {
-      if(element.name.toLowerCase().startsWith(value.toLowerCase())){
+      if (element.name.toLowerCase().startsWith(value.toLowerCase())) {
         articles.add(element);
-
       }
     });
-    setState(() {
-    });
+    setState(() {});
   }
 }
