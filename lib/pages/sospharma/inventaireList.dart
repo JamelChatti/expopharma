@@ -88,7 +88,7 @@ class _InventaireListState extends State<InventaireList> {
                         dataSnapshot.data.docs.forEach((result) {
                         int myTime = result["timestamp"];
                         String name = result["name"];
-                        InventaireModel inventaire = new InventaireModel(name, myTime, result.documentID,null);
+                        InventaireModel inventaire = new InventaireModel(name, myTime, result.id,null);
                         inventaires.add(inventaire);
                       });
 
