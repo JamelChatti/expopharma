@@ -46,28 +46,7 @@ class _ProduitDemandeState extends State<ProduitDemande> {
         medicaments;
       });
     }).whenComplete(() {
-
     });
-
-
-
-//        .listen((data) {
-//      medicaments.clear();
-//      data.documents.forEach((doc) {
-//        print(doc.documentID);
-//        medicaments.add(new Produit(doc.documentID, doc["name"].toUpperCase(),
-//            doc["nbreDemande"], doc["timestamp"]));
-//      });
-//      print("done");
-//      medicaments.length > 0 ? addNewMed = false : addNewMed = true;
-//      setState(() {
-//        myController.clear();
-//        FocusScope.of(context).requestFocus(FocusNode());
-//        addNewMed;
-//        medicaments;
-//      });
-//    });
-//    print("null");
     return null;
   }
 
@@ -161,11 +140,6 @@ class _ProduitDemandeState extends State<ProduitDemande> {
       print(value.id);
       FocusScope.of(context).requestFocus(FocusNode());
       fetchProduit();
-//      setState(() {
-//        myController.clear();
-//        addNewMed = false;
-//        FocusScope.of(context).requestFocus(FocusNode());
-//      });
     });
   }
 

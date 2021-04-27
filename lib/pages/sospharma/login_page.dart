@@ -1,7 +1,9 @@
+import 'package:expopharma/pages/sospharma/acueuilAdmin.dart';
+import 'package:expopharma/pages/sospharma/acueuilSos.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expopharma/pages/data.dart';
-import 'package:expopharma/pages/sospharma/acueuilSospharma.dart';
+import 'package:expopharma/pages/sospharma/acueuilAdmin.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -25,7 +27,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body:
+
+      Container(
         color: Colors.white,
         child: Container(
           child: SingleChildScrollView(
@@ -47,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                     BoxDecoration(shape: BoxShape.circle, color: Colors.green),
                 child: ClipOval(
                   child: Image(
-                    image: AssetImage('assets/icon/icon.jpg'),
+                    image: AssetImage('images/icon.jpg'),
                     height: 200,
                     width: 200,
                   ),
@@ -106,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => AccueilSos()),
+                                  MaterialPageRoute(builder: (context) => AccueilAdmin()),
                                 );
 
                               } else {

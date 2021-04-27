@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'package:expopharma/pages/listeVente.dart';
+import 'package:expopharma/pages/sospharma/datasos.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expopharma/pages/Item.dart';
@@ -34,14 +35,6 @@ class _SosPharmaState extends State<SosPharma> with AutomaticKeepAliveClientMixi
     // TODO: implement initState
     super.initState();
     myTextFieldController = new TextEditingController();
-    // dataList est uine listé enregistrer dans le fichier data.dart
-    // si le fichier contient deja les elément( chargé depuit internet), on l'affiche directement
-    // if(dataList.length == 0){
-    //   // on va chargé la liste des sock et la liste des médicaments et creer des objets Item
-    //   loadListFromInternet();
-    // } else {
-    //   loading = false;
-    // }
   }
 
   final fireStoreInstance = FirebaseFirestore.instance;
@@ -57,88 +50,10 @@ class _SosPharmaState extends State<SosPharma> with AutomaticKeepAliveClientMixi
   List<Vente> listVentes = new List();
 
   bool showPrixAchat = false;
-      // currentUser.isAdmin;
+
   bool addNewVente = false;
 
-
-
-  //
-  // void loadListFromInternet() async {
-  //
-  //   // D'abort on charge la liste des stock
-  //   final ref2 = FirebaseStorage.instance.ref().child('listemed/stock.txt');
-  //   final String url2 = await ref2.getDownloadURL();
-  //   final String uuid2 = Uuid().v1();
-  //   final Directory systemTempDir2 = Directory.systemTemp;
-  //   final File tempFile2 = File('${systemTempDir2.path}/tmplistemed.txt');
-  //   if (tempFile2.existsSync()) {
-  //     await tempFile2.delete();
-  //   }
-  //   if (tempFile2.existsSync()) {
-  //     await tempFile2.delete();
-  //   }
-  //   await tempFile2.create();
-  //   assert(await tempFile2.readAsString() == "");
-  //   final StorageFileDownloadTask task2 = ref2.writeToFile(tempFile2);
-  //   final int byteCount2 = (await task2.future).totalByteCount;
-  //   Uint8List contents2 = await tempFile2.readAsBytes();
-  //   LineSplitter().convert(new String.fromCharCodes(contents2)).map((s) {
-  //     if (s.split('\t').length > 5) {
-  //       String id = s.split('\t').elementAt(0);
-  //       String stock = s.split('\t').elementAt(2);
-  //       if(id.length>0 || stock.length>0)
-  //         stockMap.putIfAbsent(id, () => stock);
-  //     }
-  //   }).toList();
-  //
-  //   print(stockMap.length);
-  //
-  //
-  //   // On a chargé la liste de stock dans une map
-  //   // Maintenant on creer nos objet Item a partir de la liste des médicament et la map de stock
-  //   loadListFromInternet2();
-  // }
-  //
-
-  // void loadListFromInternet2() async {
-  //
-  //   final ref2 = FirebaseStorage.instance.ref().child('listemed/listtxt.txt');
-  //   final String url2 = await ref2.getDownloadURL();
-  //   final String uuid2 = Uuid().v1();
-  //   final Directory systemTempDir2 = Directory.systemTemp;
-  //   final File tempFile2 = File('${systemTempDir2.path}/tmplistemed2.txt');
-  //   if (tempFile2.existsSync()) {
-  //     await tempFile2.delete();
-  //   }
-  //   if (tempFile2.existsSync()) {
-  //     await tempFile2.delete();
-  //   }
-  //   await tempFile2.create();
-  //   assert(await tempFile2.readAsString() == "");
-  //   final StorageFileDownloadTask task2 = ref2.writeToFile(tempFile2);
-  //   final int byteCount2 = (await task2.future).totalByteCount;
-  //   // Read the file.
-  //   Uint8List contents2 = await tempFile2.readAsBytes();
-  //   //String myListText = await rootBundle.loadString(url);
-  //   LineSplitter().convert(new String.fromCharCodes(contents2)).map((s) {
-  //     if (s.split('\t').length > 7) {
-  //       String id = s.split('\t').elementAt(0);
-  //       String name = s.split('\t').elementAt(2);
-  //       String barCode = s.split('\t').elementAt(1);
-  //       String prixAchat = s.split('\t').elementAt(5);
-  //       String prixVente = s.split('\t').elementAt(6);
-  //       //print("name " + name + "\n");
-  //       if(name.length>0 || barCode.length>0)
-  //         dataList.add(new Item(id, name, barCode, prixAchat, prixVente, stockMap[id]));
-  //     }
-  //   }).toList();
-  //   setState(() {
-  //     loading = false;
-  //   });
-  //   print(dataList.length);
-  // }
-
-  int _selectedIndex = 0;
+    int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
@@ -599,13 +514,13 @@ class _SosPharmaState extends State<SosPharma> with AutomaticKeepAliveClientMixi
   searchItems(String text) {
     displayedList.clear();
     if (text.substring(0, 1) == "*") {
-      displayedList = dataList
+      displayedList = dataListsos
           .where((i) => i.name
               .toUpperCase()
               .contains(text.substring(1, text.length).toUpperCase()))
           .toList();
     } else {
-      displayedList = dataList
+      displayedList = dataListsos
           .where((i) => i.name.toUpperCase().startsWith(text.toUpperCase()))
           .toList();
     }
@@ -629,7 +544,7 @@ class _SosPharmaState extends State<SosPharma> with AutomaticKeepAliveClientMixi
 
   void searchMedicamentByBarCode(String barcodeScanRes) {
     displayedList.clear();
-    for (final value in dataList) {
+    for (final value in dataListsos) {
       if (value.barCode == barcodeScanRes) {
         displayedList.add(value);
         break;

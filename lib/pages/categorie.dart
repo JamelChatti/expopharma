@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:expopharma/cosmeto/deo.dart';
 import 'package:expopharma/pages/ItemForme.dart';
 import 'package:expopharma/pages/commandeClient.dart';
 import 'package:expopharma/pages/forme.dart';

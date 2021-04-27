@@ -191,6 +191,7 @@ class _HomeState extends State<Home> {
         String prixVente = s.split('\t').elementAt(6);
         String forme = s.split('\t').elementAt(11);
         if ((name.length > 0 || barCode.length > 0) && stockMap[id] != null)
+         // if ((name.length > 0 || barCode.length > 0) && stockMap[id] != null)
           dataList.add(new Item(
               id, name, barCode, prixAchat, prixVente, forme, stockMap[id],dateExpMap[id]));
       }
@@ -279,7 +280,7 @@ class _HomeState extends State<Home> {
                                 child: Stack(fit: StackFit.expand, children: <
                                     Widget>[
                                   Image.network(
-                                    'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/vitrine%2F' +
+                                    'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/articles%2F' +
                                         vitrines.elementAt(index).image +
                                         '?alt=media',
                                     fit: BoxFit.fill,

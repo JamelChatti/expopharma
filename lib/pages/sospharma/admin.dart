@@ -183,7 +183,7 @@ class _HistoryPageState extends State<AdminPage> {
                   return Center(child: CircularProgressIndicator());
                 } else if (dataSnapshot.hasData) {
                   List<UserSos> users = new List();
-                  dataSnapshot.data.documents.forEach((result) {
+                  dataSnapshot.data.docs.forEach((result) {
                     //print(result.documentID);
                     String email = result["email"];
                     bool isActive = result["isActive"];
@@ -191,7 +191,7 @@ class _HistoryPageState extends State<AdminPage> {
                     String password = result["password"];
                     int myTime = result["timestamp"];
                     UserSos user = UserSos(email, isActive, isAdmin, password, myTime,
-                        result.documentID);
+                        result.id);
                     users.add(user);
                   });
 
