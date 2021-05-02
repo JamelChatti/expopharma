@@ -1,19 +1,12 @@
-import 'package:expopharma/pages/ajoutsupprimeArtVitrine.dart';
 import 'package:expopharma/pages/commandeAExecuter.dart';
 import 'package:expopharma/pages/login.dart';
 import 'package:expopharma/pages/sospharma/inventaireList.dart';
-import 'package:expopharma/pages/sospharma/navigation_bar.dart';
-import 'package:expopharma/pages/sospharma/produitDemande.dart';
-import 'package:expopharma/pages/sospharma/acueuilSos.dart';
-import 'package:expopharma/pages/sospharma/sosPharma.dart';
-import 'package:expopharma/pages/vitrine.dart';
 import 'file:///D:/jamel/expopharma/lib/pages/sospharma/login_page.dart';
 import 'package:flutter/material.dart';
 
 
 
-
-class MyDrawer extends StatelessWidget {
+class SosDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -90,7 +83,7 @@ class MyDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text(
-              'VITRINE',
+              'حول التطبيق',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
             ),
             leading: Icon(
@@ -98,12 +91,7 @@ class MyDrawer extends StatelessWidget {
               color: Colors.blue,
               size: 20,
             ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AjousupArtvitrine()),
-              );
-            },
+            onTap: () {},
           ),
           ListTile(
             title: Text(
@@ -135,10 +123,9 @@ class MyDrawer extends StatelessWidget {
               );
             },
           ),
-
           ListTile(
             title: Text(
-              'VENTE ',
+              'INVENTAIRE',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
             ),
             leading: Icon(
@@ -149,7 +136,7 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SosPharma()),
+                MaterialPageRoute(builder: (context) => InventaireList()),
               );
             },
           ),

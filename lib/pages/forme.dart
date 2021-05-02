@@ -19,8 +19,9 @@ class Forme extends StatefulWidget {
   final String idf;
   Item article;
   final String type;
+  final String name;
 
-  Forme(this.idf, this.type);
+  Forme(this.idf, this.type, this.name);
 
   @override
   _FormeState createState() => _FormeState();
@@ -29,9 +30,11 @@ class Forme extends StatefulWidget {
 class _FormeState extends State<Forme> {
   List<Item> allArticle = [];
   List<Item> articles = [];
- // bool addNewVente = false;
+
+  // bool addNewVente = false;
   List<Vente> listCommande = new List();
-  bool empty=false;
+  bool empty = false;
+  bool checkBoxValue = true;
 
   @override
   void initState() {
@@ -51,9 +54,30 @@ class _FormeState extends State<Forme> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
+          title: Text(
+            widget.name,
+            style: TextStyle(fontSize: 15),
+          ),
           elevation: 0.5,
           brightness: Brightness.light,
+          toolbarHeight: 100,
           actions: [
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: Column(
+                children: <Widget>[
+                  new Checkbox(
+                      value: checkBoxValue,
+                      activeColor: Colors.green,
+                      onChanged: (bool newValue) {
+                        setState(() {
+                          checkBoxValue = newValue;
+                        });
+                        Text('Remember me');
+                      }),
+                ],
+              ),
+            ),
             SizedBox(
               width: 20,
             ),
@@ -68,10 +92,10 @@ class _FormeState extends State<Forme> {
               },
             )
           ],
-          title: Text(
-            'Chercher un article',
-            style: TextStyle(color: Colors.white),
-          ),
+          // title: Text(
+          //   'Chercher un article',
+          //   style: TextStyle(color: Colors.white),
+          // ),
           backgroundColor: Colors.green,
           leading: IconButton(
             icon: Icon(
@@ -85,10 +109,19 @@ class _FormeState extends State<Forme> {
         ),
         body: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: 2.0, crossAxisCount:1),
+              childAspectRatio: 2.0, crossAxisCount: 1),
           itemCount: articles.length,
           itemBuilder: (context, index) {
-            articles.sort((a, b) => a.dateExp==null ? 1: b.dateExp==null? -1 : a.dateExp.compareTo(b.dateExp));
+            if (checkBoxValue == false) {
+              articles.sort((a, b) => a.dateExp == null
+                  ? 1
+                  : b.dateExp == null
+                      ? -1
+                      : a.dateExp.compareTo(b.dateExp));
+            } else {
+              articles.sort((a, b) => a.name.compareTo(b.name));
+
+            }
             int nstock = int.tryParse(articles[index].stock) ?? 0;
             return Container(
                 color: Colors.grey[200],
@@ -141,225 +174,260 @@ class _FormeState extends State<Forme> {
                                         height: 10,
                                       ),
                                       Row(children: <Widget>[
-                                        Column(children: <Widget>[
-                                          Text(
-                                            'Prix: ' + articles[index].prixVente,
-                                            style: TextStyle(
-                                              color: Colors.green, fontSize: 15,),
-                                          ),
-                                          SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            nstock <= 0
-                                                ? 'Non disponible'
-                                                : 'Disponible',
-                                            style: nstock <= 0
-                                                ? TextStyle(
-                                                color: Colors.red, fontSize: 15)
-                                                : TextStyle(
+                                        Column(
+                                          children: <Widget>[
+                                            Text(
+                                              'Prix: ' +
+                                                  articles[index].prixVente,
+                                              style: TextStyle(
                                                 color: Colors.green,
-                                                fontSize: 15),
-                                          ),
-                                        ],),
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text('Disponible',
+                                              style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontSize: 15),
+                                            ),
+                                          ],
+                                        ),
                                         SizedBox(
                                           width: 5,
                                         ),
-
                                         Padding(
                                             padding: EdgeInsets.only(right: 5),
                                             child: StreamBuilder(
-                                                stream: FirebaseFirestore.instance
-                                                    .collection('commandeClient')
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection(
+                                                        'commandeClient')
                                                     .snapshots(),
-                                                builder: (context, snapshot)  {
+                                                builder: (context, snapshot) {
                                                   String result;
-                                                  if (snapshot.connectionState ==
+                                                  if (snapshot
+                                                          .connectionState ==
                                                       ConnectionState.waiting) {
                                                     result = "";
-                                                  } else if (snapshot.hasError) {
+                                                  } else if (snapshot
+                                                      .hasError) {
                                                     result = "";
                                                   } else if (snapshot.hasData) {
-                                                    QuerySnapshot values = snapshot.data;
+                                                    QuerySnapshot values =
+                                                        snapshot.data;
                                                     if (values != null) {
-                                                      result = snapshot.data.size.toString();
+                                                      result = snapshot
+                                                          .data.size
+                                                          .toString();
                                                     } else {
                                                       result = "";
                                                     }
 
-                                                    if (snapshot.data.size==0) {
+                                                    if (snapshot.data.size ==
+                                                        0) {
                                                       empty = true;
                                                     } else {
                                                       empty = false;
                                                     }
-                                                    print (empty);
+                                                    print(empty);
                                                   }
                                                   return Row(
                                                     children: <Widget>[
                                                       empty
-                                                          ?Row(children: <Widget>[
-                                                        SizedBox(
-                                                          width: 50,
-                                                        ),
-                                                        Container(
-                                                          height: 60,
-                                                          width: 70,
-                                                          child: RaisedButton(
-                                                            elevation: 10,
-                                                            color: Colors.blueAccent[200],
-                                                            clipBehavior: Clip.none,
-                                                            padding: EdgeInsets.symmetric(
-                                                                vertical: 1, horizontal: 2),
-                                                            onPressed: () {
-                                                              _showMyDialog(
-                                                                  context, widget.article);
-                                                              print(empty);
-                                                            },
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment.start,
-                                                              mainAxisSize: MainAxisSize.min,
-                                                              children: <Widget>[
-                                                                Text(
-                                                                  'Ajouter au panier',
-                                                                  style: TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontSize: 10),
+                                                          ? Row(
+                                                              children: <
+                                                                  Widget>[
+                                                                SizedBox(
+                                                                  width: 50,
                                                                 ),
                                                                 Container(
-                                                                  height: 20,
-                                                                  width: 20,
-                                                                  margin:
-                                                                  EdgeInsets.only(top: 0),
-                                                                  padding:
-                                                                  EdgeInsets.only(left: 10),
-                                                                  child: Icon(
-                                                                    Icons.arrow_forward,
-                                                                    color: Colors.white,
-                                                                    size: 25,
+                                                                  height: 60,
+                                                                  width: 70,
+                                                                  child:
+                                                                      RaisedButton(
+                                                                    elevation:
+                                                                        10,
+                                                                    color: Colors
+                                                                            .blueAccent[
+                                                                        200],
+                                                                    clipBehavior:
+                                                                        Clip.none,
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                            1,
+                                                                        horizontal:
+                                                                            2),
+                                                                    onPressed:
+                                                                        () {
+                                                                      _showMyDialog(
+                                                                          context,
+                                                                          widget
+                                                                              .article);
+                                                                      print(
+                                                                          empty);
+                                                                    },
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: <
+                                                                          Widget>[
+                                                                        Text(
+                                                                          'Ajouter au panier',
+                                                                          style: TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 10),
+                                                                        ),
+                                                                        Container(
+                                                                          height:
+                                                                              20,
+                                                                          width:
+                                                                              20,
+                                                                          margin:
+                                                                              EdgeInsets.only(top: 0),
+                                                                          padding:
+                                                                              EdgeInsets.only(left: 10),
+                                                                          child:
+                                                                              Icon(
+                                                                            Icons.arrow_forward,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            size:
+                                                                                25,
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ),
                                                                   ),
                                                                 )
                                                               ],
+                                                            )
+                                                          : Column(
+                                                              children: <
+                                                                  Widget>[
+                                                                Text(
+                                                                    'Le panier n\'est pas vide'),
+                                                                Row(
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Container(
+                                                                      height:
+                                                                          60,
+                                                                      width: 70,
+                                                                      child:
+                                                                          RaisedButton(
+                                                                        elevation:
+                                                                            10,
+                                                                        color: Colors
+                                                                            .green,
+                                                                        clipBehavior:
+                                                                            Clip.none,
+                                                                        padding: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                1,
+                                                                            horizontal:
+                                                                                2),
+                                                                        onPressed:
+                                                                            () {
+                                                                          _showMyDialog(
+                                                                              context,
+                                                                              widget.article);
+                                                                        },
+                                                                        child:
+                                                                            Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.min,
+                                                                          children: <
+                                                                              Widget>[
+                                                                            Text(
+                                                                              'Ajouter au panier',
+                                                                              style: TextStyle(color: Colors.white, fontSize: 10),
+                                                                            ),
+                                                                            Container(
+                                                                              height: 20,
+                                                                              width: 20,
+                                                                              margin: EdgeInsets.only(top: 0),
+                                                                              padding: EdgeInsets.only(left: 10),
+                                                                              child: Icon(
+                                                                                Icons.arrow_forward,
+                                                                                color: Colors.white,
+                                                                                size: 25,
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 5,
+                                                                    ),
+                                                                    Container(
+                                                                      height:
+                                                                          60,
+                                                                      width: 70,
+                                                                      child:
+                                                                          RaisedButton(
+                                                                        elevation:
+                                                                            10,
+                                                                        color: Colors
+                                                                            .green,
+                                                                        clipBehavior:
+                                                                            Clip.none,
+                                                                        padding: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                1,
+                                                                            horizontal:
+                                                                                2),
+                                                                        onPressed:
+                                                                            () {
+                                                                          showMyDialogViderpanier(
+                                                                              context,
+                                                                              widget.article);
+                                                                        },
+                                                                        child:
+                                                                            Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.min,
+                                                                          children: <
+                                                                              Widget>[
+                                                                            Text(
+                                                                              'Confirmer ou annuler la commande ',
+                                                                              style: TextStyle(color: Colors.white, fontSize: 10),
+                                                                            ),
+                                                                            Container(
+                                                                              height: 20,
+                                                                              width: 20,
+                                                                              margin: EdgeInsets.only(top: 0),
+                                                                              padding: EdgeInsets.only(left: 10),
+                                                                              child: Icon(
+                                                                                Icons.arrow_forward,
+                                                                                color: Colors.white,
+                                                                                size: 25,
+                                                                              ),
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ],
                                                             ),
-                                                          ),
-                                                        )
-
-                                                      ],)
-                                                     : Column(
-                                                        children: <Widget>[
-                                                          Text('Le panier n\'est pas vide'),
-                                                          Row(
-                                                            children: <Widget>[
-                                                              Container(
-                                                                height: 60,
-                                                                width: 70,
-                                                                child: RaisedButton(
-                                                                  elevation: 10,
-                                                                  color: Colors.green,
-                                                                  clipBehavior: Clip.none,
-                                                                  padding:
-                                                                  EdgeInsets.symmetric(
-                                                                      vertical: 1,
-                                                                      horizontal: 2),
-                                                                  onPressed: () {
-                                                                    _showMyDialog(context,
-                                                                        widget.article);
-                                                                  },
-                                                                  child: Column(
-                                                                    mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                    mainAxisSize:
-                                                                    MainAxisSize.min,
-                                                                    children: <Widget>[
-                                                                      Text(
-                                                                        'Ajouter au panier',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                            Colors.white,
-                                                                            fontSize: 10),
-                                                                      ),
-                                                                      Container(
-                                                                        height: 20,
-                                                                        width: 20,
-                                                                        margin:
-                                                                        EdgeInsets.only(
-                                                                            top: 0),
-                                                                        padding:
-                                                                        EdgeInsets.only(
-                                                                            left: 10),
-                                                                        child: Icon(
-                                                                          Icons.arrow_forward,
-                                                                          color: Colors.white,
-                                                                          size: 25,
-                                                                        ),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                width: 5,
-                                                              ),
-                                                              Container(
-                                                                height: 60,
-                                                                width: 70,
-                                                                child: RaisedButton(
-                                                                  elevation: 10,
-                                                                  color: Colors.green,
-                                                                  clipBehavior: Clip.none,
-                                                                  padding:
-                                                                  EdgeInsets.symmetric(
-                                                                      vertical: 1,
-                                                                      horizontal: 2),
-                                                                  onPressed: () {
-                                                                    showMyDialogViderpanier(
-                                                                        context,
-                                                                        widget.article);
-                                                                  },
-                                                                  child: Column(
-                                                                    mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                    mainAxisSize:
-                                                                    MainAxisSize.min,
-                                                                    children: <Widget>[
-                                                                      Text(
-                                                                        'Confirmer ou annuler la commande ',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                            Colors.white,
-                                                                            fontSize: 10),
-                                                                      ),
-                                                                      Container(
-                                                                        height: 20,
-                                                                        width: 20,
-                                                                        margin:
-                                                                        EdgeInsets.only(
-                                                                            top: 0),
-                                                                        padding:
-                                                                        EdgeInsets.only(
-                                                                            left: 10),
-                                                                        child: Icon(
-                                                                          Icons.arrow_forward,
-                                                                          color: Colors.white,
-                                                                          size: 25,
-                                                                        ),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
                                                     ],
                                                   );
 //
                                                 }))
                                       ]),
-
                                       Row(children: <Widget>[
                                         Expanded(
                                             child: Container(
@@ -371,7 +439,6 @@ class _FormeState extends State<Forme> {
                                         SizedBox(
                                           width: 20,
                                         ),
-
 
                                         // Container(
                                         //   height: 60,
@@ -460,16 +527,16 @@ class _FormeState extends State<Forme> {
               children: <Widget>[
                 Center(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(
-                            width: 90,
-                            child: Column(
-                              children: <Widget>[],
-                            )),
-                        Text(''),
-                      ],
-                    )),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                        width: 90,
+                        child: Column(
+                          children: <Widget>[],
+                        )),
+                    Text(''),
+                  ],
+                )),
               ],
             ),
           ),
@@ -480,13 +547,14 @@ class _FormeState extends State<Forme> {
                 height: 60,
                 width: 250,
                 child: RaisedButton(
-                  child: Text('Confirmer la commande',style: TextStyle(fontSize: 18)),
+                  child: Text('Confirmer la commande',
+                      style: TextStyle(fontSize: 18)),
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => DisplayVente()));
-                   // Navigator.of(context).pop();
+                    // Navigator.of(context).pop();
                   },
                 ),
               ),
@@ -496,10 +564,9 @@ class _FormeState extends State<Forme> {
               child: SizedBox(
                 width: 250,
                 height: 60,
-                child: RaisedButton (
-                  child: Text('Retour',style: TextStyle(fontSize: 18)),
+                child: RaisedButton(
+                  child: Text('Retour', style: TextStyle(fontSize: 18)),
                   onPressed: () {
-
                     Navigator.of(context).pop();
                   },
                 ),
@@ -508,13 +575,16 @@ class _FormeState extends State<Forme> {
             Container(
               margin: EdgeInsets.only(bottom: 15),
               child: SizedBox(
-
                 height: 60,
                 width: 250,
                 child: RaisedButton(
                   child: Column(
                     children: <Widget>[
-                      Text('Annuler la commande',style: TextStyle(fontSize: 18), textAlign: TextAlign.end,),
+                      Text(
+                        'Annuler la commande',
+                        style: TextStyle(fontSize: 18),
+                        textAlign: TextAlign.end,
+                      ),
                       //  Text('Puis appuyer sur le panier pour enregister la commande')
                     ],
                   ),
@@ -530,7 +600,7 @@ class _FormeState extends State<Forme> {
                             .delete()
                             .then((value) {
                           setState(() {
-                            empty=true;
+                            empty = true;
                           });
                           print(empty);
                           Navigator.of(context).pop();
@@ -546,7 +616,6 @@ class _FormeState extends State<Forme> {
       },
     );
   }
-
 
   Future<void> _showMyDialog(BuildContext context, Item item) async {
     TextEditingController numberController = new TextEditingController();
@@ -635,7 +704,7 @@ class _FormeState extends State<Forme> {
                     // 'vente' : vente.toMap(),
                     'name': articles.last.name,
                     'number': int.parse(numberController.text),
-                    'prixVente':articles.last.prixVente,
+                    'prixVente': articles.last.prixVente,
                   });
 
                   //  listCommande.add(new Vente(item, value));

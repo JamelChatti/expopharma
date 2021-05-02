@@ -119,7 +119,7 @@ class _DetailArticlState extends State<DetailArticl> {
                               Text(
                                 ' dt',
                                 style: TextStyle(
-                                    color: Colors.red,
+                                    color: Colors.white,
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500),
                               ),
