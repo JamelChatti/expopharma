@@ -40,6 +40,32 @@
       });
     }
   </script>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+  <script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyC54wD72Bjd5n_iFzRKZ1PKw8zEHQbLwTA",
+    authDomain: "expopharma-20c26.firebaseapp.com",
+    databaseURL: "https://expopharma-20c26-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "expopharma-20c26",
+    storageBucket: "expopharma-20c26.appspot.com",
+    messagingSenderId: "219143338185",
+    appId: "1:219143338185:web:68c37de938b392989bb518",
+    measurementId: "G-MECPNSZ974"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>

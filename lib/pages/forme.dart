@@ -12,6 +12,7 @@ import 'package:expopharma/pages/vente.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:expopharma/pages/shoppingCard.dart';
 
@@ -243,8 +244,8 @@ class _FormeState extends State<Forme> {
                                                                   width: 50,
                                                                 ),
                                                                 Container(
-                                                                  height: 60,
-                                                                  width: 70,
+                                                                  height: 30,
+                                                                  width: 50,
                                                                   child:
                                                                       RaisedButton(
                                                                     elevation:
@@ -284,24 +285,24 @@ class _FormeState extends State<Forme> {
                                                                               color: Colors.white,
                                                                               fontSize: 10),
                                                                         ),
-                                                                        Container(
-                                                                          height:
-                                                                              20,
-                                                                          width:
-                                                                              20,
-                                                                          margin:
-                                                                              EdgeInsets.only(top: 0),
-                                                                          padding:
-                                                                              EdgeInsets.only(left: 10),
-                                                                          child:
-                                                                              Icon(
-                                                                            Icons.arrow_forward,
-                                                                            color:
-                                                                                Colors.white,
-                                                                            size:
-                                                                                25,
-                                                                          ),
-                                                                        )
+                                                                        // Container(
+                                                                        //   height:
+                                                                        //       20,
+                                                                        //   width:
+                                                                        //       20,
+                                                                        //   margin:
+                                                                        //       EdgeInsets.only(top: 0),
+                                                                        //   padding:
+                                                                        //       EdgeInsets.only(left: 10),
+                                                                          // child:
+                                                                          //     Icon(
+                                                                          //   Icons.arrow_forward,
+                                                                          //   color:
+                                                                          //       Colors.white,
+                                                                          //   size:
+                                                                          //       25,
+                                                                          // ),
+                                                                        // )
                                                                       ],
                                                                     ),
                                                                   ),
@@ -309,17 +310,19 @@ class _FormeState extends State<Forme> {
                                                               ],
                                                             )
                                                           : Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.end,
                                                               children: <
                                                                   Widget>[
                                                                 Text(
                                                                     'Le panier n\'est pas vide'),
                                                                 Row(
+                                                                  mainAxisAlignment: MainAxisAlignment.end,
                                                                   children: <
                                                                       Widget>[
                                                                     Container(
                                                                       height:
-                                                                          60,
-                                                                      width: 70,
+                                                                          40,
+                                                                      width: 50,
                                                                       child:
                                                                           RaisedButton(
                                                                         elevation:
@@ -351,17 +354,17 @@ class _FormeState extends State<Forme> {
                                                                               'Ajouter au panier',
                                                                               style: TextStyle(color: Colors.white, fontSize: 10),
                                                                             ),
-                                                                            Container(
-                                                                              height: 20,
-                                                                              width: 20,
-                                                                              margin: EdgeInsets.only(top: 0),
-                                                                              padding: EdgeInsets.only(left: 10),
-                                                                              child: Icon(
-                                                                                Icons.arrow_forward,
-                                                                                color: Colors.white,
-                                                                                size: 25,
-                                                                              ),
-                                                                            )
+                                                                            // Container(
+                                                                            //   height: 20,
+                                                                            //   width: 20,
+                                                                            //   margin: EdgeInsets.only(top: 0),
+                                                                            //   padding: EdgeInsets.only(left: 10),
+                                                                            //   child: Icon(
+                                                                            //     Icons.arrow_forward,
+                                                                            //     color: Colors.white,
+                                                                            //     size: 25,
+                                                                            //   ),
+                                                                            //)
                                                                           ],
                                                                         ),
                                                                       ),
@@ -371,8 +374,8 @@ class _FormeState extends State<Forme> {
                                                                     ),
                                                                     Container(
                                                                       height:
-                                                                          60,
-                                                                      width: 70,
+                                                                          45,
+                                                                      width: 65,
                                                                       child:
                                                                           RaisedButton(
                                                                         elevation:
@@ -404,17 +407,17 @@ class _FormeState extends State<Forme> {
                                                                               'Confirmer ou annuler la commande ',
                                                                               style: TextStyle(color: Colors.white, fontSize: 10),
                                                                             ),
-                                                                            Container(
-                                                                              height: 20,
-                                                                              width: 20,
-                                                                              margin: EdgeInsets.only(top: 0),
-                                                                              padding: EdgeInsets.only(left: 10),
-                                                                              child: Icon(
-                                                                                Icons.arrow_forward,
-                                                                                color: Colors.white,
-                                                                                size: 25,
-                                                                              ),
-                                                                            )
+                                                                            // Container(
+                                                                            //   height: 20,
+                                                                            //   width: 20,
+                                                                            //   margin: EdgeInsets.only(top: 0),
+                                                                            //   padding: EdgeInsets.only(left: 10),
+                                                                            //   child: Icon(
+                                                                            //     Icons.arrow_forward,
+                                                                            //     color: Colors.white,
+                                                                            //     size: 25,
+                                                                            //   ),
+                                                                            // )
                                                                           ],
                                                                         ),
                                                                       ),

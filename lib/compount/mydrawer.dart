@@ -1,13 +1,12 @@
 import 'package:expopharma/pages/ajoutsupprimeArtVitrine.dart';
 import 'package:expopharma/pages/commandeAExecuter.dart';
 import 'package:expopharma/pages/login.dart';
-import 'package:expopharma/pages/sospharma/inventaireList.dart';
-import 'package:expopharma/pages/sospharma/navigation_bar.dart';
-import 'package:expopharma/pages/sospharma/produitDemande.dart';
-import 'package:expopharma/pages/sospharma/acueuilSos.dart';
+import 'package:expopharma/pages/maj%20article/majStockprix.dart';
+import 'package:expopharma/pages/sospharma/login_page.dart';
+
 import 'package:expopharma/pages/sospharma/sosPharma.dart';
-import 'package:expopharma/pages/vitrine.dart';
-import 'file:///D:/jamel/expopharma/lib/pages/sospharma/login_page.dart';
+
+//import 'file:///D:/jamel/expopharma/lib/pages/sospharma/login_page.dart';
 import 'package:flutter/material.dart';
 
 
@@ -150,6 +149,23 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SosPharma()),
+              );
+            },
+          ),
+          ListTile(
+            title: Text(
+              'Mise à jour stock ',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+            ),
+            leading: Icon(
+              Icons.add_comment_sharp,
+              color: Colors.blue,
+              size: 20,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MajStockprix()),
               );
             },
           ),

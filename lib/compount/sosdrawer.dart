@@ -1,7 +1,8 @@
 import 'package:expopharma/pages/commandeAExecuter.dart';
 import 'package:expopharma/pages/login.dart';
 import 'package:expopharma/pages/sospharma/inventaireList.dart';
-import 'file:///D:/jamel/expopharma/lib/pages/sospharma/login_page.dart';
+import 'package:expopharma/pages/sospharma/login_page.dart';
+//import 'file:///D:/jamel/expopharma/lib/pages/sospharma/login_page.dart';
 import 'package:flutter/material.dart';
 
 

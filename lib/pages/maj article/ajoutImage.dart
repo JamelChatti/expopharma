@@ -72,7 +72,7 @@ TextEditingController descriptionController = TextEditingController();
         .putFile(_image);
 
     setState(() {
-      _image = null;
+     _image = null;
     });
   }
   @override
@@ -111,7 +111,7 @@ TextEditingController descriptionController = TextEditingController();
       ),
       body: Center(
 
-        child: Column(
+        child: ListView(
           children: <Widget>[
             Column(
               children: <Widget>[
@@ -126,13 +126,13 @@ TextEditingController descriptionController = TextEditingController();
                     ? Row(mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                   RaisedButton(
-                    child: Text('Prendre une image'),
+                    child: Text('Prendre une image',style: TextStyle(fontSize: 12),),
                     onPressed: pickercamera,
                     color: Colors.cyan,
                   ),
                   SizedBox(width: 15,),
                   RaisedButton(
-                    child: Text('Importer une image'),
+                    child: Text('Importer une image',style: TextStyle(fontSize: 12),),
                     onPressed: pickergallery,
                     color: Colors.cyan,
                   )
@@ -141,15 +141,14 @@ TextEditingController descriptionController = TextEditingController();
                     : Container(),
                 SizedBox(height: 20,),
                 _image != null
-                    ? RaisedButton(
+                    ? ElevatedButton(
                         child: Text('Enregistrer l\'image'),
                         onPressed: uploadFile,
-                        color: Colors.cyan,
                       )
                     : Container(),
                 SizedBox(height: 20,),
                 _image != null
-                    ? RaisedButton(
+                    ? ElevatedButton(
                         child: Text('Ignorer'),
                         onPressed: null,
                       )
