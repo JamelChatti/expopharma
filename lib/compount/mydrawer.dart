@@ -9,6 +9,8 @@ import 'package:expopharma/pages/sospharma/sosPharma.dart';
 //import 'file:///D:/jamel/expopharma/lib/pages/sospharma/login_page.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/client.dart';
+
 
 
 
@@ -101,6 +103,23 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AjousupArtvitrine()),
+              );
+            },
+          ),
+          ListTile(
+            title: Text(
+              'ِCOMPTE CLIENT',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+            ),
+            leading: Icon(
+              Icons.info_outline,
+              color: Colors.blue,
+              size: 20,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Client()),
               );
             },
           ),
