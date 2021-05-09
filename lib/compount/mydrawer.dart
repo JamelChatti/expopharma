@@ -106,23 +106,23 @@ class MyDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            title: Text(
-              'ِCOMPTE CLIENT',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
-            ),
-            leading: Icon(
-              Icons.info_outline,
-              color: Colors.blue,
-              size: 20,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Client()),
-              );
-            },
-          ),
+          // ListTile(
+          //   title: Text(
+          //     'ِCOMPTE CLIENT',
+          //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+          //   ),
+          //   leading: Icon(
+          //     Icons.info_outline,
+          //     color: Colors.blue,
+          //     size: 20,
+          //   ),
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => Client()),
+          //     );
+          //   },
+          // ),
           ListTile(
             title: Text(
               'الاعدادات',
