@@ -117,12 +117,11 @@ class _FormeState extends State<Forme> {
           itemCount: articles.length,
           itemBuilder: (context, index) {
             if (checkBoxValue == false) {
-              articles.sort((a, b) =>
-              a.dateExp == null
+              articles.sort((a, b) => a.dateExp == null
                   ? 1
                   : b.dateExp == null
-                  ? -1
-                  : a.dateExp.compareTo(b.dateExp));
+                      ? -1
+                      : a.dateExp.compareTo(b.dateExp));
             } else {
               articles.sort((a, b) => a.name.compareTo(b.name));
             }
@@ -130,362 +129,349 @@ class _FormeState extends State<Forme> {
             return Container(
                 color: Colors.grey[200],
                 child: InkWell(
-                    child: Card(
-                        color: Colors.grey[300],
-                        child: Container(
+                  child: Card(
+                      color: Colors.grey[300],
+                      shadowColor: Colors.cyanAccent,
+                      child: Container(
                           height: 2000,
                           child: Row(children: <Widget>[
-                          Container(
-                          padding: EdgeInsets.all(10),
-                          color: Colors.grey[200],
-                          width: 150,
-                          child: CachedNetworkImage(
-                              imageUrl:
-                              'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/articles%2F' +
-                                  articles[index].id +
-                                  '.png?alt=media',
-                              placeholder: (context, url) =>
-                                  CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  Column(
-                                      children: [
-                                  ElevatedButton(
-                                  child: Text('Ajouter une image'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          DetailArticlmaj(
-                                              articles[index])),
-                                );
-                              }),
-                          SizedBox(height: 25,),
-                          SelectableText(
-                              articles[index].name,
-                              style: TextStyle(fontSize: 10,
-                                  color: Colors.black),
-                              showCursor: true,
-                              toolbarOptions: ToolbarOptions(
-                                  copy: true,
-                                  selectAll: true,
-                                  cut: false,
-                                  paste: false
-                              )),
-                                        SizedBox(height: 25,),
-                          SelectableText(
-                            articles[index].barCode,
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 10,
-                            ),
-                            showCursor: true,
-                            toolbarOptions: ToolbarOptions(
-                                copy: true,
-                                selectAll: true,
-                                cut: false,
-                                paste: false
-                            ),)
-                            ],
-                          ),
-                        )),
-                    Expanded(
-                      child: Container(
-                        child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                height: 15,
-                              ),
-                              Container(
-                                  width:
-                                  MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width,
-                                  padding: EdgeInsets.all(10),
-                                  color: Colors.blueGrey,
-                                  child: RichText(
-                                    text: TextSpan(
+                            Container(
+                                padding: EdgeInsets.all(10),
+                                color: Colors.grey[200],
+                                width: 150,
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      'https://firebasestorage.googleapis.com/v0/b/expopharma-20c26.appspot.com/o/articles%2F' +
+                                          articles[index].id +
+                                          '.png?alt=media',
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => Column(
+                                    children: [
+                                      ElevatedButton(
+                                          child: Text('Ajouter une image'),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetailArticlmaj(
+                                                          articles[index])),
+                                            );
+                                          }),
+                                      SizedBox(
+                                        height: 25,
+                                      ),
+                                      SelectableText(articles[index].name,
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black),
+                                          showCursor: true,
+                                          toolbarOptions: ToolbarOptions(
+                                              copy: true,
+                                              selectAll: true,
+                                              cut: false,
+                                              paste: false)),
+                                      SizedBox(
+                                        height: 25,
+                                      ),
+                                      SelectableText(
+                                        articles[index].barCode,
                                         style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.black),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                              text:
-                                              articles[index].name,
+                                          color: Colors.red,
+                                          fontSize: 15,
+                                        ),
+                                        showCursor: true,
+                                        toolbarOptions: ToolbarOptions(
+                                            copy: true,
+                                            selectAll: true,
+                                            cut: false,
+                                            paste: false),
+                                      )
+                                    ],
+                                  ),
+                                )),
+                            Expanded(
+                              child: Container(
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          padding: EdgeInsets.all(10),
+                                          color: Colors.blueGrey,
+                                          child: RichText(
+                                            text: TextSpan(
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: Colors.black),
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text:
+                                                          articles[index].name,
+                                                      style: TextStyle(
+                                                          color: Colors.white))
+                                                ]),
+                                          )),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            Text(
+                                              'Prix: ' +
+                                                  articles[index].prixVente,
                                               style: TextStyle(
-                                                  color: Colors.white))
-                                        ]),
-                                  )),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Text(
-                                      'Prix: ' +
-                                          articles[index].prixVente,
-                                      style: TextStyle(
-                                        color: Colors.green,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      'Disponible',
-                                      style: TextStyle(
-                                          color: Colors.green,
-                                          fontSize: 15),
-                                    ),
-
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Padding(
-                                    padding: EdgeInsets.only(right: 5),
-                                    child: StreamBuilder(
-                                        stream: FirebaseFirestore
-                                            .instance
-                                            .collection(
-                                            'commandeClient')
-                                            .snapshots(),
-                                        builder: (context, snapshot) {
-                                          String result;
-                                          if (snapshot
-                                              .connectionState ==
-                                              ConnectionState.waiting) {
-                                            result = "";
-                                          } else if (snapshot
-                                              .hasError) {
-                                            result = "";
-                                          } else if (snapshot.hasData) {
-                                            QuerySnapshot values =
-                                                snapshot.data;
-                                            if (values != null) {
-                                              result = snapshot
-                                                  .data.size
-                                                  .toString();
-                                            } else {
-                                              result = "";
-                                            }
-
-                                            if (snapshot.data.size ==
-                                                0) {
-                                              empty = true;
-                                            } else {
-                                              empty = false;
-                                            }
-                                            print(empty);
-                                          }
-                                          return Row(
-                                            children: <Widget>[
-                                              empty
-                                                  ? Row(
-                                                children: <
-                                                    Widget>[
-                                                  SizedBox(
-                                                    width: 50,
-                                                  ),
-                                                  Container(
-                                                    height: 30,
-                                                    width: 50,
-                                                    child:
-                                                    RaisedButton(
-                                                      elevation:
-                                                      10,
-                                                      color: Colors
-                                                          .blueAccent[
-                                                      200],
-                                                      clipBehavior:
-                                                      Clip.none,
-                                                      padding: EdgeInsets
-                                                          .symmetric(
-                                                          vertical:
-                                                          1,
-                                                          horizontal:
-                                                          2),
-                                                      onPressed:
-                                                          () {
-                                                        _showMyDialog(
-                                                            context,
-                                                            widget
-                                                                .article);
-                                                        print(
-                                                            empty);
-                                                      },
-                                                      child:
-                                                      Column(
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .start,
-                                                        mainAxisSize:
-                                                        MainAxisSize
-                                                            .min,
-                                                        children: <
-                                                            Widget>[
-                                                          Text(
-                                                            'Ajouter au panier',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 10),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
-                                              )
-                                                  : Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment
-                                                    .end,
-                                                children: <
-                                                    Widget>[
-                                                  Text(
-                                                      'Le panier n\'est pas vide'),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .end,
-                                                    children: <
-                                                        Widget>[
-                                                      Container(
-                                                        height:
-                                                        40,
-                                                        width: 50,
-                                                        child:
-                                                        RaisedButton(
-                                                          elevation:
-                                                          10,
-                                                          color: Colors
-                                                              .green,
-                                                          clipBehavior:
-                                                          Clip.none,
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                              vertical:
-                                                              1,
-                                                              horizontal:
-                                                              2),
-                                                          onPressed:
-                                                              () {
-                                                            _showMyDialog(
-                                                                context,
-                                                                widget.article);
-                                                          },
-                                                          child:
-                                                          Column(
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                            mainAxisSize:
-                                                            MainAxisSize.min,
-                                                            children: <
-                                                                Widget>[
-                                                              Text(
-                                                                'Ajouter au panier',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize: 10),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      Container(
-                                                        height:
-                                                        45,
-                                                        width: 65,
-                                                        child:
-                                                        RaisedButton(
-                                                          elevation:
-                                                          10,
-                                                          color: Colors
-                                                              .green,
-                                                          clipBehavior:
-                                                          Clip.none,
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                              vertical:
-                                                              1,
-                                                              horizontal:
-                                                              2),
-                                                          onPressed:
-                                                              () {
-                                                            showMyDialogViderpanier(
-                                                                context,
-                                                                widget.article);
-                                                          },
-                                                          child:
-                                                          Column(
-                                                            mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                            mainAxisSize:
-                                                            MainAxisSize.min,
-                                                            children: <
-                                                                Widget>[
-                                                              Text(
-                                                                'Confirmer ou annuler la commande ',
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize: 10),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
+                                                color: Colors.green,
+                                                fontSize: 15,
                                               ),
-                                            ],
-                                          );
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              'Disponible',
+                                              style: TextStyle(
+                                                  color: Colors.green,
+                                                  fontSize: 15),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.only(right: 5),
+                                            child: StreamBuilder(
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection(
+                                                        'commandeClient')
+                                                    .snapshots(),
+                                                builder: (context, snapshot) {
+                                                  String result;
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    result = "";
+                                                  } else if (snapshot
+                                                      .hasError) {
+                                                    result = "";
+                                                  } else if (snapshot.hasData) {
+                                                    QuerySnapshot values =
+                                                        snapshot.data;
+                                                    if (values != null) {
+                                                      result = snapshot
+                                                          .data.size
+                                                          .toString();
+                                                    } else {
+                                                      result = "";
+                                                    }
+
+                                                    if (snapshot.data.size ==
+                                                        0) {
+                                                      empty = true;
+                                                    } else {
+                                                      empty = false;
+                                                    }
+                                                    print(empty);
+                                                  }
+                                                  return Row(
+                                                    children: <Widget>[
+                                                      empty
+                                                          ? Row(
+                                                              children: <
+                                                                  Widget>[
+                                                                SizedBox(
+                                                                  width: 50,
+                                                                ),
+                                                                Container(
+                                                                  height: 30,
+                                                                  width: 50,
+                                                                  child:
+                                                                      RaisedButton(
+                                                                    elevation:
+                                                                        10,
+                                                                    color: Colors
+                                                                            .blueAccent[
+                                                                        200],
+                                                                    clipBehavior:
+                                                                        Clip.none,
+                                                                    padding: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                            1,
+                                                                        horizontal:
+                                                                            2),
+                                                                    onPressed:
+                                                                        () {
+                                                                      _showMyDialog(
+                                                                          context,
+                                                                          widget
+                                                                              .article);
+                                                                      print(
+                                                                          empty);
+                                                                    },
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: <
+                                                                          Widget>[
+                                                                        Text(
+                                                                          'Ajouter au panier',
+                                                                          style: TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 10),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            )
+                                                          : Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .end,
+                                                              children: <
+                                                                  Widget>[
+                                                                Text(
+                                                                    'Le panier n\'est pas vide'),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Container(
+                                                                      height:
+                                                                          40,
+                                                                      width: 50,
+                                                                      child:
+                                                                          RaisedButton(
+                                                                        elevation:
+                                                                            10,
+                                                                        color: Colors
+                                                                            .green,
+                                                                        clipBehavior:
+                                                                            Clip.none,
+                                                                        padding: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                1,
+                                                                            horizontal:
+                                                                                2),
+                                                                        onPressed:
+                                                                            () {
+                                                                          _showMyDialog(
+                                                                              context,
+                                                                              widget.article);
+                                                                        },
+                                                                        child:
+                                                                            Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.min,
+                                                                          children: <
+                                                                              Widget>[
+                                                                            Text(
+                                                                              'Ajouter au panier',
+                                                                              style: TextStyle(color: Colors.white, fontSize: 10),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 5,
+                                                                    ),
+                                                                    Container(
+                                                                      height:
+                                                                          45,
+                                                                      width: 65,
+                                                                      child:
+                                                                          RaisedButton(
+                                                                        elevation:
+                                                                            10,
+                                                                        color: Colors
+                                                                            .green,
+                                                                        clipBehavior:
+                                                                            Clip.none,
+                                                                        padding: EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                1,
+                                                                            horizontal:
+                                                                                2),
+                                                                        onPressed:
+                                                                            () {
+                                                                          showMyDialogViderpanier(
+                                                                              context,
+                                                                              widget.article);
+                                                                        },
+                                                                        child:
+                                                                            Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.min,
+                                                                          children: <
+                                                                              Widget>[
+                                                                            Text(
+                                                                              'Confirmer ou annuler la commande ',
+                                                                              style: TextStyle(color: Colors.white, fontSize: 10),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                    ],
+                                                  );
 //
-                                        }))
-                              ]),
-                              Row(children: <Widget>[
-                                Expanded(
-                                    child: Container(
-                                      child: Text(
-                                        'Appuyer sur l\'image pour plus de detail',
-                                        style: TextStyle(fontSize: 10),
+                                                }))
+                                      ]),
+                                      Row(children: <Widget>[
+                                        Expanded(
+                                            child: Container(
+                                          child: Text(
+                                            'Appuyer sur l\'image pour plus de detail',
+                                            style: TextStyle(fontSize: 10),
+                                          ),
+                                        )),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                      ]),
+                                      SizedBox(
+                                        height: 15,
                                       ),
-                                    )),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                              ]),
-                              SizedBox(
-                                height: 15,
+                                    ]),
                               ),
-                            ]),
-                      ),
-                    ),
-                    ]))),
-            onTap: () {
-            Navigator.push(
-            context,
-            MaterialPageRoute(
-            builder: (context) => DetailArticl(articles[index])),
-            );
-            },
-            )
-            //Text(myItem.name)
-            );
+                            ),
+                          ]))),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailArticl(articles[index])),
+                    );
+                  },
+                )
+                //Text(myItem.name)
+                );
           },
         ));
   }
@@ -503,16 +489,16 @@ class _FormeState extends State<Forme> {
               children: <Widget>[
                 Center(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(
-                            width: 90,
-                            child: Column(
-                              children: <Widget>[],
-                            )),
-                        Text(''),
-                      ],
-                    )),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                        width: 90,
+                        child: Column(
+                          children: <Widget>[],
+                        )),
+                    Text(''),
+                  ],
+                )),
               ],
             ),
           ),
@@ -624,32 +610,31 @@ class _FormeState extends State<Forme> {
                 ),
                 Center(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(
-                            width: 90,
-                            child: Column(
-                              children: <Widget>[
-                                TextFormField(
-                                  autofocus: true,
-                                  controller: numberController,
-                                  //initialValue: "1",
-                                  decoration: InputDecoration(
-                                    hintText: '0',
-                                    helperText: 'différent de 0',
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    //WhitelistingTextInputFormatter.digitsOnly
-                                    FilteringTextInputFormatter.allow(
-                                        expression)
-                                  ], // Only numbers can be entered
-                                ),
-                              ],
-                            )),
-                        Text(''),
-                      ],
-                    )),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                        width: 90,
+                        child: Column(
+                          children: <Widget>[
+                            TextFormField(
+                              autofocus: true,
+                              controller: numberController,
+                              //initialValue: "1",
+                              decoration: InputDecoration(
+                                hintText: '0',
+                                helperText: 'différent de 0',
+                              ),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                //WhitelistingTextInputFormatter.digitsOnly
+                                FilteringTextInputFormatter.allow(expression)
+                              ], // Only numbers can be entered
+                            ),
+                          ],
+                        )),
+                    Text(''),
+                  ],
+                )),
               ],
             ),
           ),
@@ -677,9 +662,7 @@ class _FormeState extends State<Forme> {
                   await FirebaseFirestore.instance
                       .collection('commandeClient')
                       .add({
-                    'timestamp': DateTime
-                        .now()
-                        .millisecondsSinceEpoch,
+                    'timestamp': DateTime.now().millisecondsSinceEpoch,
                     // 'vente' : vente.toMap(),
                     'name': articles.last.name,
                     'number': int.parse(numberController.text),

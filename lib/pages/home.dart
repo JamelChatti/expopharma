@@ -4,6 +4,7 @@ import 'package:expopharma/compount/mydrawer.dart';
 import 'package:expopharma/pages/Item.dart';
 import 'package:expopharma/pages/ItemCategorie.dart';
 import 'package:expopharma/pages/artlist.dart';
+import 'package:expopharma/pages/client.dart';
 import 'package:expopharma/pages/commandeClient.dart';
 import 'package:expopharma/pages/detailArticle.dart';
 import 'package:expopharma/pages/categorie.dart';
@@ -214,16 +215,25 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           title: Text(
             'عرض لجميع مواد الصيدلية',
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(fontSize: 25),
           ),
           centerTitle: false,
           elevation: 5,
           actions: <Widget>[
-             MyShoppingCard("ventes"),
+           // MyShoppingCard("ventes"),
             MyShoppingCard("commandeClient"),
+            IconButton(
+              icon: Icon(Icons.person,size: 20,),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Client()),
+                );
+              },
+            ),
 
             IconButton(
-              icon: Icon(Icons.search),
+              icon: Icon(Icons.search,size: 20,),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -235,7 +245,7 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.deepPurple,
           titleSpacing: 1,
         ),
-        drawer: MyDrawer(),
+       drawer: MyDrawer(),
         body: ListView(children: <Widget>[
           Container(
               height: 300,
@@ -304,7 +314,7 @@ class _HomeState extends State<Home> {
                                             child: Text(
                                               vitrines.elementAt(index).name,
                                               style: TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 25,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.white),
                                               textAlign: TextAlign.center,
@@ -350,7 +360,7 @@ class _HomeState extends State<Home> {
                   'Tapper sur votre choix',
                   style: TextStyle(
                       color: Colors.indigo,
-                      fontSize: 15,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 )),
@@ -422,7 +432,7 @@ class _HomeState extends State<Home> {
                                           child: Text(
                                             categories.elementAt(i).name,
                                             style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 20,
                                                 color: Colors.blue,
                                                 fontWeight: FontWeight.bold),
                                             textAlign: TextAlign.center,

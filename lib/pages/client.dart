@@ -28,7 +28,7 @@ class _ClientState extends State<Client> {
   List<String> cli = [];
 
   TextEditingController codeController;
-  TextEditingController nameController;
+  TextEditingController phoneController;
 
 
   @override
@@ -36,52 +36,22 @@ class _ClientState extends State<Client> {
     // TODO: implement initState
     super.initState();
     codeController = new TextEditingController();
-    nameController = new TextEditingController();
+    phoneController = new TextEditingController();
     // dataList est uine listé enregistrer dans le fichier data.dart
     // si le fichier contient deja les elément( chargé depuit internet), on l'affiche directement
     if (listClient.length == 0) {
-      // on va chargé la liste des sock et la liste des médicaments et creer des objets Item
-
-      loadListclientcode();
+      loadListclientsold();
     } else {
       loading = false;
     }
   }
 
-  void loadListclientcode() async {
-    // D'abort on charge la liste des stock
-    final ref2 = FirebaseStorage.instance.ref().child('lst_cli.txt');
-    final String url2 = await ref2.getDownloadURL();
-    final Directory systemTempDir2 = Directory.systemTemp;
-    final File tempFile2 = File('${systemTempDir2.path}/tmpslst_cli.txt');
-    if (tempFile2.existsSync()) {
-      await tempFile2.delete();
-    }
-    if (tempFile2.existsSync()) {
-      await tempFile2.delete();
-    }
-    await tempFile2.create();
-    assert(await tempFile2.readAsString() == "");
-    await ref2.writeToFile(tempFile2);
-    Uint8List contents2 = await tempFile2.readAsBytes();
-    LineSplitter().convert(new String.fromCharCodes(contents2)).map((s) {
-      String id = s.split('\t').elementAt(0);
-      String name = s.split('\t').elementAt(1);
-      if (name.length > 0 && id.length > 0) {
-        cli.add(name);
-        idMap.putIfAbsent(name, () => id);
-        //print(name);
-      }
-    }).toList();
-    loadListclientsold();
-  }
-
   void loadListclientsold() async {
     // D'abort on charge la liste des stock
-    final ref2 = FirebaseStorage.instance.ref().child('client.txt');
+    final ref2 = FirebaseStorage.instance.ref().child('credit2.txt');
     final String url2 = await ref2.getDownloadURL();
     final Directory systemTempDir2 = Directory.systemTemp;
-    final File tempFile2 = File('${systemTempDir2.path}/tmpsclient.txt');
+    final File tempFile2 = File('${systemTempDir2.path}/tmpscredit2.txt');
     if (tempFile2.existsSync()) {
       await tempFile2.delete();
     }
@@ -94,13 +64,18 @@ class _ClientState extends State<Client> {
     Uint8List contents2 = await tempFile2.readAsBytes();
     LineSplitter().convert(new String.fromCharCodes(contents2)).map((s) {
       if (s.split('\t').length > 2) {
-        String name = s.split('\t').elementAt(0);
-        String solde = s.split('\t').elementAt(2);
+        String code = s.split('\t').elementAt(0);
+        String name1 = s.split('\t').elementAt(1);
+        String phone1 = s.split('\t').elementAt(2);
+        String creditMax = s.split('\t').elementAt(3);
+        String solde = s.split('\t').elementAt(4);
+        String phone = phone1.replaceAll("-", "");
+        String name = name1.replaceAll("-", "");
 
         print(name);
 
-        if (name.length > 0 && idMap[name] != null) {
-          listClient.add(new ItemClient(idMap[name], name, solde));
+        if (name.length > 0 ) {
+          listClient.add(new ItemClient(code, name, solde,phone,creditMax));
           print(listClient.length);
         }
       }
@@ -161,7 +136,7 @@ class _ClientState extends State<Client> {
                     children: [
                       Expanded(
                         child: TextField(
-                          //expands: true,
+                          obscureText: true,
                           maxLines: 1,
                           autofocus: false,
                           controller: codeController,
@@ -178,7 +153,7 @@ class _ClientState extends State<Client> {
                           //expands: true,
                           maxLines: 1,
                           autofocus: false,
-                          controller: nameController,
+                          controller: phoneController,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                               border: InputBorder.none,
@@ -190,8 +165,8 @@ class _ClientState extends State<Client> {
                     ],
                   ),
                   TextButton(onPressed: (){
-                    if(codeController.text.isNotEmpty && nameController.text.isNotEmpty){
-                      getListclients(nameController.text, codeController.text);
+                    if(codeController.text.isNotEmpty && phoneController.text.isNotEmpty){
+                      getListclients(phoneController.text, codeController.text);
                     }
                   }, child: Text("Valider")),
                 ],
@@ -212,9 +187,7 @@ class _ClientState extends State<Client> {
                           '\n' +
                           'Solde =' +
                           clients[index].solde +
-                          '\n' +
-                          'Code =' +
-                          clients[index].id,
+                          '\n' ,
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -228,29 +201,21 @@ class _ClientState extends State<Client> {
         ));
   }
 
-  void getListclients(String name, String code) {
+  void getListclients(String phoneSaisie, String codeSaisie) {
     ItemClient myClient;
         listClient.forEach((element) {
-          print(element.id);
-          if(element.id == code){
+          print(element.code);
+          if(element.code == codeSaisie){
             myClient = element;
           }
         });
 
     if (myClient != null) {
-      if (myClient.name.replaceAll(new RegExp(r"\s+"), "") == name) {
+      if (myClient.phone.replaceAll(new RegExp(r"\s+"), "") == phoneSaisie) {
         clients.add(myClient);
         setState(() {});
       }
     }
-    // listClient.forEach((element) {
-    //   String name = element.name.replaceAll(new RegExp(r"\s+"), "") + element.id;
-    //   if (name == value ) {
-    //
-    //   }
-    // });
-    // if(clients.length > 0){
-    //   setState(() {});
-    // }
+
   }
 }

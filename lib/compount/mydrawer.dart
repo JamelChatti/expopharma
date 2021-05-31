@@ -2,12 +2,15 @@ import 'package:expopharma/pages/ajoutsupprimeArtVitrine.dart';
 import 'package:expopharma/pages/commandeAExecuter.dart';
 import 'package:expopharma/pages/login.dart';
 import 'package:expopharma/pages/maj%20article/majStockprix.dart';
+import 'package:expopharma/pages/sendsmsClient.dart';
 import 'package:expopharma/pages/sospharma/login_page.dart';
+import 'package:expopharma/pages/sospharma/rappelCredit.dart';
 
 import 'package:expopharma/pages/sospharma/sosPharma.dart';
 
 //import 'file:///D:/jamel/expopharma/lib/pages/sospharma/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/rpg_awesome_icons.dart';
 
 import '../pages/client.dart';
 
@@ -120,6 +123,40 @@ class MyDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Client()),
+              );
+            },
+          ),
+          ListTile(
+            title: Text(
+              'ِRappel credit par SMS',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+            ),
+            leading: Icon(
+              Icons.perm_phone_msg,
+              color: Colors.blue,
+              size: 20,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RappelCredit()),
+              );
+            },
+          ),
+          ListTile(
+            title: Text(
+              'ِEnvoyer SMS aux clients',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+            ),
+            leading: Icon(
+              Icons.perm_phone_msg,
+              color: Colors.blue,
+              size: 20,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SendsmsClient()),
               );
             },
           ),

@@ -333,7 +333,7 @@ class _DetailArticlmajState extends State<DetailArticlmaj> {
 
 
                             },
-                            child: Text('Submit'),
+                            child: Text('Valider'),
                           ),
                         ),
                       ],

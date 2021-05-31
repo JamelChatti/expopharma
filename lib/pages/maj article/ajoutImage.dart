@@ -358,7 +358,7 @@ TextEditingController descriptionController = TextEditingController();
 
 
                       },
-                      child: Text('Submit'),
+                      child: Text('Valider'),
                     ),
                   ),
                 ],
@@ -398,25 +398,6 @@ TextEditingController descriptionController = TextEditingController();
       articleIdChoisi;
     });
   }
-
-
-  // searchItems(String text) {
-  //   displayedList.clear();
-  //   if (text.substring(0, 1) == "*") {
-  //     displayedList = dataList
-  //         .where((i) => i.name
-  //         .toUpperCase()
-  //         .contains(text.substring(1, text.length).toUpperCase()))
-  //         .toList();
-  //   } else {
-  //     displayedList = dataList
-  //         .where((i) => i.name.toUpperCase().startsWith(text.toUpperCase()))
-  //         .toList();
-  //   }
-  //   setState(() {
-  //     displayedList;
-  //   });
-  // }
 
   Future<void> _showMyDialog(BuildContext context, Item item,
       ) async {

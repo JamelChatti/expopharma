@@ -50,6 +50,10 @@ dependencies:
   wifi_info_plugin: ^1.1.5
   dwds: ^7.1.1
   file_picker: ^2.1.7
+  flutter_sms: ^2.1.1
+  late_init: ^1.1.0
+
+
 
 
 

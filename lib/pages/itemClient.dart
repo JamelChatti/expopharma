@@ -1,20 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemClient {
-  String id;
+  String code;
   String name;
   String solde;
+  String phone;
+  String creditMax;
 
 
 
-  ItemClient.id();
-  ItemClient(this.id, this.name,this.solde);
+  ItemClient.code();
+  ItemClient(this.code, this.name,this.solde,this.phone,this.creditMax);
 
   Map<String, dynamic> toMap() {
     return {
-      'id' : id,
+      'id' : code,
       'name': name,
       'solde': solde,
+      'phone' : phone,
+      'creditMax': creditMax,
       // this worked well
 
     };}
@@ -23,7 +27,9 @@ class ItemClient {
     return ItemClient(
       documentSnapshot["id"],
       documentSnapshot["name"],
-      documentSnapshot["code"],
+      documentSnapshot["solde"],
+      documentSnapshot["phone"],
+      documentSnapshot["creditMax"],
     );
   }
 
