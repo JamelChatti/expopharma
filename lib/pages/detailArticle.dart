@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expopharma/compount/mydrawer.dart';
 import 'package:expopharma/pages/Item.dart';
 import 'package:expopharma/pages/displayvente.dart';
 import 'package:expopharma/pages/itemDetailArticle.dart';
@@ -47,8 +50,7 @@ class _DetailArticlState extends State<DetailArticl> {
 
   @override
   Widget build(BuildContext context) {
-    //bool empty = false;
-    //FirebaseFirestore.instance.collection('commandeClient').snapshots().isEmpty;
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Description' + 'التفاصيل'),
@@ -69,6 +71,7 @@ class _DetailArticlState extends State<DetailArticl> {
             )
           ],
         ),
+        drawer: MyDrawer(),
         body: ListView(
           children: <Widget>[
             Container(
@@ -200,19 +203,7 @@ class _DetailArticlState extends State<DetailArticl> {
                                                       color: Colors.white,
                                                       fontSize: 10),
                                                 ),
-                                                // Container(
-                                                //   height: 20,
-                                                //   width: 20,
-                                                //   margin:
-                                                //       EdgeInsets.only(top: 0),
-                                                //   padding:
-                                                //       EdgeInsets.only(left: 10),
-                                                //   child: Icon(
-                                                //     Icons.arrow_forward,
-                                                //     color: Colors.white,
-                                                //     size: 25,
-                                                //   ),
-                                                // )
+
                                               ],
                                             ),
                                           ),
@@ -252,21 +243,6 @@ class _DetailArticlState extends State<DetailArticl> {
                                                                   Colors.white,
                                                               fontSize: 10),
                                                         ),
-                                                        // Container(
-                                                        //   height: 20,
-                                                        //   width: 20,
-                                                        //   margin:
-                                                        //       EdgeInsets.only(
-                                                        //           top: 0),
-                                                        //   padding:
-                                                        //       EdgeInsets.only(
-                                                        //           left: 10),
-                                                        //   child: Icon(
-                                                        //     Icons.arrow_forward,
-                                                        //     color: Colors.white,
-                                                        //     size: 25,
-                                                        //   ),
-                                                        // )
                                                       ],
                                                     ),
                                                   ),
@@ -304,21 +280,7 @@ class _DetailArticlState extends State<DetailArticl> {
                                                                   Colors.white,
                                                               fontSize: 10),
                                                         ),
-                                                        // Container(
-                                                        //   height: 20,
-                                                        //   width: 20,
-                                                        //   margin:
-                                                        //       EdgeInsets.only(
-                                                        //           top: 0),
-                                                        //   padding:
-                                                        //       EdgeInsets.only(
-                                                        //           left: 10),
-                                                        //   child: Icon(
-                                                        //     Icons.arrow_forward,
-                                                        //     color: Colors.white,
-                                                        //     size: 25,
-                                                        //   ),
-                                                        // )
+
                                                       ],
                                                     ),
                                                   ),
@@ -384,13 +346,13 @@ class _DetailArticlState extends State<DetailArticl> {
   List<Widget> getDetailsAsWidgets() {
     List<Widget> widgets = [];
     if (dci1 != null && dci1 != "") {
-      widgets.add(Text(dci1));
+      widgets.add(Text(dci1.toUpperCase(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,),));
     }
     if (dci2 != null && dci2 != "") {
-      widgets.add(Text(dci2));
+      widgets.add(Text(dci2.toUpperCase(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,),));
     }
     if (dci3 != null && dci3 != "") {
-      widgets.add(Text(dci3));
+      widgets.add(Text(dci3.toUpperCase(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,),));
     }
     if (description != null && description != "") {
       widgets.add(Text(description,style: TextStyle(fontSize: 18),));

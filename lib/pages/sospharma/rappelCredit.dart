@@ -265,7 +265,6 @@
 //   }
 // }
 
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -284,7 +283,7 @@ class RappelCredit extends StatefulWidget {
 class _RappelCreditState extends State<RappelCredit> {
   TextEditingController _controllerPeople = TextEditingController();
   TextEditingController _controllerMessage = TextEditingController();
-  TextEditingController soldsmsController = TextEditingController(text:'100000');
+  TextEditingController soldsmsController = TextEditingController(text: '5000');
   int soldsms;
   String _message, body;
   String _canSendSMSMessage = 'Check is not run.';
@@ -297,7 +296,7 @@ class _RappelCreditState extends State<RappelCredit> {
   void initState() {
     super.initState();
     initPlatformState();
-    soldsms=int.parse(soldsmsController.text);
+    soldsms = int.parse(soldsmsController.text);
     if (listClient.length == 0) {
       loadListclientphone();
     } else {
@@ -339,10 +338,7 @@ class _RappelCreditState extends State<RappelCredit> {
         //   print('phone');
         //   print(people.length);
         // }
-        if (name.length > 0 &&
-            intsolde > 1000000 &&
-            phone != "" &&
-            phone != null) {
+        if (name.length > 0 && intsolde > 1 && phone != "" && phone != null) {
           listClient.add(new ItemClient(code, name, solde, phone, creditMax));
         }
         print(listClient.length);
@@ -360,10 +356,10 @@ class _RappelCreditState extends State<RappelCredit> {
   }
 
   Future<void> _sendSMS() async {
-    listClient.forEach((client) async {
+    sendlistClient.forEach((client) async {
       try {
         String _result = await sendSMS(
-            message: _controllerMessage.text +' '+ client.solde,
+            message: 'Madame, Monsieur le montant de'+  client.solde + 'n\'a toujours pas été réglée à ce jour. Nous pensons qu\'il s\'agit d\'un oubli, et nous vous remercions de bien vouloir nous adresser dans les plus brefs délais votre règlement.',
             recipients: [client.phone]);
         setState(() => _message = _result);
       } catch (error) {
@@ -375,7 +371,7 @@ class _RappelCreditState extends State<RappelCredit> {
   Future<bool> _canSendSMS() async {
     bool _result = await canSendSMS();
     setState(() => _canSendSMSMessage =
-    _result ? 'This unit can send SMS' : 'This unit cannot send SMS');
+        _result ? 'This unit can send SMS' : 'This unit cannot send SMS');
     return _result;
   }
 
@@ -385,11 +381,11 @@ class _RappelCreditState extends State<RappelCredit> {
       child: Container(
           decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(color: Colors.grey.shade300),
-                top: BorderSide(color: Colors.grey.shade300),
-                left: BorderSide(color: Colors.grey.shade300),
-                right: BorderSide(color: Colors.grey.shade300),
-              )),
+            bottom: BorderSide(color: Colors.grey.shade300),
+            top: BorderSide(color: Colors.grey.shade300),
+            left: BorderSide(color: Colors.grey.shade300),
+            right: BorderSide(color: Colors.grey.shade300),
+          )),
           child: Padding(
             padding: const EdgeInsets.all(4),
             child: Column(
@@ -398,7 +394,7 @@ class _RappelCreditState extends State<RappelCredit> {
               children: <Widget>[
                 IconButton(
                   icon: const Icon(Icons.close),
-                  onPressed: () => setState(() => listClient.remove(client)),
+                  onPressed: () => setState(() => sendlistClient.remove(client)),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(0),
@@ -432,21 +428,30 @@ class _RappelCreditState extends State<RappelCredit> {
         ),
         body: ListView(
           children: <Widget>[
-            SizedBox(
-                width: 90,
-                child: TextFormField(
-                  autofocus: true,
-                  controller: soldsmsController,
-                  decoration: InputDecoration(
-                    hintText: '0',
-                  ),
-                  onChanged: (String value) => setState(() {
-                    sendlistClient.clear();
-                    getlistClient(int.parse(value));
-                  }),
-                  keyboardType: TextInputType.number,
-                  // Only numbers can be entered
-                )),
+            Padding(
+              padding: const EdgeInsets.only(left: 50),
+              child: SizedBox(
+                  width: 90,
+                  child: TextFormField(
+                    autofocus: true,
+                    controller: soldsmsController,
+                    decoration: InputDecoration(
+                      hintText: '0',
+                    ),
+                    onChanged: (String value) => setState(() {
+                      sendlistClient.clear();
+                      getlistClient(int.parse(value));
+                    }),
+                    validator: (value) {
+                      if (value.contains(".") && value.contains("-")) {
+                        return "Vous ne pouvez saisir que des chiffres";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.number,
+                    // Only numbers can be entered
+                  )),
+            ),
             if (sendlistClient == null || sendlistClient.isEmpty)
               const SizedBox(height: 0)
             else
@@ -456,45 +461,14 @@ class _RappelCreditState extends State<RappelCredit> {
                   padding: const EdgeInsets.all(3),
                   child: ListView(
                     scrollDirection: Axis.horizontal,
-                    children:
-                    List<Widget>.generate(sendlistClient.length, (int index) {
+                    children: List<Widget>.generate(sendlistClient.length,
+                        (int index) {
                       return _phoneTile(sendlistClient.elementAt(index));
-
                     }),
                   ),
                 ),
               ),
-            /*ListTile(
-              leading: const Icon(Icons.people),
-              title: TextField(
-                controller: _controllerPeople,
-                decoration:
-                const InputDecoration(labelText: 'Add Phone Number'),
-                keyboardType: TextInputType.number,
-                onChanged: (String value) => setState(() {
 
-                }),
-              ),
-              trailing: IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: _controllerPeople.text.isEmpty
-                    ? null
-                    : () => setState(() {
-                  people.add(_controllerPeople.text.toString());
-                  _controllerPeople.clear();
-                }),
-              ),
-            ),*/
-            // const Divider(),
-            ListTile(
-              leading: const Icon(Icons.message),
-              title: TextField(
-                decoration: const InputDecoration(labelText: 'Add Message'),
-                controller: _controllerMessage,
-
-              ),
-            ),
-            const Divider(),
             ListTile(
               title: const Text('Can send SMS'),
               subtitle: Text(_canSendSMSMessage),
@@ -511,9 +485,9 @@ class _RappelCreditState extends State<RappelCredit> {
               child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith(
-                          (states) => Theme.of(context).accentColor),
+                      (states) => Theme.of(context).accentColor),
                   padding: MaterialStateProperty.resolveWith(
-                          (states) => const EdgeInsets.symmetric(vertical: 16)),
+                      (states) => const EdgeInsets.symmetric(vertical: 16)),
                 ),
                 onPressed: () {
                   _send();
@@ -555,10 +529,12 @@ class _RappelCreditState extends State<RappelCredit> {
       _sendSMS();
     }
   }
+
   void getlistClient(int value) {
     listClient.forEach((element) {
-       int soldeint= int.tryParse(element.solde.replaceAll(new RegExp(r"\s+"), "") ?? 0);
-      if ( soldeint > int.parse(soldsmsController.text)) {
+      int soldeint =
+          int.tryParse(element.solde.replaceAll(new RegExp(r"\s+"), "") ?? 0);
+      if (soldeint > int.parse(soldsmsController.text)) {
         sendlistClient.add(element);
         print(sendlistClient.length);
         print(listClient.length);
@@ -566,5 +542,4 @@ class _RappelCreditState extends State<RappelCredit> {
     });
     setState(() {});
   }
-
 }

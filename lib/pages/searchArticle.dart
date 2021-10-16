@@ -77,9 +77,9 @@ class _SearchArticleState extends State<SearchArticle> {
               );
             },
               child: Container(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 30,bottom: 20),
                 child: Text(
-                  articles[index].name +
+                  articles[index].stock+ '     ' + articles[index].name +
                       '\n' +
                       'Prix =' +
                       articles[index].prixVente,

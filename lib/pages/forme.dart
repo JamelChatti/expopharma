@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expopharma/compount/mydrawer.dart';
 import 'package:expopharma/pages/Item.dart';
 import 'package:expopharma/pages/commandeAExecuter.dart';
 import 'package:expopharma/pages/commandeClient.dart';
@@ -111,6 +112,7 @@ class _FormeState extends State<Forme> {
             },
           ),
         ),
+        drawer: MyDrawer(),
         body: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 2.0, crossAxisCount: 1),
@@ -236,7 +238,7 @@ class _FormeState extends State<Forme> {
                                               height: 5,
                                             ),
                                             Text(
-                                              'Disponible',
+                                                articles[index].stock,
                                               style: TextStyle(
                                                   color: Colors.green,
                                                   fontSize: 15),

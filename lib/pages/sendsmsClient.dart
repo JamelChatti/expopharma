@@ -20,7 +20,7 @@ class _SendsmsClientState extends State<SendsmsClient> {
   TextEditingController soldsmsController = TextEditingController();
   String _message, body;
   String _canSendSMSMessage = 'Check is not run.';
-  List<String> people = [];
+  List<String> phoneClient = ['98453151','56173375'];
   bool loading = true;
   bool soldsms = false;
   List<ItemClient> listClient = new List();
@@ -62,6 +62,7 @@ class _SendsmsClientState extends State<SendsmsClient> {
         String phone = phone1.replaceAll("-", "");
         String name = name1.replaceAll("-", "");
 
+
         int intsolde =
             int.tryParse(solde.replaceAll(new RegExp(r"\s+"), "")) ?? 0;
         // if (phone.length > 0 &&  intsolde>1000000
@@ -71,11 +72,12 @@ class _SendsmsClientState extends State<SendsmsClient> {
         //   print(people.length);
         // }
         if (name.length > 0 &&
-            intsolde > 1000000 &&
+            //intsolde > 1000000 &&
             phone != "" &&
             phone != null) {
           listClient.add(new ItemClient(code, name, solde, phone, creditMax));
         }
+        listClient.forEach((element) {phoneClient.add(phone); });
         print(listClient.length);
         print('sms');
       }
@@ -94,7 +96,7 @@ class _SendsmsClientState extends State<SendsmsClient> {
     listClient.forEach((client) async {
       try {
         String _result = await sendSMS(
-            message: _controllerMessage.text +' '+ client.solde,
+            message: _controllerMessage.text,
             recipients: [client.phone]);
         setState(() => _message = _result);
       } catch (error) {
@@ -102,6 +104,13 @@ class _SendsmsClientState extends State<SendsmsClient> {
       }
     });
   }
+  // void _sendSMS(String message, List<String> recipents) async {
+  //   String _result = await sendSMS(message:_controllerMessage.text , recipients: phoneClient)
+  //       .catchError((onError) {
+  //     print(onError);
+  //   });
+  //   print(_result);
+  // }
 
   Future<bool> _canSendSMS() async {
     bool _result = await canSendSMS();
@@ -131,6 +140,8 @@ class _SendsmsClientState extends State<SendsmsClient> {
                   icon: const Icon(Icons.close),
                   onPressed: () => setState(() => listClient.remove(client)),
                 ),
+
+
                 Padding(
                   padding: const EdgeInsets.all(0),
                   child: Text(
@@ -190,28 +201,29 @@ class _SendsmsClientState extends State<SendsmsClient> {
                   ),
                 ),
               ),
-            /*ListTile(
-              leading: const Icon(Icons.people),
-              title: TextField(
-                controller: _controllerPeople,
-                decoration:
-                const InputDecoration(labelText: 'Add Phone Number'),
-                keyboardType: TextInputType.number,
-                onChanged: (String value) => setState(() {
 
-                }),
-              ),
-              trailing: IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: _controllerPeople.text.isEmpty
-                    ? null
-                    : () => setState(() {
-                  people.add(_controllerPeople.text.toString());
-                  _controllerPeople.clear();
-                }),
-              ),
-            ),*/
-            // const Divider(),
+            // /*ListTile(
+            //   leading: const Icon(Icons.people),
+            //   title: TextField(
+            //     controller: _controllerPeople,
+            //     decoration:
+            //     const InputDecoration(labelText: 'Add Phone Number'),
+            //     keyboardType: TextInputType.number,
+            //     onChanged: (String value) => setState(() {
+            //
+            //     }),
+            //   ),
+            //   trailing: IconButton(
+            //     icon: const Icon(Icons.add),
+            //     onPressed: _controllerPeople.text.isEmpty
+            //         ? null
+            //         : () => setState(() {
+            //       people.add(_controllerPeople.text.toString());
+            //       _controllerPeople.clear();
+            //     }),
+            //   ),
+            // ),*/
+            // // const Divider(),
             ListTile(
               leading: const Icon(Icons.message),
               title: TextField(
@@ -220,6 +232,13 @@ class _SendsmsClientState extends State<SendsmsClient> {
                 onChanged: (String value) => setState(() {}),
               ),
             ),
+            ListTile(
+              leading: const Icon(Icons.people_alt),
+              title: Text(
+                listClient.length.toString(),
+              ),
+            ),
+
             const Divider(),
             ListTile(
               title: const Text('Can send SMS'),
